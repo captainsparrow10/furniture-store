@@ -10,6 +10,8 @@ export async function GET(req: NextApiRequest, context:any) {
   const items = await client.fetch(groq`*[_type == 'product' && _id == '${id}'] {
     _id,
     name,
+    description,
+    price,
     "tags": *[
       _type == 'tag'  && 
         _id in ^.tags[]._ref
@@ -26,7 +28,7 @@ export async function GET(req: NextApiRequest, context:any) {
           name,
           urlList[]
         }
-  }
+  }[0]
   `)
 	return NextResponse.json(items)
 

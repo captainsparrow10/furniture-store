@@ -12,30 +12,28 @@ export default function ContentImage({ shopItem }: Props) {
 		setUrl(url)
 	}
 	return (
-		<div className="flex gap-6 ">
-			<div>
-				<>
-					<img
-						src={shopItem.colors[0].urlList[0]}
-						className="w-12 h-12"
-						onClick={() => changeUrl(shopItem.colors[0].urlList[0])}
-					/>
-					<img
-						src={shopItem.colors[0].urlList[1]}
-						className="w-12 h-12"
-						onClick={() => changeUrl(shopItem.colors[0].urlList[1])}
-					/>
-					<img
-						src={shopItem.colors[0].urlList[2]}
-						className="w-12 h-12"
-						onClick={() => changeUrl(shopItem.colors[0].urlList[2])}
-					/>
-				</>
+		<div className="grid grid-cols-1 gap-4">
+			<div className='flex order-2 w-full justify-evenly'>
+				<img
+					src={shopItem.colors[0].urlList[0]}
+					className="w-16 h-16"
+					onClick={() => changeUrl(shopItem.colors[0].urlList[0])}
+				/>
+				<img
+					src={shopItem.colors[0].urlList[1]}
+					className="w-16 h-16"
+					onClick={() => changeUrl(shopItem.colors[0].urlList[1])}
+				/>
+				<img
+					src={shopItem.colors[0].urlList[2]}
+					className="w-16 h-16"
+					onClick={() => changeUrl(shopItem.colors[0].urlList[2])}
+				/>
 			</div>
 			<div>
 				<img
 					src={url.length == 0 ? shopItem.colors[0].urlList[0] : url}
-					className="w-full h-[300px]"
+					className="w-full h-[450px]"
 				/>
 			</div>
 		</div>
