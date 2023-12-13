@@ -2,26 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer base {
+	html,
+	body {
+		@apply h-full w-full text-black;
+	}
+	h1 {
+		@apply text-[48px] font-bold capitalize md:text-[64px];
+	}
+	h2 {
+		@apply text-[36px] font-semibold capitalize md:text-[48px];
+	}
+	h3 {
+		@apply text-[24px] font-semibold capitalize md:text-[36px];
+	}
+	p {
+		@apply text-[10px] font-normal text-justify md:text-[12px];
+	}
+	h4{
+		@apply text-[18px] font-bold capitalize md:text-[20px];
+	}
+	h5{
+		@apply text-[14px] font-normal capitalize md:text-[16px];
+	}
+	button {
+		@apply button;
+	}
+}
+@layer components {
+	.p {
+		@apply text-[12px] font-normal;
+	}
+	.icon {
+		@apply h-6 w-6 text-black;
+	}
+	.button {
+		@apply text-[20px] font-normal capitalize;
+	}
+
+	.input {
+		@apply px-5 py-3 flex w-full text-[16px] font-normal placeholder:text-gray border border-gray rounded-xl outline-none;
+	}
+	.input-space {
+		@apply flex flex-col gap-y-1;
+	}
+	.input-footer {
+		@apply w-fit text-[14px] p text-black outline-none placeholder:text-gray border border-transparent focus:border-b-black hover:border-b-gray;
+	}
+	.btn-navegation{
+		@apply px-4 py-1 rounded-xl flex justify-center items-center cursor-pointer button
+	}
+	.btn-md {
+		@apply h-12 rounded-xl  flex justify-center items-center w-min px-6  cursor-pointer button;
+	}
+	.btn-sm {
+		@apply h-8 rounded-md  flex justify-center items-center w-min px-3 cursor-pointer;
+	}
+	.btn-lg {
+		@apply px-8 border rounded-xl border-gray py-4 w-fit flex justify-center items-center cursor-pointer hover:border-black;
+	}
+	.line {
+		@apply bg-gray-line w-full h-[1px];
+	}
+	.line-black{
+		@apply bg-black w-full h-[1px];
+	}
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer utilities {
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	textarea:-webkit-autofill,
+	textarea:-webkit-autofill:hover,
+	textarea:-webkit-autofill:focus,
+	option:-webkit-autofill,
+	option:-webkit-autofill:hover,
+	option:-webkit-autofill:focus,
+	select:-webkit-autofill,
+	select:-webkit-autofill:hover,
+	select:-webkit-autofill:focus {
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: #323234;
+		transition: white 5000s ease-in-out 0s;
+		box-shadow: inset 0 0 20px 20px white;
+	}
 }
