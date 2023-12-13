@@ -8,7 +8,7 @@ export default function Count({ number }: Props) {
 	return (
 		<div className="flex justify-center px-4 py-5 gap-6 items-center border border-black w-fit rounded-xl">
 			<PlusIcon className="h-4 w-4 text-black" />
-			<p className="body2">{number}</p>
+			<h4>{number}</h4>
 			<MinusIcon className="h-4 w-4 text-black" />
 		</div>
 	)

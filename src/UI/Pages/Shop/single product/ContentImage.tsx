@@ -12,8 +12,8 @@ export default function ContentImage({ shopItem }: Props) {
 		setUrl(url)
 	}
 	return (
-		<div className="grid grid-cols-1 gap-4">
-			<div className='flex order-2 w-full justify-evenly'>
+		<div className="flex-wrap gap-4  w-full max-w-[420px] flex">
+			<div className="flex order-2 w-full justify-evenly sm:order-1 sm:flex-col sm:w-fit sm:justify-start">
 				<img
 					src={shopItem.colors[0].urlList[0]}
 					className="w-16 h-16"
@@ -30,12 +30,11 @@ export default function ContentImage({ shopItem }: Props) {
 					onClick={() => changeUrl(shopItem.colors[0].urlList[2])}
 				/>
 			</div>
-			<div>
-				<img
-					src={url.length == 0 ? shopItem.colors[0].urlList[0] : url}
-					className="w-full h-[450px]"
-				/>
-			</div>
+
+			<img
+				src={url.length == 0 ? shopItem.colors[0].urlList[0] : url}
+				className="w-full h-[450px] max-w-[320px] sm:order-2"
+			/>
 		</div>
 	)
 }
