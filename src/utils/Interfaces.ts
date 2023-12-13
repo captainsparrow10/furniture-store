@@ -1,4 +1,4 @@
-export interface shopItems {
+export interface shopItemsInterface {
   _id: string
   name: string
   price: string

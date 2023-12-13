@@ -1,10 +1,11 @@
+import { BannerType } from '@/utils/Types'
 import Image from 'next/image'
 import React from 'react'
-import { BannerType } from '@/utils/type'
+ type Props = {
+	banner: BannerType
+ }
 
-export default async function Banner() {
-	const data = await fetch('http://localhost:3000/api/banner')
-	const banner: BannerType = await data.json()
+export default function Banner({banner}:Props) {
 	return (
 		<div className="h-[1000px] px-6 lg:px-12 2xl:px-24 bg-yellow">
 			<div

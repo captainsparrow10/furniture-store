@@ -1,9 +1,9 @@
 import React from 'react'
-import Check from '../Button/Check'
+import Check from './Button/Check'
 
 export default function Footer() {
 	return (
-		<div className="w-full h-full px-6 py-16 gap-12 flex flex-col lg:px-12 3xl:px-24">
+		<div className="w-full h-fit px-6 py-16 gap-12 flex flex-col lg:px-12 3xl:px-24">
 			<div className="flex w-full flex-wrap gap-12">
 				<h3 className="text-gray flex items-center w-full">e-commerme</h3>
 				<div className="flex flex-col gap-y-8">

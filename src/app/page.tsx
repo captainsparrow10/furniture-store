@@ -1,17 +1,18 @@
-import NavBar from '@/components/navegation/NavBar'
-import React from 'react'
-import Footer from '@/components/Common/Footer'
-import Banner from '@/components/Common/Banner'
-import Picks from '@/components/Common/Picks'
-import TopPicks from '@/components/Common/TopPicks'
-import NewPick from '@/components/Common/NewPick'
+import { BannerType } from '@/utils/Types'
+import Banner from '@pages/Home/Banner'
+import NewPick from '@pages/Home/NewPick'
+import Picks from '@pages/Home/Picks'
+import TopPicks from '@pages/Home/TopPicks'
+
 export default async function page() {
+	const data = await fetch('http://localhost:3000/api/banner')
+	const banner: BannerType = await data.json()
 	return (
 		<main className="relative">
-			<Banner />
-			<Picks />
-			<TopPicks />
-			<NewPick />
+			<Banner banner={banner} />
+			<Picks banner={banner} />
+			<TopPicks banner={banner} />
+			<NewPick banner={banner} />
 		</main>
 	)
 }

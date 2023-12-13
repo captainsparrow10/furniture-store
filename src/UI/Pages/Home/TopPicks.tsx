@@ -1,11 +1,12 @@
-import { BannerType } from '@/utils/type'
+
+import { BannerType } from '@utils/Types'
 import Image from 'next/image'
 import React from 'react'
+type Props = {
+	banner: BannerType
+ }
+export default function TopPicks({banner}:Props) {
 
-export default async function TopPicks() {
-	const data = await fetch('http://localhost:3000/api/banner')
-
-	const banner: BannerType = await data.json()
 	const tops = [1, 2, 3, 4]
 	return (
 		<div
