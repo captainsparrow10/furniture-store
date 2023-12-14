@@ -13,18 +13,14 @@ export default async function page() {
 			<div className="py-16 flex justify-center flex-wrap gap-x-9">
 				<div className="input-space">
 					<div className="grid grid-cols-12 gap-5 w-[817px] bg-cream py-3">
-						<p className="body2 font-bold col-span-5 flex justify-center">
+						<h5 className=" font-bold col-span-5 flex justify-center">
 							Product
-						</p>
-						<p className="body2 font-bold col-span-2 flex justify-center">
-							Price
-						</p>
-						<p className="body2 font-bold col-span-2 flex justify-center">
+						</h5>
+						<h5 className=" font-bold col-span-2 flex justify-center">Price</h5>
+						<h5 className=" font-bold col-span-2 flex justify-center">
 							Quantity
-						</p>
-						<p className="body2 font-bold col-span-2 flex justify-center">
-							Total
-						</p>
+						</h5>
+						<h5 className=" font-bold col-span-2 flex justify-center">Total</h5>
 					</div>
 					{items.map((item) => (
 						<div
@@ -38,20 +34,20 @@ export default async function page() {
 									className="w-full h-full"
 								/>
 							</div>
-							<p className="col-span-3 h-full flex justify-center items-center body2 text-gray">
+							<h5 className="col-span-3 h-full flex justify-center items-center  text-gray">
 								{item.name}
-							</p>
-							<p className="col-span-2 h-full flex justify-center items-center body2 text-gray">
+							</h5>
+							<h5 className="col-span-2 h-full flex justify-center items-center  text-gray">
 								${item.price}
-							</p>
+							</h5>
 							<div className="col-span-2 h-full flex justify-center items-center">
-								<p className="h-8 w-8 rounded-xl border border-gray body2 flex justify-center items-center">
+								<h5 className="h-8 w-8 rounded-xl border border-gray  flex justify-center items-center">
 									1
-								</p>
+								</h5>
 							</div>
-							<p className="col-span-2 h-full flex justify-center items-center body2 text-gray">
+							<h5 className="col-span-2 h-full flex justify-center items-center text-gray">
 								$250.00
-							</p>
+							</h5>
 							<div className=" col-span-1 flex justify-center items-center">
 								<TrashIcon className="icon text-gray hover:text-black" />
 							</div>
@@ -63,17 +59,17 @@ export default async function page() {
 					<div className="flex flex-col w-full gap-y-6">
 						<div className="flex flex-col w-full gap-y-3">
 							<div className="flex justify-between w-full">
-								<p className="body2">Sub Total</p>
-								<p className="body2 text-gray">500.00</p>
+								<h5>Sub Total</h5>
+								<h5 className="text-gray">500.00</h5>
 							</div>
 							<div className="flex justify-between w-full">
-								<p className="body2">ITBMS</p>
-								<p className="body2 text-gray">7%</p>
+								<h5 >ITBMS</h5>
+								<h5 className="text-gray">7%</h5>
 							</div>
 						</div>
 						<div className="flex justify-between w-full">
-							<p className="body2">Total</p>
-							<p className="body2 font-bold">535.00</p>
+							<h5>Total</h5>
+							<h5 className="font-bold">535.00</h5>
 						</div>
 					</div>
 					<button className="btn-lg">Check Out</button>
