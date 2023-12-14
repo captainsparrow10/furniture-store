@@ -6,6 +6,7 @@ export async function GET() {
 	const items = await client.fetch(groq`*[_type == 'product'] {
     _id,
     name,
+    price,
     "tags": *[
       _type == 'tag'  && 
         _id in ^.tags[]._ref
