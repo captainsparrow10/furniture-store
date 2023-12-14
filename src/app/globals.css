@@ -37,7 +37,7 @@
 		@apply h-6 w-6 text-black;
 	}
 	.button {
-		@apply text-[20px] font-normal capitalize;
+		@apply text-[18px] font-normal capitalize;
 	}
 
 	.input {
@@ -59,7 +59,7 @@
 		@apply h-8 rounded-md  flex justify-center items-center w-min px-3 cursor-pointer;
 	}
 	.btn-lg {
-		@apply px-8 border rounded-xl border-gray py-4 w-fit flex justify-center items-center cursor-pointer hover:border-black;
+		@apply px-8 border rounded-xl border-gray py-2 w-fit flex justify-center items-center cursor-pointer hover:border-black;
 	}
 	.line {
 		@apply bg-gray-line w-full h-[1px];

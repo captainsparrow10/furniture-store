@@ -1,14 +1,11 @@
-import Banner from '@/components/Common/Banner'
-import Footer from '@/components/Common/Footer'
-import Sponsor from '@/components/Common/Sponsor'
-import NavBar from '@/components/navegation/NavBar'
+import Indications from '@/UI/Components/Navegation/Indications'
+import Sponsor from '@/UI/Components/Sponsor'
 import React from 'react'
 
 export default function page() {
 	return (
 		<main>
-			<NavBar />
-			<Banner />
+			<Indications />
 			<div className="flex justify-center py-16 gap-x-24">
 				<div className="flex flex-col gap-y-9 w-[423px]">
 					<h3>Billing Details</h3>
@@ -104,7 +101,6 @@ export default function page() {
 				</div>
 			</div>
 			<Sponsor />
-			<Footer />
 		</main>
 	)
 }

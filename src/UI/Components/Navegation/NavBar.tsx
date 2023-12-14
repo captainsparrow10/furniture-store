@@ -27,21 +27,26 @@ export default function NavBar() {
 			name: 'Contact',
 		},
 	]
+
 	return (
 		<nav className="flex py-6 justify-end bg-transparent px-6 lg:px-12 2xl:px-24 overflow-hidden top-0 w-full fixed sm:justify-between gap-16 lg:justify-end lg:gap-36 z-50">
 			<Bars3Icon className="icon cursor-pointer text-black lg:hidden" />
 			<div className="gap-12 hidden lg:flex">
-					{navegations.map((nav) => (
-						<Link href={nav.href} key={nav.name}>
-							<h5 className="hover:font-bold cursor-pointer">{nav.name}</h5>
-						</Link>
-					))}
-				</div>
+				{navegations.map((nav) => (
+					<Link href={nav.href} key={nav.name}>
+						<h5 className="hover:font-bold cursor-pointer">{nav.name}</h5>
+					</Link>
+				))}
+			</div>
 			<div className="gap-12 hidden sm:flex">
-				<UserIcon className="icon cursor-pointer" />
+				<Link href="/account">
+					<UserIcon className="icon cursor-pointer" />
+				</Link>
 				<MagnifyingGlassIcon className="icon cursor-pointer" />
 				<HeartIcon className="icon cursor-pointer" />
-				<ShoppingCartIcon className="icon cursor-pointer" />
+				<Link href="/checkout">
+					<ShoppingCartIcon className="icon cursor-pointer" />
+				</Link>
 			</div>
 		</nav>
 	)
