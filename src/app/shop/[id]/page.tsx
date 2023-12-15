@@ -16,7 +16,7 @@ export default async function SingleProduct({
 			<UrlIndications name={shopItem.name} />
 			<ContentProduct shopItem={shopItem} />
 			<ProductDescription shopItem={shopItem} />
-			<RelatedProducts id={shopItem._id} />
+			<RelatedProducts id={shopItem._id} tags={shopItem.tags} />
 		</main>
 	)
 }

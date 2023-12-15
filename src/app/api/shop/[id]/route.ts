@@ -1,7 +1,6 @@
 import { client } from "@sanity/lib/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { groq } from "next-sanity";
-import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(req: NextApiRequest, context:any) {
@@ -30,6 +29,7 @@ export async function GET(req: NextApiRequest, context:any) {
         }
   }[0]
   `)
+  
 	return NextResponse.json(items)
 
 }
