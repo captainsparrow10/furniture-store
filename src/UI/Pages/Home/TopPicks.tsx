@@ -1,13 +1,10 @@
-
-import { BannerType } from '@utils/Types'
+import {  PicksType } from '@utils/Types'
 import Image from 'next/image'
 import React from 'react'
 type Props = {
-	banner: BannerType
- }
-export default function TopPicks({banner}:Props) {
-
-	const tops = [1, 2, 3, 4]
+	products: PicksType[]
+}
+export default function TopPicks({ products }: Props) {
 	return (
 		<div
 			title="TopPicksForYou"
@@ -20,15 +17,15 @@ export default function TopPicks({banner}:Props) {
 					suspension, floor and table lights.
 				</h5>
 			</div>
-			<div className='w-full flex justify-center'>
+			<div className="w-full flex justify-center">
 				<div className="flex gap-6 pb-4  overflow-hidden overflow-x-scroll w-fit 2xl:md:overflow-x-hidden">
-					{tops.map((top) => (
-						<div className="min-w-[300px] h-full" key={top}>
+					{products.map((product) => (
+						<div className="min-w-[300px] h-full" key={product.data[0]._id}>
 							<div className="relative w-full h-[300px]">
-								<Image src={banner.colorRef} alt={banner.name} fill />
+								<img src={product.data[0].colorRef} alt={product.data[0].name} className="w-full h-full" />
 							</div>
-							<h5>{banner.name}</h5>
-							<h4>$120</h4>
+							<h5>{product.data[0].name}</h5>
+							<h4>{product.data[0].price}</h4>
 						</div>
 					))}
 				</div>

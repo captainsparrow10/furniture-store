@@ -1,7 +1,17 @@
 export type BannerType = {
 	_id: string
 	name: string
+	price: number
 	colorRef: string
+}
+
+export type PicksType = {
+	data: {
+		_id: string
+		name: string
+		price: number
+		colorRef: string
+	}[]
 }
 
 export type ColorType = {
