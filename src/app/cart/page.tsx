@@ -1,12 +1,12 @@
 import Indications from '@/UI/Components/Navegation/Indications'
 import Sponsor from '@/UI/Components/Sponsor'
-import { shopItemsInterface } from '@/utils/Interfaces'
+import { ShopItemSelectedInterface } from '@/utils/Interfaces'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 
 export default async function page() {
 	const res = await fetch('http://localhost:3000/api/shop')
-	const items: shopItemsInterface[] = await res.json()
+	const items: ShopItemSelectedInterface = await res.json()
 	return (
 		<main>
 			<Indications />
@@ -22,14 +22,14 @@ export default async function page() {
 						</h5>
 						<h5 className=" font-bold col-span-2 flex justify-center">Total</h5>
 					</div>
-					{items.map((item) => (
+					{items.default.map((item) => (
 						<div
 							className="grid grid-cols-12 gap-5 h-[106px] w-[817px]"
 							key={item._id}
 						>
 							<div className="col-span-2 w-full h-[106px] bg-cream rounded-xl">
 								<img
-									src={item.colors[0].urlList[0]}
+									src={item.colors.urlList}
 									alt={item.name}
 									className="w-full h-full"
 								/>
