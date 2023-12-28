@@ -7,7 +7,7 @@ export default function NewPick({ product }: Props) {
 
 	return (
 		<div className="flex px-6 py-6 bg-cream justify-center flex-wrap items-center h-[700px]">
-			<div className="relative w-full max-w-[400px] h-3/5 lg:h-full">
+			<div className="relative w-full max-w-[500px] h-3/5 lg:h-4/5">
 				<img src={product.colors.urlList} alt={product.name} className="w-full h-full" />
 			</div>
 

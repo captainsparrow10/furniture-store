@@ -14,3 +14,15 @@ export interface shopItemsInterface {
 	}[]
 }
 
+export interface pruebaInterface {
+	default : shopItemsInterface[],
+	price: {
+		descending: shopItemsInterface[];
+		ascending: shopItemsInterface[];
+	},
+	name: {
+		descending: shopItemsInterface[];
+		ascending: shopItemsInterface[];
+	}
+
+}
