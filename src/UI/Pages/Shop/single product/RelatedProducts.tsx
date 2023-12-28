@@ -1,4 +1,4 @@
-import { shopItemsInterface } from '@/utils/Interfaces'
+import { shopItemsInterface, shopSingleItemInterface } from '@/utils/Interfaces'
 import Image from 'next/image'
 import React from 'react'
 type Props = {
@@ -15,8 +15,8 @@ export default async function RelatedProducts({ id, tags }: Props) {
 	} else {
 		tagNames = tags.map((tag) => tag.name.toLowerCase()).join('/')
 		const res = await fetch(`http://localhost:3000/api/shop/${id}/${tagNames}`)
-		const shopItems: shopItemsInterface[] = await res.json()
-		
+		const shopItems: shopSingleItemInterface[] = await res.json()
+
 		return (
 			<div
 				title="relatedProducts"
@@ -48,7 +48,6 @@ export default async function RelatedProducts({ id, tags }: Props) {
 					</button>
 				</div>
 			</div>
-
 		)
 	}
 }

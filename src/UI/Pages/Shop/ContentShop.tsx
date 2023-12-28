@@ -2,38 +2,37 @@
 import React, { useState } from 'react'
 import FilterBar from './FilterBar'
 import Link from 'next/link'
-import { pruebaInterface, shopItemsInterface } from '@/utils/Interfaces'
+import { ShopItemSelectedInterface } from '@/utils/Interfaces'
 import CardItem from '@/UI/Components/Card/CardItem'
 type Props = {
-	shopItems: shopItemsInterface[]
-	pruebas: pruebaInterface
+	shopItems: ShopItemSelectedInterface
 }
-export default function ContentShop({ shopItems, pruebas }: Props) {
-	const [orderby, setOrderby] = useState(pruebas.default)
-	const setOrderBySelected =(state : string) => {
-		if (state == "name_asc") {
-			return setOrderby(pruebas.name.ascending)
+export default function ContentShop({ shopItems}: Props) {
+	const [orderby, setOrderby] = useState(shopItems.default)
+	const setOrderBySelected = (state: number) => {
+		if (state == 1) {
+			return setOrderby(shopItems.name.ascending)
 		}
-		if (state == "name_desc") {
-			return setOrderby(pruebas.name.descending)
+		if (state == 2) {
+			return setOrderby(shopItems.name.descending)
 		}
-		if (state == "price_asc") {
-			return setOrderby(pruebas.price.ascending)
+		if (state == 3) {
+			return setOrderby(shopItems.price.ascending)
 		}
-		if (state == "price_desc") {
-			return setOrderby(pruebas.price.descending)
+		if (state == 4) {
+			return setOrderby(shopItems.price.descending)
 		}
-		return pruebas.default
+		return shopItems.default
 	}
 	return (
 		<div className="flex flex-col py-16 gap-y-12">
-			<FilterBar results={shopItems.length} sortby={setOrderBySelected} />
+			<FilterBar results={orderby.length} sortby={setOrderBySelected} />
 			<div className="w-full px-3 sm:px-6 lg:px-12 3xl:px-24 flex justify-center">
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8 lg:gap-16 place-items-center max-w-fit">
-					{shopItems.map((item) => (
+					{orderby.map((item) => (
 						<Link href={`/shop/${item._id}`} key={item._id}>
 							<CardItem
-								image={item.colors[0].urlList[0]}
+								image={item.colors.urlList}
 								name={item.name}
 								price={item.price}
 							/>

@@ -1,10 +1,10 @@
 import Count from '@/UI/Components/Button/Count'
 import React from 'react'
 import ContentImage from './ContentImage'
-import { shopItemsInterface } from '@/utils/Interfaces'
+import { shopSingleItemInterface } from '@/utils/Interfaces'
 import { StarIcon } from '@heroicons/react/20/solid'
 type Props = {
-	shopItem: shopItemsInterface
+	shopItem: shopSingleItemInterface
 }
 export default function ContentProduct({shopItem}:Props) {
   return (
