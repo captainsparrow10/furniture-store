@@ -1,3 +1,5 @@
+import { BannerType, PicksType } from "./Types"
+
 export interface shopItemsInterface {
 	_id: string
 	name: string
@@ -12,6 +14,13 @@ export interface shopItemsInterface {
 		name: string
 		urlList: string
 	}
+}
+
+export interface HomeInterface {
+	banner: any
+	topPicks : PicksType[]
+	picks: PicksType[]
+	news: any
 }
 
 export interface shopSingleItemInterface{

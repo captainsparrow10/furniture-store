@@ -5,6 +5,7 @@ export type BannerType = {
 	colorRef: string
 }
 
+
 export type PicksType = {
 	data: {
 		_id: string
