@@ -1,5 +1,6 @@
 import { shopItemsInterface, shopSingleItemInterface } from '@/utils/Interfaces'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 type Props = {
 	id: string
@@ -28,24 +29,29 @@ export default async function RelatedProducts({ id, tags }: Props) {
 				<div className="w-full flex justify-center">
 					<div className="flex gap-6 pb-4  overflow-hidden overflow-x-scroll w-fit 2xl:md:overflow-x-hidden">
 						{shopItems.map((item) => (
-							<div
-								className="min-w-[300px] h-full flex flex-col gap-3"
-								key={item._id}
-							>
-								<div className="relative w-full h-[300px]">
-									<Image src={item.colors[0].urlList[0]} alt={item.name} fill />
+							<Link href={`/shop/${item._id}`} key={item._id}>
+								<div className="min-w-[300px] h-full flex flex-col gap-3">
+									<div className="relative w-full h-[300px]">
+										<Image
+											src={item.colors[0].urlList[0]}
+											alt={item.name}
+											fill
+										/>
+									</div>
+									<h5>{item.name}</h5>
+									<h4>{item.price}</h4>
 								</div>
-								<h5>{item.name}</h5>
-								<h4>{item.price}</h4>
-							</div>
+							</Link>
 						))}
 					</div>
 				</div>
 				<div className="w-full flex justify-center">
-					<button className="group w-fit">
-						View More
-						<div className="invisible group-hover:visible line-black" />
-					</button>
+					<Link href="/shop">
+						<button className="group w-fit">
+							View More
+							<div className="invisible group-hover:visible line-black" />
+						</button>
+					</Link>
 				</div>
 			</div>
 		)

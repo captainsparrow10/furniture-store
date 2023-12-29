@@ -4,7 +4,7 @@ import { FunnelIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
 import React, { useState } from 'react'
 interface FilterBarProps {
-	results: number
+	results: number | undefined
 	sortby: (state: number) => void // Tipo de sortby como una función que toma un string y no retorna nada
 }
 export default function FilterBar({ results, sortby }: FilterBarProps) {

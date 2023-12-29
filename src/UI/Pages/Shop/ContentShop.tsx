@@ -7,7 +7,7 @@ import CardItem from '@/UI/Components/Card/CardItem'
 type Props = {
 	shopItems: ShopItemSelectedInterface
 }
-export default function ContentShop({ shopItems}: Props) {
+export default function ContentShop({ shopItems }: Props) {
 	const [orderby, setOrderby] = useState(shopItems.default)
 	const setOrderBySelected = (state: number) => {
 		if (state == 1) {
@@ -24,6 +24,7 @@ export default function ContentShop({ shopItems}: Props) {
 		}
 		return shopItems.default
 	}
+
 	return (
 		<div className="flex flex-col py-16 gap-y-12">
 			<FilterBar results={orderby.length} sortby={setOrderBySelected} />

@@ -2,15 +2,15 @@ import UrlIndications from '@/UI/Components/Navegation/UrlIndications'
 import ContentProduct from '@/UI/Pages/Shop/single product/ContentProduct'
 import ProductDescription from '@/UI/Pages/Shop/single product/ProductDescription'
 import RelatedProducts from '@/UI/Pages/Shop/single product/RelatedProducts'
-import { shopItemsInterface } from '@/utils/Interfaces'
+import { singleProduct } from '@/app/server'
+import { shopSingleItemInterface } from '@/utils/Interfaces'
 
 export default async function SingleProduct({
 	params,
 }: {
 	params: { id: string }
 }) {
-	const res = await fetch(`http://localhost:3000/api/shop/${params.id}`)
-	const shopItem: shopItemsInterface = await res.json()
+	const shopItem: shopSingleItemInterface = await singleProduct(params.id)
 	return (
 		<main>
 			<UrlIndications name={shopItem.name} />

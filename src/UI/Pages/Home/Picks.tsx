@@ -1,10 +1,10 @@
 import { PicksType } from '@utils/Types'
+import Link from 'next/link'
 import React from 'react'
 type Props = {
 	products: PicksType[]
 }
 export default async function Picks({ products }: Props) {
-
 	return (
 		<div
 			title="Picks"
@@ -25,10 +25,12 @@ export default async function Picks({ products }: Props) {
 						</div>
 						<div>
 							<h3>{product.data[0].name}</h3>
-							<button className="group w-fit">
-								Shop Now
-								<div className="invisible group-hover:visible line-black" />
-							</button>
+							<Link href={`/shop/${product.data[0]._id}`}>
+								<button className="group w-fit">
+									Shop Now
+									<div className="invisible group-hover:visible line-black" />
+								</button>
+							</Link>
 						</div>
 					</div>
 				))}

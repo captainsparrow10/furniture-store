@@ -28,6 +28,7 @@ export interface shopSingleItemInterface{
 	name: string
 	price: string
 	description: string
+	available: number
 	tags: {
 		_id: string
 		name: string

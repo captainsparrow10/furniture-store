@@ -10,6 +10,7 @@ export async function GET(req: NextApiRequest, context:any) {
     _id,
     name,
     description,
+    available,
     price,
     "tags": *[
       _type == 'tag'  && 

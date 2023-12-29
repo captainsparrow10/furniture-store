@@ -1,4 +1,5 @@
 
+import Link from 'next/link'
 import React from 'react'
 type Props = {
 	product: any
@@ -16,7 +17,9 @@ export default function NewPick({ product }: Props) {
 					<h4 className="text-center">New Arrivals</h4>
 					<h2>{product.name}</h2>
 				</div>
+				<Link href={`/shop/${product._id}`}>
 				<button className="btn-lg rounded-none">Order Now</button>
+				</Link>
 			</div>
 		</div>
 	)
