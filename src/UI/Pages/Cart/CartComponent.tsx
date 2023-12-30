@@ -1,32 +1,50 @@
 'use client'
-import Indications from '@/UI/Components/Navegation/Indications'
-import Sponsor from '@/UI/Components/Sponsor'
-import { cartProducts } from '@/app/server'
-import {
-	CartInterface,
-	ShopItemSelectedInterface,
-	shopSingleItemInterface,
-} from '@/utils/Interfaces'
+import { deleteCartProducts } from '@/app/server'
+import { CartInterface } from '@/utils/Interfaces'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
-import React from 'react'
+import React, { useState } from 'react'
 type Props = {
 	cartItems: CartInterface[]
 }
 export default function CartComponent({ cartItems }: Props) {
-	const subPrice = cartItems.map((item) => item.amount * parseFloat(item.price))
-	const totalPrice = subPrice.reduce((total, value) => total + value, 0)
+	const [totalPrice, setTotalPrice] = useState(0)
+	const handlePrice = (cartItems: CartInterface[]) => {
+		let subPrice, totalPrice
+		if (Array.isArray(cartItems) && cartItems.length > 0) {
+			subPrice = cartItems.map((item) => item.amount * parseFloat(item.price))
+			totalPrice = subPrice.reduce((total, value) => total + value, 0)
+			setTotalPrice(totalPrice)
+		} else if (cartItems && cartItems.length === 1) {
+			totalPrice = parseFloat(cartItems[0].price)
+			setTotalPrice(totalPrice)
+		} else {
+			setTotalPrice(0)
+		}
+	}
+
 	const total = totalPrice + totalPrice * 0.07
 	const queryClient = useQueryClient()
 	const cartProductsPrueba = useQuery({
 		queryKey: ['cart'],
 		queryFn: async () => {
-			const response = await fetch("http://localhost:3000/api/cart")
-			return await response.json()
+			const response = await fetch('http://localhost:3000/api/cart')
+			const data: CartInterface[] = await response.json()
+			handlePrice(data)
+			return data
 		},
 	})
 
+	const handleDelete = async (id: number) => {
+		await deleteCartProducts(id)
+		return
+	}
+	const mutation = useMutation({
+		mutationFn: (id: number) => handleDelete(id),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['cart'] })
+		},
+	})
 
 	return (
 		<div className="py-16 flex justify-center flex-wrap gap-x-9">
@@ -45,7 +63,7 @@ export default function CartComponent({ cartItems }: Props) {
 					cartProductsPrueba.data.map((item: CartInterface) => (
 						<div
 							className="grid grid-cols-12 gap-5 h-[106px] w-[817px]"
-							key={item.id_product}
+							key={item.id}
 						>
 							<div className="col-span-2 w-full h-[106px] bg-cream rounded-xl">
 								<img
@@ -69,7 +87,12 @@ export default function CartComponent({ cartItems }: Props) {
 								{item.amount * parseFloat(item.price)}
 							</h5>
 							<div className=" col-span-1 flex justify-center items-center">
-								<TrashIcon className="icon text-gray hover:text-black" />
+								<TrashIcon
+									className="icon text-gray hover:text-black"
+									onClick={() => {
+										mutation.mutate(item.id)
+									}}
+								/>
 							</div>
 						</div>
 					))}

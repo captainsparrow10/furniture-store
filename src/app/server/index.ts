@@ -68,10 +68,10 @@ export const cartProducts = async () => {
 	}
 }
 
-export const deleteCartProducts = async () => {
+export const deleteCartProducts = async (id:number) => {
 	try {
-		const response = await axios.delete(process.env.NEXT_PUBLIC_URL + '/api/cart')
-		return response.data
+		await axios.delete(process.env.NEXT_PUBLIC_URL + '/api/cart/'+id)
+		return;
 	} catch (error) {
 		throw error // Re-throw the error to propagate it to the caller
 	}

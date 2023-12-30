@@ -44,7 +44,7 @@ export default function NavBar() {
 				</Link>
 				<MagnifyingGlassIcon className="icon cursor-pointer" />
 				<HeartIcon className="icon cursor-pointer" />
-				<Link href="/checkout">
+				<Link href="/cart">
 					<ShoppingCartIcon className="icon cursor-pointer" />
 				</Link>
 			</div>
