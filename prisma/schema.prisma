@@ -13,7 +13,7 @@ datasource db {
 model CartPrueba {
   id     Int    @id @default(autoincrement())
   id_user String
-  id_product String
+  id_product String @unique
   name   String 
   image  String
   amount Int

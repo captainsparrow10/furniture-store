@@ -1,6 +1,7 @@
 import { NextApiRequest } from 'next'
 import { db } from '../../../../../prisma/lib/db'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { CartInterface } from '@/utils/Interfaces'
 
 export async function DELETE(req: NextApiRequest, context: any) {
 	const { id } = context.params
@@ -10,10 +11,30 @@ export async function DELETE(req: NextApiRequest, context: any) {
 				id: parseInt(id),
 			},
 		})
-		return NextResponse.json("succed")
+		return NextResponse.json('succed')
 	} catch (error) {
 		// Handle potential errors here
 		console.error('Deletion failed:', error)
-		return NextResponse.json("failed")
+		return NextResponse.json('failed')
+	}
+}
+
+export async function PUT(request: NextRequest, context: any) {
+	const { id } = context.params
+	const { amount } = await request.json()
+	try {
+		await db.cartPrueba.update({
+			where: {
+				id_product: id,
+			},
+			data: {
+				amount: amount,
+			},
+		})
+		return NextResponse.json('succed')
+	} catch (error) {
+		// Handle potential errors here
+		console.error('Deletion failed:', error)
+		return NextResponse.json('failed')
 	}
 }

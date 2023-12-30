@@ -2,7 +2,7 @@
 import Count from '@/UI/Components/Button/Count'
 import React, { useState } from 'react'
 import ContentImage from './ContentImage'
-import { shopSingleItemInterface } from '@/utils/Interfaces'
+import { CartInterface, shopSingleItemInterface } from '@/utils/Interfaces'
 import { StarIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import { insertCartProduct } from '@/app/server'
@@ -25,7 +25,7 @@ export default function ContentProduct({ shopItem }: Props) {
 		return
 	}
 	const handleCartItem = async () => {
-		const product = {
+		const product:any = {
 			id_user: '1',
 			id_product: shopItem._id,
 			name: shopItem.name,

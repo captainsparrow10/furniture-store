@@ -68,10 +68,25 @@ export const cartProducts = async () => {
 	}
 }
 
-export const deleteCartProducts = async (id:number) => {
+export const deleteCartProducts = async (id_product: string) => {
 	try {
-		await axios.delete(process.env.NEXT_PUBLIC_URL + '/api/cart/'+id)
-		return;
+		await axios.delete(process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product)
+		return
+	} catch (error) {
+		throw error // Re-throw the error to propagate it to the caller
+	}
+}
+export const updateCartProducts = async (
+	id_product: string,
+	amount: number
+) => {
+	try {
+		await axios.put(
+			process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product,{
+				amount
+			}
+		)
+		return
 	} catch (error) {
 		throw error // Re-throw the error to propagate it to the caller
 	}
