@@ -4,6 +4,9 @@ import React, { useState } from 'react'
 import ContentImage from './ContentImage'
 import { shopSingleItemInterface } from '@/utils/Interfaces'
 import { StarIcon } from '@heroicons/react/20/solid'
+import axios from 'axios'
+import { insertCartProduct } from '@/app/server'
+
 type Props = {
 	shopItem: shopSingleItemInterface
 }
@@ -20,6 +23,17 @@ export default function ContentProduct({ shopItem }: Props) {
 			return setCount(count - 1)
 		}
 		return
+	}
+	const handleCartItem = async () => {
+		const product = {
+			id_user: '1',
+			id_product: shopItem._id,
+			name: shopItem.name,
+			image: shopItem.colors[0].urlList[0],
+			amount: count,
+			price: shopItem.price.toString(),
+		}
+		await insertCartProduct(product)
 	}
 	return (
 		<div className="py-12 px-6 flex flex-wrap gap-6 justify-center">
@@ -55,7 +69,9 @@ export default function ContentProduct({ shopItem }: Props) {
 						handlePlusNumber={handlePlusNumber}
 						handleLessNumber={handleLessNumber}
 					/>
-					<button className="btn-lg">Add to cart</button>
+					<button className="btn-lg" onClick={handleCartItem}>
+						Add to cart
+					</button>
 				</div>
 				<div className="line my-6" />
 				<div className="flex flex-col gap-3">

@@ -16,6 +16,16 @@ export interface shopItemsInterface {
 	}
 }
 
+export interface CartInterface{
+
+  id_user: string
+  id_product: string
+  name:   string
+  image:  string
+  amount:  number
+  price:  string
+}
+
 export interface HomeInterface {
 	banner: any
 	topPicks : PicksType[]
