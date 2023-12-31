@@ -6,11 +6,14 @@ import { CartInterface, shopSingleItemInterface } from '@/utils/Interfaces'
 import { StarIcon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 import { insertCartProduct } from '@/app/server'
+import { useSession } from 'next-auth/react'
 
 type Props = {
 	shopItem: shopSingleItemInterface
 }
 export default function ContentProduct({ shopItem }: Props) {
+	const { data: session } = useSession()
+	console.log(session)
 	const [count, setCount] = useState(1)
 	const handlePlusNumber = () => {
 		if (shopItem.available >= count) {

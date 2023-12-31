@@ -1,12 +1,13 @@
 import Indications from '@/UI/Components/Navegation/Indications'
 import Sponsor from '@/UI/Components/Sponsor'
-import LoginForm from '@/UI/Pages/Account/LoginForm'
+import CheckOutComponent from '@/UI/Pages/CheckOut/CheckOutComponent'
+import React from 'react'
 
-export default function Page() {
+export default function page() {
 	return (
 		<main>
 			<Indications />
-			<LoginForm />
+			<CheckOutComponent />
 			<Sponsor />
 		</main>
 	)

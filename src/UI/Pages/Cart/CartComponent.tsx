@@ -4,6 +4,7 @@ import { CartInterface } from '@/utils/Interfaces'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 export default function CartComponent() {
@@ -23,7 +24,7 @@ export default function CartComponent() {
 		}
 	}
 
-	const total = totalPrice + totalPrice * 0.07
+	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const queryClient = useQueryClient()
 	const cartProductsPrueba = useQuery({
 		queryKey: ['cart'],
@@ -77,7 +78,7 @@ export default function CartComponent() {
 	})
 
 	return (
-		<div className="py-16 flex justify-center flex-wrap gap-x-9">
+		<div className="px-6 lg:px-12 py-16 3xl:px-24  flex justify-center flex-wrap gap-9">
 			<div className="input-space">
 				<div className="grid grid-cols-12 gap-5 w-[817px] bg-cream py-3">
 					<h5 className=" font-bold col-span-5 flex justify-center">Product</h5>
@@ -152,7 +153,7 @@ export default function CartComponent() {
 						</div>
 					))}
 			</div>
-			<div className="bg-cream px-12 py-6 flex flex-col items-center w-[393px] gap-y-12 h-fit">
+			<div className="bg-cream px-12 py-6 flex flex-col items-center w-[300px] gap-y-12 h-fit">
 				<h3>Car Total</h3>
 				<div className="flex flex-col w-full gap-y-6">
 					<div className="flex flex-col w-full gap-y-3">
@@ -167,10 +168,12 @@ export default function CartComponent() {
 					</div>
 					<div className="flex justify-between w-full">
 						<h5>Total</h5>
-						<h5 className="font-bold">{total.toFixed(2)}</h5>
+						<h5 className="font-bold">{total}</h5>
 					</div>
 				</div>
-				<button className="btn-lg">Check Out</button>
+				<Link href="/cart/checkout">
+					<button className="btn-lg">Check Out</button>
+				</Link>
 			</div>
 		</div>
 	)

@@ -17,7 +17,7 @@ export interface shopItemsInterface {
 }
 
 export interface CartInterface{
-  id_user: string
+  id_user: number
   id_product: string
   name:   string
   image:  string

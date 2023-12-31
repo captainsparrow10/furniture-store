@@ -15,19 +15,19 @@ export default function Indications() {
 		<div className="h-[600px] w-full relative flex justify-center items-center">
 			<Image src="/indicaciones.webp" alt="img" fill />
 			<div className="absolute w-fit text-center">
-				<h3>Shop</h3>
+				<h3>{path}</h3>
 				<div className="flex gap-3">
 					<Link href="/">
 						<h5 >Home</h5>
 					</Link>
 					<ChevronRightIcon className="icon" />
           <Link href={`/${path}`}>
-					<h5 className="font-bold">{path}</h5>
+					<h5 className={`${!name && "font-bold"}`}>{path}</h5>
           </Link>
 					{name && (
 						<>
 							<ChevronRightIcon className="icon" />
-							<h5>{name}</h5>
+							<h5 className='font-bold'>{name}</h5>
 						</>
 					)}
 				</div>
