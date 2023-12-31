@@ -4,7 +4,8 @@ import '@/app/globals.css'
 
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import Providers from '@/utils/Providers'
+import ReactQuery from '@/utils/providers/ReactQuery'
+import NextAuth from '@/utils/providers/NextAuth'
 
 const poppins = Poppins({
 	weight: '400',
@@ -24,11 +25,13 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={poppins.className}>
-				<Providers>
-					<NavBar />
-					{children}
-					<Footer />
-				</Providers>
+				<NextAuth>
+					<ReactQuery>
+						<NavBar />
+						{children}
+						<Footer />
+					</ReactQuery>
+				</NextAuth>
 			</body>
 		</html>
 	)

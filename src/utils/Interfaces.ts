@@ -1,4 +1,4 @@
-import { BannerType, PicksType } from "./Types"
+import { BannerType, PicksType } from './Types'
 
 export interface shopItemsInterface {
 	_id: string
@@ -16,23 +16,30 @@ export interface shopItemsInterface {
 	}
 }
 
-export interface CartInterface{
-  id_user: number
-  id_product: string
-  name:   string
-  image:  string
-  amount:  number
-  price:  string
+export interface CartInterface {
+	id_user: number
+	id_product: string
+	name: string
+	image: string
+	amount: number
+	price: string
+}
+
+export interface userSessionInterface {
+	user: {
+		name: string
+		email: string
+	}
 }
 
 export interface HomeInterface {
 	banner: any
-	topPicks : PicksType[]
+	topPicks: PicksType[]
 	picks: PicksType[]
 	news: any
 }
 
-export interface shopSingleItemInterface{
+export interface shopSingleItemInterface {
 	_id: string
 	name: string
 	price: string
@@ -49,17 +56,14 @@ export interface shopSingleItemInterface{
 	}[]
 }
 
-
-
 export interface ShopItemSelectedInterface {
-	default : shopItemsInterface[],
+	default: shopItemsInterface[]
 	price: {
-		descending: shopItemsInterface[];
-		ascending: shopItemsInterface[];
-	},
-	name: {
-		descending: shopItemsInterface[];
-		ascending: shopItemsInterface[];
+		descending: shopItemsInterface[]
+		ascending: shopItemsInterface[]
 	}
-
+	name: {
+		descending: shopItemsInterface[]
+		ascending: shopItemsInterface[]
+	}
 }

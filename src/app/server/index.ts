@@ -81,12 +81,22 @@ export const updateCartProducts = async (
 	amount: number
 ) => {
 	try {
-		await axios.put(
-			process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product,{
-				amount
-			}
-		)
+		await axios.put(process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product, {
+			amount,
+		})
 		return
+	} catch (error) {
+		throw error // Re-throw the error to propagate it to the caller
+	}
+}
+
+export const userId = async (email: string) => {
+	const params = {
+		email,
+	}
+	try {
+		const response =await axios.get(process.env.NEXT_PUBLIC_URL + '/api/profile/', { params })
+		return response.data
 	} catch (error) {
 		throw error // Re-throw the error to propagate it to the caller
 	}

@@ -4,9 +4,11 @@ import NewPick from '@pages/Home/NewPick'
 import Picks from '@pages/Home/Picks'
 import TopPicks from '@pages/Home/TopPicks'
 import { presentationItems } from './server'
+import { useSession } from 'next-auth/react'
 
 export default async function page() {
 	const home: HomeInterface = await presentationItems()
+
 	return (
 		<main className="relative">
 			<Banner product={home.banner.data} />

@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import ContentImage from './ContentImage'
 import { CartInterface, shopSingleItemInterface } from '@/utils/Interfaces'
 import { StarIcon } from '@heroicons/react/20/solid'
-import axios from 'axios'
-import { insertCartProduct } from '@/app/server'
+import { useRouter } from 'next/navigation'
+import { insertCartProduct, userId } from '@/app/server'
 import { useSession } from 'next-auth/react'
 
 type Props = {
@@ -13,8 +13,8 @@ type Props = {
 }
 export default function ContentProduct({ shopItem }: Props) {
 	const { data: session } = useSession()
-	console.log(session)
 	const [count, setCount] = useState(1)
+	const router = useRouter()
 	const handlePlusNumber = () => {
 		if (shopItem.available >= count) {
 			return setCount(count + 1)
@@ -28,15 +28,29 @@ export default function ContentProduct({ shopItem }: Props) {
 		return
 	}
 	const handleCartItem = async () => {
-		const product:any = {
-			id_user: '1',
-			id_product: shopItem._id,
-			name: shopItem.name,
-			image: shopItem.colors[0].urlList[0],
-			amount: count,
-			price: shopItem.price.toString(),
+		try {
+			if (session?.user?.email) {
+				const user = await userId(session?.user?.email)
+				if (user) {
+					const product: CartInterface = {
+						id_user: user,
+						id_product: shopItem._id,
+						name: shopItem.name,
+						image: shopItem.colors[0].urlList[0],
+						amount: count,
+						price: shopItem.price.toString(),
+					}
+					await insertCartProduct(product)
+
+				} else {
+					router.push('/account')
+				}
+			} else {
+				router.push('/account')
+			}
+		} catch (error) {
+			throw error
 		}
-		await insertCartProduct(product)
 	}
 	return (
 		<div className="py-12 px-6 flex flex-wrap gap-6 justify-center">

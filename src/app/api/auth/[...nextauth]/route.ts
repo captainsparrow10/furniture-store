@@ -2,9 +2,9 @@ import NextAuth from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 import bcrypt from 'bcrypt'
-import { db } from '../../../../../prisma/lib/db'
+import { db } from '@db/db'
 
-const authOptions = {
+export const authOptions = {
 	providers: [
 		CredentialsProvider({
 			name: 'Credentials',
@@ -46,6 +46,10 @@ const authOptions = {
 			},
 		}),
 	],
+	pages: {
+		signIn: '/account',
+		error: '/api/auth/error',
+	},
 	callbacks: {
 		session({ session, token, user }: any) {
 			return session // The return type will match the one returned in `useSession()`

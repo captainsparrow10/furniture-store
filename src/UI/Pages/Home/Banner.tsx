@@ -1,3 +1,4 @@
+'use client'
 import { BannerType } from '@/utils/Types'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -7,6 +8,7 @@ type Props = {
 }
 
 export default function product({ product }: Props) {
+
 	return (
 		<div className="h-[1000px] px-6 lg:px-12 2xl:px-24 bg-yellow">
 			<div

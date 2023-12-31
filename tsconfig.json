@@ -25,7 +25,8 @@
 			"@api/*": ["./src/app/api/*"],
 			"@components/*": ["./src/UI/Components/*"],
 			"@pages/*": ["./src/UI/Pages/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+			"@db/*" : ["./prisma/lib/*"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/shop/[id]"],

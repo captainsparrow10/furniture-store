@@ -1,6 +1,4 @@
 import { type SchemaTypeDefinition } from 'sanity'
-import profile from '@sanity/schemas/profile'
-import comentary from '@sanity/schemas/comentary'
 import category from '@sanity/schemas/category'
 import product from '@sanity/schemas/product'
 import tag from '@sanity/schemas/tag'
@@ -13,8 +11,6 @@ import picks from './schemas/picks'
 export const schema: { types: SchemaTypeDefinition[] } = {
 	types: [
 		product,
-		profile,
-		comentary,
 		category,
 		tag,
 		color,

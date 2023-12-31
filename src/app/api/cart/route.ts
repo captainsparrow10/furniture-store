@@ -1,5 +1,5 @@
 import { CartInterface } from '@/utils/Interfaces'
-import { db } from '../../../../prisma/lib/db'
+import { db } from '@db/db'
 import { NextResponse } from 'next/server'
 
 export async function POST(request: any) {

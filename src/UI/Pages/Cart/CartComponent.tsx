@@ -4,12 +4,13 @@ import { CartInterface } from '@/utils/Interfaces'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
 export default function CartComponent() {
+	const { data: session } = useSession()
 	const [totalPrice, setTotalPrice] = useState(0)
-	const [count, setCount] = useState(0)
 	const handlePrice = (cartItems: CartInterface[]) => {
 		let subPrice, totalPrice
 		if (Array.isArray(cartItems) && cartItems.length > 0) {
@@ -29,6 +30,7 @@ export default function CartComponent() {
 	const cartProductsPrueba = useQuery({
 		queryKey: ['cart'],
 		queryFn: async () => {
+			// hacer un get con el id del user y listo
 			const response = await fetch('http://localhost:3000/api/cart')
 			const data: CartInterface[] = await response.json()
 			handlePrice(data)

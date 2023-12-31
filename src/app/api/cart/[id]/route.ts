@@ -1,7 +1,6 @@
 import { NextApiRequest } from 'next'
-import { db } from '../../../../../prisma/lib/db'
+import { db } from '@db/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { CartInterface } from '@/utils/Interfaces'
 
 export async function DELETE(req: NextApiRequest, context: any) {
 	const { id } = context.params
