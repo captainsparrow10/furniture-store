@@ -5,15 +5,19 @@ import CartComponent from '@/UI/Pages/Cart/CartComponent'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import { sessionInterface } from '@/utils/Interfaces'
+import { redirect } from 'next/navigation'
 
 export default async function page() {
 	const session: sessionInterface | null = await getServerSession(authOptions)
-
-	return (
-		<main>
-			<Indications />
-			{session && <CartComponent userId={session.user.id} />}
-			<Sponsor />
-		</main>
-	)
+	if (session) {
+		return (
+			<main>
+				<Indications />
+				<CartComponent userId={session.user.id} />
+				<Sponsor />
+			</main>
+		)
+	} else {
+		redirect('/account')
+	}
 }
