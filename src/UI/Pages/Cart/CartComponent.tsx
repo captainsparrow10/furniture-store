@@ -4,12 +4,14 @@ import { CartInterface } from '@/utils/Interfaces'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-export default function CartComponent() {
-	const { data: session } = useSession()
+type Props = {
+	userId: number
+}
+
+export default function CartComponent({ userId }: Props) {
 	const [totalPrice, setTotalPrice] = useState(0)
 	const handlePrice = (cartItems: CartInterface[]) => {
 		let subPrice, totalPrice
@@ -30,8 +32,9 @@ export default function CartComponent() {
 	const cartProductsPrueba = useQuery({
 		queryKey: ['cart'],
 		queryFn: async () => {
-			// hacer un get con el id del user y listo
-			const response = await fetch('http://localhost:3000/api/cart')
+			const response = await fetch(
+				'http://localhost:3000/api/cart?id=' + userId
+			)
 			const data: CartInterface[] = await response.json()
 			handlePrice(data)
 			return data
@@ -39,7 +42,7 @@ export default function CartComponent() {
 	})
 
 	const handleDelete = async (id_product: string) => {
-		await deleteCartProducts(id_product)
+		await deleteCartProducts(id_product, userId)
 		return
 	}
 	const deleteItem = useMutation({
@@ -57,12 +60,12 @@ export default function CartComponent() {
 		const { amount, type, id_product } = params
 		if (type == 1) {
 			if (99 >= amount) {
-				await updateCartProducts(id_product, amount + 1)
+				await updateCartProducts(id_product, amount + 1, userId)
 				return
 			}
 		} else if (type == 2) {
 			if (amount > 1) {
-				await updateCartProducts(id_product, amount - 1)
+				await updateCartProducts(id_product, amount - 1, userId)
 				return
 			}
 		}

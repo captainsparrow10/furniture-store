@@ -5,7 +5,7 @@ import ContentImage from './ContentImage'
 import { CartInterface, shopSingleItemInterface } from '@/utils/Interfaces'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { useRouter } from 'next/navigation'
-import { insertCartProduct, userId } from '@/app/server'
+import { insertCartProduct } from '@/app/server'
 import { useSession } from 'next-auth/react'
 
 type Props = {
@@ -29,22 +29,16 @@ export default function ContentProduct({ shopItem }: Props) {
 	}
 	const handleCartItem = async () => {
 		try {
-			if (session?.user?.email) {
-				const user = await userId(session?.user?.email)
-				if (user) {
-					const product: CartInterface = {
-						id_user: user,
-						id_product: shopItem._id,
-						name: shopItem.name,
-						image: shopItem.colors[0].urlList[0],
-						amount: count,
-						price: shopItem.price.toString(),
-					}
-					await insertCartProduct(product)
-
-				} else {
-					router.push('/account')
+			if (session?.user) {
+				const product: CartInterface = {
+					id_user: session.user.id,
+					id_product: shopItem._id,
+					name: shopItem.name,
+					image: shopItem.colors[0].urlList[0],
+					amount: count,
+					price: shopItem.price.toString(),
 				}
+				await insertCartProduct(product)
 			} else {
 				router.push('/account')
 			}

@@ -68,9 +68,15 @@ export const cartProducts = async () => {
 	}
 }
 
-export const deleteCartProducts = async (id_product: string) => {
+export const deleteCartProducts = async (id_product: string, id: number) => {
+	const params = {
+		id,
+	}
 	try {
-		await axios.delete(process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product)
+		await axios.delete(
+			process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product,
+			{ params }
+		)
 		return
 	} catch (error) {
 		throw error // Re-throw the error to propagate it to the caller
@@ -78,11 +84,16 @@ export const deleteCartProducts = async (id_product: string) => {
 }
 export const updateCartProducts = async (
 	id_product: string,
-	amount: number
+	amount: number,
+	userId: number
 ) => {
+ const params = {
+	amount,
+	userId
+ }
 	try {
 		await axios.put(process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product, {
-			amount,
+		params
 		})
 		return
 	} catch (error) {
@@ -90,12 +101,15 @@ export const updateCartProducts = async (
 	}
 }
 
-export const userId = async (email: string) => {
+export const cartProductsUserId = async (id: number) => {
 	const params = {
-		email,
+		id,
 	}
 	try {
-		const response =await axios.get(process.env.NEXT_PUBLIC_URL + '/api/profile/', { params })
+		const response = await axios.get(
+			process.env.NEXT_PUBLIC_URL + '/api/cart/',
+			{ params }
+		)
 		return response.data
 	} catch (error) {
 		throw error // Re-throw the error to propagate it to the caller

@@ -51,8 +51,12 @@ export const authOptions = {
 		error: '/api/auth/error',
 	},
 	callbacks: {
-		session({ session, token, user }: any) {
-			return session // The return type will match the one returned in `useSession()`
+		async jwt({ token, user }: any) {
+			return { ...token, ...user }
+		},
+		async session({ session, token, user }: any) {
+			session.user = token
+			return session 
 		},
 	},
 }

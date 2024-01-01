@@ -1,16 +1,19 @@
-import { NextApiRequest } from 'next'
 import { db } from '@db/db'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function DELETE(req: NextApiRequest, context: any) {
+export async function DELETE(req: NextRequest, context: any) {
 	const { id } = context.params
+	const { userId } = await req.json()
 	try {
-		await db.cartPrueba.delete({
-			where: {
-				id: parseInt(id),
-			},
-		})
-		return NextResponse.json('succed')
+		if (userId) {
+			await db.cartPrueba.delete({
+				where: {
+					id: parseInt(id),
+					id_user: parseInt(userId),
+				},
+			})
+			return NextResponse.json('succed')
+		}
 	} catch (error) {
 		// Handle potential errors here
 		console.error('Deletion failed:', error)
@@ -20,11 +23,18 @@ export async function DELETE(req: NextApiRequest, context: any) {
 
 export async function PUT(request: NextRequest, context: any) {
 	const { id } = context.params
-	const { amount } = await request.json()
+	const req: {
+		params: {
+			amount: number
+			userId: number
+		}
+	} = await request.json()
+	const { amount, userId } = req.params
 	try {
 		await db.cartPrueba.update({
 			where: {
 				id_product: id,
+				id_user: userId,
 			},
 			data: {
 				amount: amount,

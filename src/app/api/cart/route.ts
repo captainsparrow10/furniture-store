@@ -1,6 +1,6 @@
 import { CartInterface } from '@/utils/Interfaces'
 import { db } from '@db/db'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: any) {
 	const data: CartInterface = await request.json()
@@ -22,7 +22,18 @@ export async function POST(request: any) {
 	return NextResponse.json(newItemCar)
 }
 
-export async function GET() {
-	const data = await db.cartPrueba.findMany()
-	return NextResponse.json(data)
+export async function GET(request: NextRequest) {
+	try {
+		const id = request.nextUrl.searchParams.get('id')
+		if (id) {
+			const data = await db.cartPrueba.findMany({
+				where: {
+					id_user: parseInt(id),
+				},
+			})
+			return NextResponse.json(data)
+		}
+	} catch (error) {
+		return NextResponse.json('Error')
+	}
 }

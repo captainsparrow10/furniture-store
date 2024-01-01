@@ -16,6 +16,18 @@ export interface shopItemsInterface {
 	}
 }
 
+export interface sessionInterface {
+	user: {
+		id: number
+		email: string
+		exp: number
+		iat: number
+		jti: string
+		name: string
+		sub: string
+	}
+}
+
 export interface CartInterface {
 	id_user: number
 	id_product: string
