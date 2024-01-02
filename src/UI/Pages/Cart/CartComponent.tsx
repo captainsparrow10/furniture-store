@@ -14,7 +14,7 @@ type Props = {
 export default function CartComponent({ userId }: Props) {
 	const [totalPrice, setTotalPrice] = useState(0)
 	const handlePrice = (cartItems: CartInterface[]) => {
-		let subPrice, totalPrice: number
+		let subPrice, totalPrice
 		if (Array.isArray(cartItems) && cartItems.length > 0) {
 			subPrice = cartItems.map((item) => item.amount * parseFloat(item.price))
 			totalPrice = subPrice.reduce((total, value) => total + value, 0)
@@ -42,7 +42,8 @@ export default function CartComponent({ userId }: Props) {
 	})
 
 	const handleDelete = async (id_product: string) => {
-		return await deleteCartProducts(id_product, userId)
+		await deleteCartProducts(id_product, userId)
+		return
 	}
 	const deleteItem = useMutation({
 		mutationFn: async (id_product: string) => handleDelete(id_product),
@@ -59,11 +60,13 @@ export default function CartComponent({ userId }: Props) {
 		const { amount, type, id_product } = params
 		if (type == 1) {
 			if (99 >= amount) {
-				return await updateCartProducts(id_product, amount + 1, userId)
+				await updateCartProducts(id_product, amount + 1, userId)
+				return
 			}
 		} else if (type == 2) {
 			if (amount > 1) {
-				return await updateCartProducts(id_product, amount - 1, userId)
+				await updateCartProducts(id_product, amount - 1, userId)
+				return
 			}
 		}
 	}
@@ -81,25 +84,21 @@ export default function CartComponent({ userId }: Props) {
 
 	return (
 		<div className="px-6 lg:px-12 py-16 3xl:px-24  flex justify-center flex-wrap gap-9">
-			<div className="input-space">
-				<div className="w-full overflow-hidden overflow-x-scroll max-w-[817px]">
-					<div className="flex bg-cream py-3">
-						<h5 className=" font-bold w-[320px] flex justify-center">
-							Product
-						</h5>
-						<h5 className=" font-bold w-[320px] flex justify-center">Price</h5>
-						<h5 className=" font-bold w-[320px] flex justify-center">
-							Quantity
-						</h5>
-						<h5 className=" font-bold w-[320px]  flex justify-center">Total</h5>
-					</div>
+			<div className="input-space w-fit overflow-hidden overflow-x-scroll lg:overflow-x-hidden">
+				<div className="grid grid-cols-12 gap-5 w-[817px] bg-cream py-3">
+					<h5 className=" font-bold col-span-5 flex justify-center">Product</h5>
+					<h5 className=" font-bold col-span-2 flex justify-center">Price</h5>
+					<h5 className=" font-bold col-span-2 flex justify-center">
+						Quantity
+					</h5>
+					<h5 className=" font-bold col-span-2 flex justify-center">Total</h5>
 				</div>
 				{cartProductsPrueba.isLoading && <span>Loading...</span>}
 				{cartProductsPrueba.isError && <span>Data not found</span>}
 				{cartProductsPrueba.data &&
 					cartProductsPrueba.data.map((item: CartInterface) => (
 						<div
-							className="grid grid-cols-12 gap-5 h-[106px]"
+							className="grid grid-cols-12 gap-5 h-[106px] w-[817px]"
 							key={item.id_product}
 						>
 							<div className="col-span-2 w-full h-[106px] bg-cream rounded-xl">
@@ -146,7 +145,7 @@ export default function CartComponent({ userId }: Props) {
 								</button>
 							</div>
 							<h5 className="col-span-2 h-full flex justify-center items-center text-gray">
-								{(item.amount * parseFloat(item.price)).toFixed(2)}
+								{item.amount * parseFloat(item.price)}
 							</h5>
 							<div className=" col-span-1 flex justify-center items-center">
 								<TrashIcon
@@ -165,7 +164,7 @@ export default function CartComponent({ userId }: Props) {
 					<div className="flex flex-col w-full gap-y-3">
 						<div className="flex justify-between w-full">
 							<h5>Sub Total</h5>
-							<h5 className="text-gray">{totalPrice.toFixed(2)}</h5>
+							<h5 className="text-gray">{totalPrice}</h5>
 						</div>
 						<div className="flex justify-between w-full">
 							<h5>ITBMS</h5>
