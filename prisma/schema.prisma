@@ -32,12 +32,13 @@ model User {
 }
 
 model Adress {
-  id          Int    @id @default(autoincrement())
-  userId      User   @relation(fields: [id_user], references: [id])
-  id_user     Int
-  companyName String
+  id          Int     @id @default(autoincrement())
+  userId      User    @relation(fields: [id_user], references: [id])
+  id_user     Int     @unique
+  companyName String?
   country     String
+  province    String
   street      String
-  zipCode     Int
+  zipCode     String
   phone       String
 }

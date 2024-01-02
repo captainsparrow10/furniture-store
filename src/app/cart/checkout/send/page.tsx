@@ -1,8 +1,19 @@
+"use client"
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react'
 
 export default function page() {
+	const router = useRouter();
+  const [redirect, setRedirect] = useState(false);
+
+  if (!redirect) {
+    setTimeout(() => {
+      setRedirect(true);
+      router.push('/');
+    }, 10000);
+  }
 	return (
 		<div className="flex justify-center items-center h-full">
 			<Link href="/">

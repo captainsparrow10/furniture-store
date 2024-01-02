@@ -87,13 +87,13 @@ export const updateCartProducts = async (
 	amount: number,
 	userId: number
 ) => {
- const params = {
-	amount,
-	userId
- }
+	const params = {
+		amount,
+		userId,
+	}
 	try {
 		await axios.put(process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product, {
-		params
+			params,
 		})
 		return
 	} catch (error) {
@@ -111,6 +111,41 @@ export const cartProductsUserId = async (id: number) => {
 			{ params }
 		)
 		return response.data
+	} catch (error) {
+		throw error // Re-throw the error to propagate it to the caller
+	}
+}
+
+export const profileCardProductUser = async (email: string) => {
+	const params = {
+		email,
+	}
+	try {
+		const response = await axios.get(
+			process.env.NEXT_PUBLIC_URL + '/api/profile/',
+			{ params }
+		)
+		return response.data
+	} catch (error) {
+		throw error // Re-throw the error to propagate it to the caller
+	}
+}
+
+export const adressCardProductUser = async (id: number) => {
+	try {
+		const response = await axios.get(
+			process.env.NEXT_PUBLIC_URL + '/api/profile/' + id
+		)
+		return response.data
+	} catch (error) {
+		throw error // Re-throw the error to propagate it to the caller
+	}
+}
+
+export const deleteProfileUserProducts = async (id: number) => {
+	try {
+		await axios.delete(process.env.NEXT_PUBLIC_URL + '/api/profile/' + id)
+		return
 	} catch (error) {
 		throw error // Re-throw the error to propagate it to the caller
 	}

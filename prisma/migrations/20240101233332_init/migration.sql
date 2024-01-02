@@ -26,10 +26,11 @@ CREATE TABLE "User" (
 CREATE TABLE "Adress" (
     "id" SERIAL NOT NULL,
     "id_user" INTEGER NOT NULL,
-    "companyName" TEXT NOT NULL,
+    "companyName" TEXT,
     "country" TEXT NOT NULL,
+    "province" TEXT NOT NULL,
     "street" TEXT NOT NULL,
-    "zipCode" INTEGER NOT NULL,
+    "zipCode" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
 
     CONSTRAINT "Adress_pkey" PRIMARY KEY ("id")
@@ -40,6 +41,9 @@ CREATE UNIQUE INDEX "CartPrueba_id_product_key" ON "CartPrueba"("id_product");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Adress_id_user_key" ON "Adress"("id_user");
 
 -- AddForeignKey
 ALTER TABLE "CartPrueba" ADD CONSTRAINT "CartPrueba_id_user_fkey" FOREIGN KEY ("id_user") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

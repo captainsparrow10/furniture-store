@@ -30,7 +30,11 @@ export async function GET(request: NextRequest) {
 				where: {
 					id_user: parseInt(id),
 				},
+				orderBy: {
+					name: 'asc',
+				},
 			})
+
 			return NextResponse.json(data)
 		}
 	} catch (error) {
