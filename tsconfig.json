@@ -25,10 +25,17 @@
 			"@api/*": ["./src/app/api/*"],
 			"@components/*": ["./src/UI/Components/*"],
 			"@pages/*": ["./src/UI/Pages/*"],
-      "@utils/*": ["./src/utils/*"],
-			"@db/*" : ["./prisma/lib/*"]
+			"@lib/*": ["./src/lib/*"],
+			"@db/*": ["./prisma/lib/*"],
+			"@server/*": ["./src/lib/server/*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/api/shop/[id]"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		"src/app/api/shop/[id]"
+	],
 	"exclude": ["node_modules"]
 }

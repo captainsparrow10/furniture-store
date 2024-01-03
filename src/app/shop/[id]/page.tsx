@@ -1,10 +1,11 @@
-import UrlIndications from '@/UI/Components/Navegation/UrlIndications'
-import ContentProduct from '@/UI/Pages/Shop/single product/ContentProduct'
-import ProductDescription from '@/UI/Pages/Shop/single product/ProductDescription'
-import RelatedProducts from '@/UI/Pages/Shop/single product/RelatedProducts'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { singleProduct } from '@/app/server'
-import { sessionInterface, shopSingleItemInterface } from '@/utils/Interfaces'
+import UrlIndications from '@/components/navegation/UrlIndications'
+import ContentProduct from '@/components/pages/shop/single product/ContentProduct'
+import ProductDescription from '@/components/pages/shop/single product/ProductDescription'
+import RelatedProducts from '@/components/pages/shop/single product/RelatedProducts'
+import { sessionInterface } from '@/lib/Interfaces/SessionInterface'
+import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
+import { singleProduct } from '@/lib/server/ShopServer'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
@@ -25,6 +26,6 @@ export default async function SingleProduct({
 			</main>
 		)
 	} else {
-		redirect('/account')
+		redirect('/login')
 	}
 }

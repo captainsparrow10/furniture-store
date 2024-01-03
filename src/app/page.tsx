@@ -1,13 +1,11 @@
-import { HomeInterface } from '@/utils/Interfaces'
-import Banner from '@pages/Home/Banner'
-import NewPick from '@pages/Home/NewPick'
-import Picks from '@pages/Home/Picks'
-import TopPicks from '@pages/Home/TopPicks'
-import { presentationItems } from './server'
-import { useSession } from 'next-auth/react'
+import Banner from '@/components/pages/home/Banner'
+import Picks from '@/components/pages/home/Picks'
+import { presentationItems } from '../lib/server'
+import TopPicks from '@/components/pages/home/TopPicks'
+import NewPick from '@/components/pages/home/NewPick'
 
 export default async function page() {
-	const home: HomeInterface = await presentationItems()
+	const home: any = await presentationItems()
 
 	return (
 		<main className="relative">

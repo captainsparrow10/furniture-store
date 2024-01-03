@@ -1,9 +1,12 @@
-import Indications from '@/UI/Components/Navegation/Indications'
-import Sponsor from '@/UI/Components/Sponsor'
-import CheckOutComponent from '@/UI/Pages/CheckOut/CheckOutComponent'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
-import { adressCardProductUser, profileCardProductUser } from '@/app/server'
-import { sessionInterface } from '@/utils/Interfaces'
+import Sponsor from '@/components/Sponsor'
+import Indications from '@/components/navegation/Indications'
+import CheckOutComponent from '@/components/pages/checkout/CheckOutComponent'
+import { sessionInterface } from '@/lib/Interfaces/SessionInterface'
+import {
+	adressCardProductUser,
+	profileCardProductUser,
+} from '@/lib/server/UserServer'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import React from 'react'
@@ -21,6 +24,6 @@ export default async function page() {
 			</main>
 		)
 	} else {
-		redirect('/account')
+		redirect('/login')
 	}
 }

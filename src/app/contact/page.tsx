@@ -1,5 +1,5 @@
-import Indications from '@/UI/Components/Navegation/Indications'
-import Sponsor from '@/UI/Components/Sponsor'
+import Sponsor from '@/components/Sponsor'
+import Indications from '@/components/navegation/Indications'
 import { ClockIcon, MapPinIcon, PhoneIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 
@@ -7,7 +7,6 @@ export default function page() {
 	return (
 		<main>
 			<Indications />
-
 			<div className="py-24 flex flex-col justify-center h-full w-full gap-y-24 items-center">
 				<div className="w-[644px] flex flex-col items-center">
 					<h3>Get in touch with us</h3>

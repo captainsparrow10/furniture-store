@@ -1,11 +1,10 @@
-import Indications from '@/UI/Components/Navegation/Indications'
-import Sponsor from '@/UI/Components/Sponsor'
-import React from 'react'
-import CartComponent from '@/UI/Pages/Cart/CartComponent'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth]/route'
-import { sessionInterface } from '@/utils/Interfaces'
 import { redirect } from 'next/navigation'
+import { sessionInterface } from '@/lib/Interfaces/SessionInterface'
+import Indications from '@/components/navegation/Indications'
+import CartComponent from '@/components/pages/cart/CartComponent'
+import Sponsor from '@/components/Sponsor'
 
 export default async function page() {
 	const session: sessionInterface | null = await getServerSession(authOptions)
@@ -18,6 +17,6 @@ export default async function page() {
 			</main>
 		)
 	} else {
-		redirect('/account')
+		redirect('/login')
 	}
 }

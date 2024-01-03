@@ -1,11 +1,10 @@
-import Footer from '@components/Footer'
-import NavBar from '@components/Navegation/NavBar'
 import '@/app/globals.css'
-
+import Footer from '@/components/Footer'
+import NavBar from '@/components/navegation/NavBar'
+import NextAuth from '@/lib/providers/NextAuth'
+import ReactQuery from '@/lib/providers/ReactQuery'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import ReactQuery from '@/utils/providers/ReactQuery'
-import NextAuth from '@/utils/providers/NextAuth'
 
 const poppins = Poppins({
 	weight: '400',
