@@ -1,4 +1,5 @@
 import { PicksType } from '@/lib/types/ShopTypes'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 type Props = {
@@ -17,10 +18,10 @@ export default async function Picks({ products }: Props) {
 						key={product.data[0]._id}
 					>
 						<div className="relative w-full h-[450px]">
-							<img
+							<Image
 								src={product.data[0].colorRef}
 								alt={product.data[0].name}
-								className="w-full h-full"
+fill
 							/>
 						</div>
 						<div>

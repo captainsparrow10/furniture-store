@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 type Props = {
 	image: string 
 	name: string
@@ -6,11 +8,11 @@ type Props = {
 export default function CardItem({ image, name, price }: Props) {
 	return (
 		<div className="w-[287px] h-[372px] flex flex-col gap-y-2">
-				<div className="w-full h-[292px]">
-						<img
+				<div className="w-full h-[292px] relative">
+						<Image
 							src={image}
 							alt={name}
-							className="w-full h-full"
+							 fill
 						/>
 					</div>
 			<h5>{name}</h5>
