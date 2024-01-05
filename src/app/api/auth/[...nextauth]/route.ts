@@ -47,12 +47,11 @@ export const authOptions = {
 		}),
 	],
 	pages: {
-		signIn: '/account',
-		error: '/api/auth/error',
+		signIn: '/login',
 	},
 	callbacks: {
 		async jwt({ token, user }: any) {
-			return { ...token, ...user }
+			return {...token, ...user}
 		},
 		async session({ session, token, user }: any) {
 			session.user = token

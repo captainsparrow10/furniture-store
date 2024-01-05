@@ -8,15 +8,12 @@ import Sponsor from '@/components/Sponsor'
 
 export default async function page() {
 	const session: sessionInterface | null = await getServerSession(authOptions)
-	if (session) {
-		return (
-			<main>
-				<Indications />
-				<CartComponent userId={session.user.id} />
-				<Sponsor />
-			</main>
-		)
-	} else {
-		redirect('/login')
-	}
+
+	return (
+		<main>
+			<Indications />
+			{session && <CartComponent userId={session.user.id} />}
+			<Sponsor />
+		</main>
+	)
 }

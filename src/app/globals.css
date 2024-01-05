@@ -3,9 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-	html,
+	html {
+		@apply h-full w-full text-black relative;
+	}
 	body {
-		@apply h-full w-full text-black;
+		@apply h-fit w-full text-black relative;
 	}
 	h1 {
 		@apply text-[48px] font-bold capitalize md:text-[64px];
@@ -19,10 +21,10 @@
 	p {
 		@apply text-[10px] font-normal text-justify md:text-[12px];
 	}
-	h4{
+	h4 {
 		@apply text-[18px] font-bold capitalize md:text-[20px];
 	}
-	h5{
+	h5 {
 		@apply text-[14px] font-normal capitalize md:text-[16px];
 	}
 	button {
@@ -49,8 +51,8 @@
 	.input-footer {
 		@apply w-fit text-[14px] p text-black outline-none placeholder:text-gray border border-transparent focus:border-b-black hover:border-b-gray;
 	}
-	.btn-navegation{
-		@apply px-4 py-1 rounded-xl flex justify-center items-center cursor-pointer button
+	.btn-navegation {
+		@apply px-4 py-1 rounded-xl flex justify-center items-center cursor-pointer button;
 	}
 	.btn-md {
 		@apply h-12 rounded-xl  flex justify-center items-center w-min px-6  cursor-pointer button;
@@ -64,7 +66,7 @@
 	.line {
 		@apply bg-gray-line w-full h-[1px];
 	}
-	.line-black{
+	.line-black {
 		@apply bg-black w-full h-[1px];
 	}
 }

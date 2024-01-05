@@ -6,11 +6,13 @@ import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import { insertCartProduct } from '@/lib/server/CartServer'
 import Count from '@/components/button/Count'
+import { useRouter } from 'next/navigation'
 type Props = {
 	shopItem: shopSingleItemInterface
-	userId: number
+	userId: number | undefined
 }
 export default function ContentProduct({ shopItem, userId }: Props) {
+	const router = useRouter()
 	const [count, setCount] = useState(1)
 	const handlePlusNumber = () => {
 		if (shopItem.available >= count) {
@@ -25,18 +27,22 @@ export default function ContentProduct({ shopItem, userId }: Props) {
 		return
 	}
 	const handleCartItem = async () => {
-		try {
-			const product: CartInterface = {
-				id_user: userId,
-				id_product: shopItem._id,
-				name: shopItem.name,
-				image: shopItem.colors[0].urlList[0],
-				amount: count,
-				price: shopItem.price.toString(),
+		if (userId) {
+			try {
+				const product: CartInterface = {
+					id_user: userId,
+					id_product: shopItem._id,
+					name: shopItem.name,
+					image: shopItem.colors[0].urlList[0],
+					amount: count,
+					price: shopItem.price.toString(),
+				}
+				await insertCartProduct(product)
+			} catch (error) {
+				throw error
 			}
-			await insertCartProduct(product)
-		} catch (error) {
-			throw error
+		} else {
+			router.push('/login')
 		}
 	}
 	return (

@@ -7,8 +7,8 @@ export default function page() {
 	return (
 		<main>
 			<Indications />
-			<div className="py-24 flex flex-col justify-center h-full w-full gap-y-24 items-center">
-				<div className="w-[644px] flex flex-col items-center">
+			<div className="py-24 flex flex-col justify-center h-full w-full gap-y-24 items-center px-3 sm:px-6 lg:px-12 3xl:px-24">
+				<div className="max-w-[644px] w-full flex flex-col items-center">
 					<h3>Get in touch with us</h3>
 					<p className="body2 text-center text-gray">
 						For More Information About Our Product & Services. Please Feel Free
@@ -16,8 +16,8 @@ export default function page() {
 						Not Hesitate!
 					</p>
 				</div>
-				<div className="flex gap-x-24">
-					<div className="w-[277px] flex flex-col gap-y-12">
+				<div className="flex flex-wrap px-3 sm:px-6  gap-6 w-full justify-center">
+					<div className="max-w-[277px] w-full flex flex-col gap-y-12">
 						<div className="flex gap-x-6">
 							<MapPinIcon className="h-9 w-9" />
 							<div className="w-full">
@@ -44,7 +44,7 @@ export default function page() {
 							</div>
 						</div>
 					</div>
-					<div className="flex flex-col gap-y-6 w-[423px]">
+					<div className="flex flex-col gap-y-6 max-w-[423px] w-full">
 						<div className="input-space">
 							<h5>Name</h5>
 							<input type="text" className="input" placeholder="John Doe" />

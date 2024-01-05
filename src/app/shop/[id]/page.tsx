@@ -16,16 +16,13 @@ export default async function SingleProduct({
 }) {
 	const shopItem: shopSingleItemInterface = await singleProduct(params.id)
 	const session: sessionInterface | null = await getServerSession(authOptions)
-	if (session) {
-		return (
-			<main>
-				<UrlIndications name={shopItem.name} />
-				<ContentProduct shopItem={shopItem} userId={session.user.id} />
-				<ProductDescription shopItem={shopItem} />
-				<RelatedProducts id={shopItem._id} tags={shopItem.tags} />
-			</main>
-		)
-	} else {
-		redirect('/login')
-	}
+
+	return (
+		<main>
+			<UrlIndications name={shopItem.name} />
+			<ContentProduct shopItem={shopItem} userId={session?.user.id} />
+			<ProductDescription shopItem={shopItem} />
+			<RelatedProducts id={shopItem._id} tags={shopItem.tags} />
+		</main>
+	)
 }

@@ -19,7 +19,7 @@ export default async function page() {
 		return (
 			<main>
 				<Indications />
-				<CheckOutComponent user={user} userAdress={userAdress} />
+				 <CheckOutComponent user={user} userAdress={userAdress} />
 				<Sponsor />
 			</main>
 		)
