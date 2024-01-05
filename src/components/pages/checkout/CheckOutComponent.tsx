@@ -101,7 +101,10 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 		}
 	})
 	return (
-		<form className="flex flex-wrap justify-center gap-24 px-6 lg:px-12 py-16 3xl:px-24" onSubmit={onSubmit}>
+		<form
+			className="flex flex-wrap justify-center gap-24 px-6 lg:px-12 py-16 3xl:px-24"
+			onSubmit={onSubmit}
+		>
 			<div className="flex flex-col gap-y-9 max-w-[423px] w-full">
 				<h3>Billing Details</h3>
 				<div className="flex gap-x-9">
@@ -247,7 +250,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 				<div className="flex flex-col gap-y-2">
 					{cartProductsPrueba.data &&
 						cartProductsPrueba.data.map((item) => (
-							<div className="flex justify-between">
+							<div className="flex justify-between" key={item.id_product}>
 								<h5 className="text-gray">
 									{item.name}
 									<span className="font-bold"> x {item.amount}</span>

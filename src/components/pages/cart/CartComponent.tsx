@@ -5,6 +5,7 @@ import { deleteCartProducts, updateCartProducts } from '@/lib/server/CartServer'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -102,12 +103,8 @@ export default function CartComponent({ userId }: Props) {
 							className="grid grid-cols-12 gap-5 h-[106px] w-[817px]"
 							key={item.id_product}
 						>
-							<div className="col-span-2 w-full h-[106px] bg-cream rounded-xl">
-								<img
-									src={item.image}
-									alt={item.name}
-									className="w-full h-full"
-								/>
+							<div className="col-span-2 relative w-full h-[106px] bg-cream rounded-xl">
+								<Image src={item.image} alt={item.name} fill />
 							</div>
 							<h5 className="col-span-3 h-full flex justify-center items-center  text-gray">
 								{item.name}

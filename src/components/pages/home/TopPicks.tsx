@@ -1,5 +1,6 @@
 
 import { PicksType } from '@/lib/types/ShopTypes'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 type Props = {
@@ -24,10 +25,10 @@ export default function TopPicks({ products }: Props) {
 						<Link href={`/shop/${product.data[0]._id}`} key={product.data[0]._id}>
 							<div className="min-w-[300px] h-full" >
 								<div className="relative w-full h-[300px]">
-									<img
+									<Image
 										src={product.data[0].colorRef}
 										alt={product.data[0].name}
-										className="w-full h-full"
+										fill
 									/>
 								</div>
 								<h5>{product.data[0].name}</h5>

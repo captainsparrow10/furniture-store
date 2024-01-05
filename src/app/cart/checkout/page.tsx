@@ -1,8 +1,9 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+
 import Sponsor from '@/components/Sponsor'
 import Indications from '@/components/navegation/Indications'
 import CheckOutComponent from '@/components/pages/checkout/CheckOutComponent'
 import { sessionInterface } from '@/lib/Interfaces/SessionInterface'
+import { authOptions } from '@/lib/server/Auth'
 import {
 	adressCardProductUser,
 	profileCardProductUser,

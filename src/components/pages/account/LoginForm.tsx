@@ -79,9 +79,9 @@ export default function LoginForm() {
 						Login In
 					</button>
 					<p className="text-gray">
-						Don't have account?{' '}
+						Don&apos;t have account?
 						<Link href="/register">
-							<span className="hover:font-bold hover:text-black">
+							<span className="pl-1 hover:font-bold hover:text-black">
 								Register here
 							</span>
 						</Link>

@@ -1,5 +1,6 @@
 'use client'
 import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
+import Image from 'next/image'
 import React, { useState } from 'react'
 
 type Props = {
@@ -13,28 +14,25 @@ export default function ContentImage({ shopItem }: Props) {
 	}
 	return (
 		<div className="flex-wrap gap-4  w-full max-w-[420px] flex">
-			<div className="flex order-2 w-full justify-evenly sm:order-1 sm:flex-col sm:w-fit sm:justify-start">
-				<img
-					src={shopItem.colors[0].urlList[0]}
-					className="w-16 h-16"
-					onClick={() => changeUrl(shopItem.colors[0].urlList[0])}
-				/>
-				<img
-					src={shopItem.colors[0].urlList[1]}
-					className="w-16 h-16"
-					onClick={() => changeUrl(shopItem.colors[0].urlList[1])}
-				/>
-				<img
-					src={shopItem.colors[0].urlList[2]}
-					className="w-16 h-16"
-					onClick={() => changeUrl(shopItem.colors[0].urlList[2])}
+			<div className="flex order-2 w-full justify-evenly sm:order-1 sm:flex-col sm:w-fit sm:justify-start gap-6">
+				{shopItem.colors[0].urlList.map((url) => (
+					<Image
+						src={url}
+						alt={shopItem.name}
+						width={64}
+						height={64}
+						key={url}
+						onClick={() => changeUrl(url)}
+					/>
+				))}
+			</div>
+			<div className="w-full h-[450px] max-w-[320px] sm:order-2 relative">
+				<Image
+					src={url.length == 0 ? shopItem.colors[0].urlList[0] : url}
+					alt={shopItem.name}
+					fill
 				/>
 			</div>
-
-			<img
-				src={url.length == 0 ? shopItem.colors[0].urlList[0] : url}
-				className="w-full h-[450px] max-w-[320px] sm:order-2"
-			/>
 		</div>
 	)
 }

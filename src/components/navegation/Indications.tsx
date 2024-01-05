@@ -13,7 +13,7 @@ export default function Indications() {
   const name = url[2]
 	return (
 		<div className="h-[600px] w-full relative flex justify-center items-center">
-			<Image src="/indicaciones.webp" alt="img" fill />
+			<Image src="/indicaciones.webp" alt="img" fill/>
 			<div className="absolute w-fit text-center">
 				<h3>{path}</h3>
 				<div className="flex gap-3">
