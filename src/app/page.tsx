@@ -3,9 +3,8 @@ import Picks from '@/components/pages/home/Picks'
 import { presentationItems } from '../lib/server'
 import TopPicks from '@/components/pages/home/TopPicks'
 import NewPick from '@/components/pages/home/NewPick'
-import { userSessionInterface } from '@/lib/Interfaces/SessionInterface'
 import { getServerSession } from 'next-auth'
-import { authOptions } from './api/auth/[...nextauth]/route'
+import { authOptions } from '@/lib/server/Auth'
 
 export default async function page() {
 	const home: any = await presentationItems()
