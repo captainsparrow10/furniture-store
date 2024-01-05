@@ -12,7 +12,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
-export default async function page() {
+export default async function CheckOutpage() {
 	const session: sessionInterface | null = await getServerSession(authOptions)
 	if (session) {
 		const user = await profileCardProductUser(session.user.email)

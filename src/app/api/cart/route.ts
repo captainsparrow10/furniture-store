@@ -1,4 +1,5 @@
-import { CartInterface } from '@/utils/Interfaces'
+
+import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import { db } from '@db/db'
 import { NextRequest, NextResponse } from 'next/server'
 

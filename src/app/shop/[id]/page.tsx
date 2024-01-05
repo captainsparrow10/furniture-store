@@ -8,7 +8,6 @@ import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 import { authOptions } from '@/lib/server/Auth'
 import { singleProduct } from '@/lib/server/ShopServer'
 import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
 
 export default async function SingleProduct({
 	params,

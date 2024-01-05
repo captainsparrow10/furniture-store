@@ -55,7 +55,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 		queryKey: ['cart'],
 		queryFn: async () => {
 			const response = await fetch(
-				'http://localhost:3000/api/cart?id=' + user.id
+				'/api/cart?id=' + user.id
 			)
 			const data: CartInterface[] = await response.json()
 			handlePrice(data)

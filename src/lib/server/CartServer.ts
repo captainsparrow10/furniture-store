@@ -1,5 +1,5 @@
-import axios from "axios"
-import { CartInterface } from "../Interfaces/CartInterface"
+import axios from 'axios'
+import { CartInterface } from '../Interfaces/CartInterface'
 
 export const insertCartProduct = async (product: CartInterface) => {
 	try {
@@ -21,10 +21,10 @@ export const insertCartProduct = async (product: CartInterface) => {
 
 export const cartProducts = async () => {
 	try {
-		const response = await axios.get(process.env.NEXT_PUBLIC_URL + '/api/cart')
+		const response = await axios.get('http://localhost:3000/api/cart')
 		return response.data
 	} catch (error) {
-		throw error 
+		throw error
 	}
 }
 
@@ -33,13 +33,12 @@ export const deleteCartProducts = async (id_product: string, id: number) => {
 		id,
 	}
 	try {
-		await axios.delete(
-			process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product,
-			{ params }
-		)
+		await axios.delete('http://localhost:3000/api/cart/' + id_product, {
+			params,
+		})
 		return
 	} catch (error) {
-		throw error 
+		throw error
 	}
 }
 export const updateCartProducts = async (
@@ -52,12 +51,12 @@ export const updateCartProducts = async (
 		userId,
 	}
 	try {
-		await axios.put(process.env.NEXT_PUBLIC_URL + '/api/cart/' + id_product, {
+		await axios.put('http://localhost:3000/api/cart/' + id_product, {
 			params,
 		})
 		return
 	} catch (error) {
-		throw error 
+		throw error
 	}
 }
 
@@ -66,12 +65,11 @@ export const cartProductsUserId = async (id: number) => {
 		id,
 	}
 	try {
-		const response = await axios.get(
-			process.env.NEXT_PUBLIC_URL + '/api/cart/',
-			{ params }
-		)
+		const response = await axios.get('http://localhost:3000/api/cart/', {
+			params,
+		})
 		return response.data
 	} catch (error) {
-		throw error 
+		throw error
 	}
 }

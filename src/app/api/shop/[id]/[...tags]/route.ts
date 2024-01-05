@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server'
 import { client } from '@sanity/lib/client'
 import { groq } from 'next-sanity'
-import { NextApiRequest } from 'next'
-import { shopItemsInterface } from '@/utils/Interfaces'
+import { shopItemsInterface } from '@/lib/Interfaces/ShopInterface'
 
-export async function GET(req: NextApiRequest, context: any) {
+export async function GET(req: any, context: any) {
 	const { id, tags } = context.params
 	const [tag1, tag2, tag3] = tags
 	const items: shopItemsInterface[] = await client.fetch(groq`*[

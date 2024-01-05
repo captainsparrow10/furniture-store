@@ -3,7 +3,7 @@ import Indications from "@/components/navegation/Indications";
 import LoginForm from "@/components/pages/account/LoginForm";
 
 
-export default function Page() {
+export default function LoginPage() {
 	return (
 		<main>
 			<Indications />

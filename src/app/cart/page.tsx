@@ -6,7 +6,7 @@ import CartComponent from '@/components/pages/cart/CartComponent'
 import Sponsor from '@/components/Sponsor'
 import { authOptions } from '@/lib/server/Auth'
 
-export default async function page() {
+export default async function Cartpage() {
 	const session: sessionInterface | null = await getServerSession(authOptions)
 
 	return (

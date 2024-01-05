@@ -1,9 +1,8 @@
 import { client } from "@sanity/lib/client";
-import { NextApiRequest, NextApiResponse } from "next";
 import { groq } from "next-sanity";
 import { NextResponse } from "next/server";
 
-export async function GET(req: NextApiRequest, context:any) {
+export async function GET(req: any, context:any) {
 	const {id}= context.params
 
   const items = await client.fetch(groq`*[_type == 'product' && _id == '${id}'] {

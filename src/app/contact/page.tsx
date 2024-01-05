@@ -3,7 +3,7 @@ import Indications from '@/components/navegation/Indications'
 import { ClockIcon, MapPinIcon, PhoneIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 
-export default function page() {
+export default function Contactpage() {
 	return (
 		<main>
 			<Indications />

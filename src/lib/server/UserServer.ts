@@ -6,7 +6,7 @@ export const profileCardProductUser = async (email: string) => {
 	}
 	try {
 		const response = await axios.get(
-			process.env.NEXT_PUBLIC_URL + '/api/profile/',
+			'http://localhost:3000/api/profile/',
 			{ params }
 		)
 		return response.data
@@ -18,7 +18,7 @@ export const profileCardProductUser = async (email: string) => {
 export const adressCardProductUser = async (id: number) => {
 	try {
 		const response = await axios.get(
-			process.env.NEXT_PUBLIC_URL + '/api/profile/' + id
+			'http://localhost:3000/api/profile/' + id
 		)
 		return response.data
 	} catch (error) {
@@ -28,7 +28,7 @@ export const adressCardProductUser = async (id: number) => {
 
 export const deleteProfileUserProducts = async (id: number) => {
 	try {
-		await axios.delete(process.env.NEXT_PUBLIC_URL + '/api/profile/' + id)
+		await axios.delete('http://localhost:3000/api/profile/' + id)
 		return
 	} catch (error) {
 		throw error

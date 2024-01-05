@@ -2,7 +2,7 @@ import axios from "axios"
 
 export const products = async () => {
 	try {
-		const response = await axios.get(process.env.NEXT_PUBLIC_URL + '/api/shop')
+		const response = await axios.get('http://localhost:3000/api/shop')
 		return response.data
 	} catch (error) {
 		throw error
@@ -12,7 +12,7 @@ export const products = async () => {
 export const singleProduct = async (id: any) => {
 	try {
 		const response = await axios.get(
-			process.env.NEXT_PUBLIC_URL + '/api/shop/' + id
+			'http://localhost:3000/api/shop/' + id
 		)
 		return response.data
 	} catch (error) {
