@@ -22,7 +22,6 @@
 			"@/*": ["./src/*"],
 			"@public/*": ["./public/*"],
 			"@sanity/*": ["./sanity/*"],
-			"@api/*": ["./src/app/api/*"],
 			"@components/*": ["./src/UI/Components/*"],
 			"@pages/*": ["./src/UI/Pages/*"],
 			"@lib/*": ["./src/lib/*"],

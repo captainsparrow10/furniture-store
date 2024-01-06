@@ -1,4 +1,5 @@
 import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
+import { singleProductTags } from '@/lib/server/ShopServer'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -14,9 +15,15 @@ export default async function RelatedProducts({ id, tags }: Props) {
 	if (tags.length === 1) {
 		tagNames = tags[0].name
 	} else {
-		tagNames = tags.map((tag) => tag.name.toLowerCase()).join('/')
-		const res = await fetch(`http://localhost:3000/api/shop/${id}/${tagNames}`)
-		const shopItems: shopSingleItemInterface[] = await res.json()
+		const { name: tag1 } = tags[0] || ''
+		const { name: tag2 } = tags[1] || ''
+		const { name: tag3 } = tags[2] || ''
+		const shopItems: shopSingleItemInterface[] = await singleProductTags(
+			id,
+			tag1,
+			tag2,
+			tag3
+		)
 
 		return (
 			<div
