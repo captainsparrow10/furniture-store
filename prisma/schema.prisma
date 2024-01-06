@@ -11,7 +11,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model CartPrueba {
+model Cart {
   id         Int    @id @default(autoincrement())
   userId     User   @relation(fields: [id_user], references: [id])
   id_user    Int
@@ -29,7 +29,7 @@ model User {
   email      String       @unique
   password   String
   Adress     Adress[]
-  CartPrueba CartPrueba[]
+  Cart Cart[]
 }
 
 model Adress {

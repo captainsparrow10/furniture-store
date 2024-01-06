@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: any) {
 	const data: CartInterface = await request.json()
 
-	const newItemCar = await db.cartPrueba.upsert({
+	const newItemCar = await db.cart.upsert({
 		where: {
 			id_product: data.id_product,
 		},
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 	try {
 		const id = request.nextUrl.searchParams.get('id')
 		if (id) {
-			const data = await db.cartPrueba.findMany({
+			const data = await db.cart.findMany({
 				where: {
 					id_user: parseInt(id),
 				},

@@ -6,7 +6,7 @@ export async function DELETE(req: NextRequest, context: any) {
 	const { userId } = await req.json()
 	try {
 		if (userId) {
-			await db.cartPrueba.delete({
+			await db.cart.delete({
 				where: {
 					id: parseInt(id),
 					id_user: parseInt(userId),
@@ -31,7 +31,7 @@ export async function PUT(request: NextRequest, context: any) {
 	} = await request.json()
 	const { amount, userId } = req.params
 	try {
-		await db.cartPrueba.update({
+		await db.cart.update({
 			where: {
 				id_product: id,
 				id_user: userId,
