@@ -2,9 +2,10 @@ import axios from 'axios'
 import { CartInterface } from '../Interfaces/CartInterface'
 import { BaseURL } from '../var'
 
+// cart/post
 export const insertCartProduct = async (product: CartInterface) => {
 	try {
-		await axios.post(
+		const response = await axios.post(
 			'/api/cart',
 			{
 				...product,
@@ -15,26 +16,35 @@ export const insertCartProduct = async (product: CartInterface) => {
 				},
 			}
 		)
+		return response.status
 	} catch (error) {
-		console.error('Error:', error)
+		throw error
 	}
 }
 
-export const cartProducts = async () => {
+// cart/get
+export const cartProductsUserId = async (userId: number) => {
+	const params = {
+		userId,
+	}
 	try {
-		const response = await axios.get(BaseURL() + '/api/cart')
+		const response = await axios.get(BaseURL() + '/api/cart', {
+			params,
+		})
 		return response.data
 	} catch (error) {
 		throw error
 	}
 }
 
-export const deleteCartProducts = async (id_product: string, id: number) => {
+// cart/delete
+export const deleteCartProducts = async (productId: string, userId: number) => {
 	const params = {
-		id,
+		productId,
+		userId,
 	}
 	try {
-		await axios.delete(BaseURL() + '/api/cart/' + id_product, {
+		await axios.delete(BaseURL() + '/api/cart', {
 			params,
 		})
 		return
@@ -42,34 +52,23 @@ export const deleteCartProducts = async (id_product: string, id: number) => {
 		throw error
 	}
 }
+
+// cart/update
 export const updateCartProducts = async (
-	id_product: string,
+	producId: string,
 	amount: number,
 	userId: number
 ) => {
 	const params = {
 		amount,
 		userId,
+		producId,
 	}
 	try {
-		await axios.put(BaseURL()+'/api/cart/' + id_product, {
+		await axios.put(BaseURL() + '/api/cart', {
 			params,
 		})
 		return
-	} catch (error) {
-		throw error
-	}
-}
-
-export const cartProductsUserId = async (id: number) => {
-	const params = {
-		id,
-	}
-	try {
-		const response = await axios.get(BaseURL()+'/api/cart/', {
-			params,
-		})
-		return response.data
 	} catch (error) {
 		throw error
 	}

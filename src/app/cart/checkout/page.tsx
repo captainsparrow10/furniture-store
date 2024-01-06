@@ -2,7 +2,7 @@
 import Sponsor from '@/components/Sponsor'
 import Indications from '@/components/navegation/Indications'
 import CheckOutComponent from '@/components/pages/checkout/CheckOutComponent'
-import { sessionInterface } from '@/lib/Interfaces/SessionInterface'
+import { sessionInterface } from '@/lib/Interfaces/ProfileInterface'
 import { authOptions } from '@/lib/server/Auth'
 import {
 	adressCardProductUser,

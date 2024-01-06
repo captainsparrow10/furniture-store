@@ -2,14 +2,14 @@
 import React, { useState } from 'react'
 import ContentImage from './ContentImage'
 import { StarIcon } from '@heroicons/react/20/solid'
-import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import { insertCartProduct } from '@/lib/server/CartServer'
 import Count from '@/components/button/Count'
 import { useRouter } from 'next/navigation'
+import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 type Props = {
-	shopItem: shopSingleItemInterface
-	userId: number | undefined
+	shopItem: ShopSingleItemInterface
+	userId: string | undefined
 }
 export default function ContentProduct({ shopItem, userId }: Props) {
 	const router = useRouter()
@@ -30,8 +30,8 @@ export default function ContentProduct({ shopItem, userId }: Props) {
 		if (userId) {
 			try {
 				const product: CartInterface = {
-					id_user: userId,
-					id_product: shopItem._id,
+					userId: userId,
+					productId: shopItem._id,
 					name: shopItem.name,
 					image: shopItem.colors[0].urlList[0],
 					amount: count,

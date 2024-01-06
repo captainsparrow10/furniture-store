@@ -11,10 +11,10 @@ datasource db {
 }
 
 model Cart {
-  id         Int    @id @default(autoincrement())
-  userId     User   @relation(fields: [id_user], references: [id])
-  id_user    Int
-  id_product String @unique
+  id         String @id @default(cuid())
+  user       User   @relation(fields: [userId], references: [id])
+  userId     String
+  productId String @unique
   name       String
   image      String
   amount     Int
@@ -22,19 +22,34 @@ model Cart {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  firstName  String
-  lastName   String
-  email      String       @unique
-  password   String
-  Adress     Adress[]
-  Cart Cart[]
+  id        String    @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String    @unique
+  password  String
+  adress    Adress[]
+  cart      Cart[]
+  session   Session[]
+  role      UserRole  @default(USER)
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  user         User     @relation(fields: [userId], references: [id])
+  expires      DateTime
+  userId       String   @unique
+}
+
+enum UserRole {
+  ADMIN
+  USER
 }
 
 model Adress {
-  id          Int     @id @default(autoincrement())
-  userId      User    @relation(fields: [id_user], references: [id])
-  id_user     Int     @unique
+  id          String  @id @default(cuid())
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String  @unique
   companyName String?
   country     String
   province    String

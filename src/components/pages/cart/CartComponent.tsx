@@ -10,7 +10,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 
 type Props = {
-	userId: number
+	userId: string
 }
 
 export default function CartComponent({ userId }: Props) {
@@ -35,7 +35,7 @@ export default function CartComponent({ userId }: Props) {
 		queryKey: ['cart'],
 		queryFn: async () => {
 			const response = await fetch(
-				'/api/cart?id=' + userId
+				'/api/cart?userId=' + userId
 			)
 			const data: CartInterface[] = await response.json()
 			handlePrice(data)

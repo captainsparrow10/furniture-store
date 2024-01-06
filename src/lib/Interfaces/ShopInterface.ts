@@ -1,4 +1,4 @@
-export interface shopItemsInterface {
+export interface ShopItemsInterface {
 	_id: string
 	name: string
 	price: string
@@ -14,7 +14,7 @@ export interface shopItemsInterface {
 	}
 }
 
-export interface shopSingleItemInterface {
+export interface ShopSingleItemInterface {
 	_id: string
 	name: string
 	price: string
@@ -32,13 +32,13 @@ export interface shopSingleItemInterface {
 }
 
 export interface ShopItemSelectedInterface {
-	default: shopItemsInterface[]
+	default: ShopItemsInterface[]
 	price: {
-		descending: shopItemsInterface[]
-		ascending: shopItemsInterface[]
+		descending: ShopItemsInterface[]
+		ascending: ShopItemsInterface[]
 	}
 	name: {
-		descending: shopItemsInterface[]
-		ascending: shopItemsInterface[]
+		descending: ShopItemsInterface[]
+		ascending: ShopItemsInterface[]
 	}
 }

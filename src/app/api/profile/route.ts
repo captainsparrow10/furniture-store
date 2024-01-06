@@ -1,28 +1,29 @@
 import { db } from '@db/db'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
-export async function GET(request: NextRequest) {
+export async function GET(context: any) {
 	try {
-		const email = request.nextUrl.searchParams.get('email')
+		const email = await context.params
 		if (email) {
-			const data: any = await db.user.findUnique({
+			const data = await db.user.findUnique({
 				where: {
 					email: email,
 				},
+				select: {
+					id: true,
+				},
 			})
-			if (data && data.password) {
-				delete data.password
-				return NextResponse.json(data)
-			}
+			return NextResponse.json(data)
 		}
+		return NextResponse.json({ message: 'Email not found' }, { status: 400 })
 	} catch (error) {
-		return NextResponse.json('Error')
+		return NextResponse.json({ error }, { status: 400 })
 	}
 }
 
 export async function POST(request: Request) {
 	const data: {
-		id_user: number
+		userId: string
 		companyName?: string
 		country: string
 		street: string
@@ -31,24 +32,27 @@ export async function POST(request: Request) {
 		phone: string
 	} = await request.json()
 	try {
-		await db.adress.upsert({
-			where: {
-				id_user: data.id_user,
-			},
-			update: {
-				companyName: data.companyName,
-				country: data.country,
-				street: data.street,
-				province: data.province,
-				zipCode: data.zipCode,
-				phone: data.phone,
-			},
-			create: {
-				...data,
-			},
-		})
-		return NextResponse.json({ message: 'success' }, { status: 200 })
+		if (data) {
+			await db.adress.upsert({
+				where: {
+					userId: data.userId,
+				},
+				update: {
+					companyName: data.companyName,
+					country: data.country,
+					street: data.street,
+					province: data.province,
+					zipCode: data.zipCode,
+					phone: data.phone,
+				},
+				create: {
+					...data,
+				},
+			})
+			return NextResponse.json({ message: 'success' }, { status: 200 })
+		}
+		return NextResponse.json({ message: 'Data not found' }, { status: 400 })
 	} catch (error) {
-		return NextResponse.json('Error')
+		return NextResponse.json({ error }, { status: 400 })
 	}
 }
