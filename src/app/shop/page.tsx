@@ -2,7 +2,7 @@ import Sponsor from '@/components/Sponsor'
 import Indications from '@/components/navegation/Indications'
 import ContentShop from '@/components/pages/shop/ContentShop'
 import { ShopItemSelectedInterface } from '@/lib/Interfaces/ShopInterface'
-import Service from '@/lib/service'
+import Service from '@/lib/services'
 
 export default async function ShopPage() {
 	const shopItems: ShopItemSelectedInterface = await Service.shop.getProducts()

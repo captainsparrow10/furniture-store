@@ -22,11 +22,10 @@
 			"@/*": ["./src/*"],
 			"@public/*": ["./public/*"],
 			"@sanity/*": ["./sanity/*"],
-			"@components/*": ["./src/UI/Components/*"],
-			"@pages/*": ["./src/UI/Pages/*"],
+			"@components/*": ["./src/components/*"],
 			"@lib/*": ["./src/lib/*"],
 			"@db/*": ["./prisma/lib/*"],
-			"@service/*": ["./lib/service/*"]
+			"@services/*": ["./lib/services/*"]
 		}
 	},
 	"include": [

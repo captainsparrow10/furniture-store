@@ -2,10 +2,10 @@ import CartService from './CartServer'
 import ShopService from './ShopServer'
 import UserService from './UserServer'
 
-const Service = {
+const Services = {
 	shop: ShopService,
 	cart: CartService,
 	user: UserService,
 }
 
-export default Service
+export default Services

@@ -1,4 +1,4 @@
-import { authOptions } from '@/lib/Auth'
+import { authOptions } from '@/lib/auth'
 import { db } from '@db/db'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
@@ -22,9 +22,9 @@ export async function GET() {
 			})
 			return NextResponse.json(data)
 		}
-		return NextResponse.json({ message: 'data not found' }, { status: 400 })
+		return NextResponse.json({ message: 'data not found' }, { status: 404 })
 	} catch (error) {
-		return NextResponse.json('Error')
+		return NextResponse.json({ error }, { status: 400 })
 	}
 }
 
@@ -58,7 +58,7 @@ export async function POST(request: any) {
 
 			return NextResponse.json({ message: 'success' }, { status: 200 })
 		}
-		return NextResponse.json({ message: 'data not found' }, { status: 400 })
+		return NextResponse.json({ message: 'data not found' }, { status: 404 })
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 400 })
 	}
@@ -83,7 +83,7 @@ export async function DELETE(request: Request, context: any) {
 		}
 		return NextResponse.json(
 			{ message: 'data in params not found' },
-			{ status: 400 }
+			{ status: 404 }
 		)
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 400 })
@@ -112,7 +112,7 @@ export async function PUT(request: Request, context: any) {
 		}
 		return NextResponse.json(
 			{ message: 'data in params not found' },
-			{ status: 400 }
+			{ status: 404 }
 		)
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 400 })

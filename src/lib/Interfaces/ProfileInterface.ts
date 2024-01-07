@@ -4,3 +4,12 @@ export interface ProfileInterface {
 	lastName: string
 	password: string
 }
+
+export interface AdressInterface {
+	companyName?: string
+	street: string
+	province: string
+	zipCode: string
+	phone: string
+	country: string
+}

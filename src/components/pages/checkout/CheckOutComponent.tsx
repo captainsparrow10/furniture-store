@@ -1,6 +1,7 @@
 'use client'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { deleteProfileUserProducts } from '@/lib/service/UserServer'
+import { totalPriceFunction } from '@/lib/functions'
+import Services from '@/lib/services'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -37,31 +38,18 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 	const [totalPrice, setTotalPrice] = useState(0)
 	const router = useRouter()
 	const handlePrice = (cartItems: CartInterface[]) => {
-		let subPrice, totalPrice: number
-		if (Array.isArray(cartItems) && cartItems.length > 0) {
-			subPrice = cartItems.map((item) => item.amount * parseFloat(item.price))
-			totalPrice = subPrice.reduce((total, value) => total + value, 0)
-			setTotalPrice(totalPrice)
-		} else if (cartItems && cartItems.length === 1) {
-			totalPrice = parseFloat(cartItems[0].price)
-			setTotalPrice(totalPrice)
-		} else {
-			setTotalPrice(0)
-		}
+		const result = totalPriceFunction(cartItems)
+		setTotalPrice(result)
 	}
-
-	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const cartProductsPrueba = useQuery({
 		queryKey: ['cart'],
 		queryFn: async () => {
-			const response = await fetch(
-				'/api/cart?id=' + user.id
-			)
-			const data: CartInterface[] = await response.json()
+			const data: CartInterface[] = await Services.cart.get()
 			handlePrice(data)
 			return data
 		},
 	})
+	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const {
 		register,
 		handleSubmit,
@@ -79,23 +67,17 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 			data.phone &&
 			data.email
 		) {
-			const res = await fetch('/api/profile', {
-				method: 'POST',
-				body: JSON.stringify({
-					id_user: user.id,
-					companyName: data.companyName,
-					country: data.country,
-					province: data.province,
-					street: data.street,
-					zipCode: data.zipCode,
-					phone: data.phone,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			})
-			if (res.ok) {
-				await deleteProfileUserProducts(user.id)
+			const req = {
+				companyName: data.companyName,
+				country: data.country,
+				province: data.province,
+				street: data.street,
+				zipCode: data.zipCode,
+				phone: data.phone,
+			}
+			const res = await Services.user.Adress.insert(req)
+			if (res) {
+				await Services.user.Profile.deleteCart()
 				router.push('/cart/checkout/send')
 			}
 		}
@@ -250,7 +232,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 				<div className="flex flex-col gap-y-2">
 					{cartProductsPrueba.data &&
 						cartProductsPrueba.data.map((item) => (
-							<div className="flex justify-between" key={item.id_product}>
+							<div className="flex justify-between" key={item.productId}>
 								<h5 className="text-gray">
 									{item.name}
 									<span className="font-bold"> x {item.amount}</span>

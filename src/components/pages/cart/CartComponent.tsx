@@ -1,7 +1,12 @@
 'use client'
 
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { deleteCartProducts, updateCartProducts } from '@/lib/service/CartServer'
+import { totalPriceFunction } from '@/lib/functions'
+import Service from '@/lib/services'
+import {
+	deleteCartProducts,
+	updateCartProducts,
+} from '@/lib/services/CartServer'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -9,46 +14,30 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-type Props = {
-	userId: string
-}
-
-export default function CartComponent({ userId }: Props) {
+export default function CartComponent() {
 	const [totalPrice, setTotalPrice] = useState(0)
 	const handlePrice = (cartItems: CartInterface[]) => {
-		let subPrice, totalPrice
-		if (Array.isArray(cartItems) && cartItems.length > 0) {
-			subPrice = cartItems.map((item) => item.amount * parseFloat(item.price))
-			totalPrice = subPrice.reduce((total, value) => total + value, 0)
-			setTotalPrice(totalPrice)
-		} else if (cartItems && cartItems.length === 1) {
-			totalPrice = parseFloat(cartItems[0].price)
-			setTotalPrice(totalPrice)
-		} else {
-			setTotalPrice(0)
-		}
+		const result = totalPriceFunction(cartItems)
+		setTotalPrice(result)
 	}
 
-	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const queryClient = useQueryClient()
 	const cartProductsPrueba = useQuery({
 		queryKey: ['cart'],
 		queryFn: async () => {
-			const response = await fetch(
-				'/api/cart?userId=' + userId
-			)
-			const data: CartInterface[] = await response.json()
+			const data: CartInterface[] = await Service.cart.get()
 			handlePrice(data)
 			return data
 		},
 	})
 
-	const handleDelete = async (id_product: string) => {
-		await deleteCartProducts(id_product, userId)
+	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
+	const handleDelete = async (productId: string) => {
+		await deleteCartProducts(productId)
 		return
 	}
 	const deleteItem = useMutation({
-		mutationFn: async (id_product: string) => handleDelete(id_product),
+		mutationFn: async (prductId: string) => handleDelete(prductId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['cart'] })
 		},
@@ -57,17 +46,17 @@ export default function CartComponent({ userId }: Props) {
 	const handleAmount = async (params: {
 		amount: number
 		type: number
-		id_product: string
+		productId: string
 	}) => {
-		const { amount, type, id_product } = params
+		const { amount, type, productId } = params
 		if (type == 1) {
 			if (99 >= amount) {
-				await updateCartProducts(id_product, amount + 1, userId)
+				await updateCartProducts(productId, amount + 1)
 				return
 			}
 		} else if (type == 2) {
 			if (amount > 1) {
-				await updateCartProducts(id_product, amount - 1, userId)
+				await updateCartProducts(productId, amount - 1)
 				return
 			}
 		}
@@ -77,7 +66,7 @@ export default function CartComponent({ userId }: Props) {
 		mutationFn: async (params: {
 			amount: number
 			type: number
-			id_product: string
+			productId: string
 		}) => handleAmount(params),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['cart'] })
@@ -101,7 +90,7 @@ export default function CartComponent({ userId }: Props) {
 					cartProductsPrueba.data.map((item: CartInterface) => (
 						<div
 							className="grid grid-cols-12 gap-5 h-[106px] w-[817px]"
-							key={item.id_product}
+							key={item.productId}
 						>
 							<div className="col-span-2 relative w-full h-[106px] bg-cream rounded-xl">
 								<Image src={item.image} alt={item.name} fill />
@@ -118,7 +107,7 @@ export default function CartComponent({ userId }: Props) {
 										const params = {
 											amount: item.amount,
 											type: 1,
-											id_product: item.id_product,
+											productId: item.productId,
 										}
 										updateItem.mutate(params)
 									}}
@@ -134,7 +123,7 @@ export default function CartComponent({ userId }: Props) {
 										const params = {
 											amount: item.amount,
 											type: 2,
-											id_product: item.id_product,
+											productId: item.productId,
 										}
 										updateItem.mutate(params)
 									}}
@@ -149,7 +138,7 @@ export default function CartComponent({ userId }: Props) {
 								<TrashIcon
 									className="icon text-gray hover:text-black"
 									onClick={() => {
-										deleteItem.mutate(item.id_product)
+										deleteItem.mutate(item.productId)
 									}}
 								/>
 							</div>

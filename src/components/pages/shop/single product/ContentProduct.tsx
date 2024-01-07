@@ -3,11 +3,10 @@ import React, { useState } from 'react'
 import ContentImage from './ContentImage'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { insertCartProduct } from '@/lib/service/CartServer'
 import Count from '@/components/button/Count'
 import { useRouter } from 'next/navigation'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
-import Service from '@/lib/service'
+import Services from '@/lib/services'
 type Props = {
 	shopItem: ShopSingleItemInterface
 }
@@ -35,7 +34,7 @@ export default function ContentProduct({ shopItem }: Props) {
 				amount: count,
 				price: shopItem.price.toString(),
 			}
-			await Service.cart.post(product)
+			await Services.cart.post(product)
 		} catch (error) {
 			console.log(error)
 		}

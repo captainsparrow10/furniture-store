@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { CartInterface } from '../Interfaces/CartInterface'
-import { error } from 'console'
 
 const CartService = {
 	get: async () => {
@@ -31,6 +30,7 @@ export const insertCartProduct = async (product: CartInterface) => {
 				},
 			}
 		)
+		.then((response) => response.status)
 		.catch((error) => {
 			console.log(error.response.status)
 		})
@@ -38,12 +38,12 @@ export const insertCartProduct = async (product: CartInterface) => {
 
 // cart/get
 export const cartProductsUserId = async () => {
-	try {
-		const response = await axios.get('/api/cart')
-		return response.data
-	} catch (error) {
-		throw error
-	}
+	return await axios
+		.get('/api/cart')
+		.then((response) => response.data)
+		.catch((error) => {
+			console.log(error.response.status)
+		})
 }
 
 // cart/delete
@@ -51,14 +51,15 @@ export const deleteCartProducts = async (productId: string) => {
 	const params = {
 		productId,
 	}
-	try {
-		await axios.delete('/api/cart', {
+	const response = await axios
+		.delete('/api/cart', {
 			params,
 		})
-		return
-	} catch (error) {
-		throw error
-	}
+		.then((response) => response.status)
+		.catch((error) => {
+			console.log(error.response.status)
+		})
+	return response
 }
 
 // cart/update
@@ -67,14 +68,16 @@ export const updateCartProducts = async (producId: string, amount: number) => {
 		amount,
 		producId,
 	}
-	try {
-		await axios.put('/api/cart', {
+
+	const response = await axios
+		.put('/api/cart', {
 			params,
 		})
-		return
-	} catch (error) {
-		throw error
-	}
+		.then((response) => response.status)
+		.catch((error) => {
+			console.log(error.response.status)
+		})
+	return response
 }
 
 export default CartService
