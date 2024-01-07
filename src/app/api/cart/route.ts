@@ -1,10 +1,14 @@
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
+import { authOptions } from '@/lib/server/Auth'
 import { db } from '@db/db'
+import { getServerSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 
-export async function GET(context: any) {
+const session = await getServerSession(authOptions)
+const userId = session?.user.id
+
+export async function GET() {
 	try {
-		const { userId } = await context.params
 		if (userId) {
 			const data = await db.cart.findMany({
 				where: {
@@ -48,7 +52,7 @@ export async function POST(request: any) {
 }
 
 export async function DELETE(context: any) {
-	const { productId, userId } = context.params
+	const { productId } = context.params
 	try {
 		if (userId && productId) {
 			await db.cart.delete({
@@ -68,11 +72,10 @@ export async function DELETE(context: any) {
 	}
 }
 
-export async function PUT(context: any) {
-	const { productId, amount, userId } = await context.params
-
+export async function PUT(request: Request, context: any) {
+	const { productId, amount } = await context.params
 	try {
-		if (productId && amount & userId) {
+		if (productId && amount && userId) {
 			await db.cart.update({
 				where: {
 					productId,

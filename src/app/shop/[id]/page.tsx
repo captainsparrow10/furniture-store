@@ -5,7 +5,7 @@ import ProductDescription from '@/components/pages/shop/single product/ProductDe
 import RelatedProducts from '@/components/pages/shop/single product/RelatedProducts'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 import { authOptions } from '@/lib/server/Auth'
-import { singleProduct } from '@/lib/server/ShopServer'
+import ShopService from '@/lib/server/ShopServer'
 import { getServerSession } from 'next-auth'
 
 export default async function SingleProduct({
@@ -13,7 +13,7 @@ export default async function SingleProduct({
 }: {
 	params: { id: string }
 }) {
-	const shopItem: ShopSingleItemInterface = await singleProduct(params.id)
+	const shopItem: ShopSingleItemInterface = await ShopService.getSingleProducts(params.id)
 	const session = await getServerSession(authOptions)
 
 	return (

@@ -1,9 +1,23 @@
 import { client } from '@sanity/lib/client'
 import { groq } from 'next-sanity'
 
+const ShopService = {
+	getPresentation: async () => await presentationItems(),
+	getProducts: async () => await products(),
+	getSingleProducts: async (productId: string) =>
+		await singleProduct(productId),
+	getTagsSingleProducts: async (
+		productId: string,
+		tag1: string,
+		tag2: string,
+		tag3: string
+	) => await singleProductTags(productId, tag1, tag2, tag3),
+}
+
 export const products = async () => {
-	try {
-		const items = await client.fetch(groq`{
+	const items = await client
+		.fetch(
+			groq`{
 			"default": *[_type == 'product'] {
 				_id,
 				name,
@@ -64,17 +78,19 @@ export const products = async () => {
 			}
 		}
 		
-		`)
-		return items
-	} catch (error) {
-		throw error
-	}
+		`
+		)
+		.catch((error) => {
+			console.log(error)
+			return null
+		})
+	return items
 }
 
-export const singleProduct = async (id: string) => {
-	try {
-		const items =
-			await client.fetch(groq`*[_type == 'product' && _id == '${id}'] {
+const singleProduct = async (productId: string) => {
+	const items = await client
+		.fetch(
+			groq`*[_type == 'product' && _id == '${productId}'] {
 			_id,
 			name,
 			description,
@@ -97,23 +113,26 @@ export const singleProduct = async (id: string) => {
 						urlList[]
 					}
 		}[0]
-		`)
-		return items
-	} catch (error) {
-		throw error // Re-throw the error to propagate it to the caller
-	}
+		`
+		)
+		.catch((error) => {
+			console.log(error)
+			return null
+		})
+	return items
 }
 
-export const singleProductTags = async (
-	id: string,
+const singleProductTags = async (
+	productId: string,
 	tag1: string,
 	tag2: string,
 	tag3: string
 ) => {
-	try {
-		const items = await client.fetch(groq`*[
+	const items = await client
+		.fetch(
+			groq`*[
 			_type == 'product' &&
-			_id != '${id}' &&
+			_id != '${productId}' &&
 			(
 				(
 					'${tag1}' in tags[]->name &&
@@ -141,9 +160,75 @@ export const singleProductTags = async (
 				urlList[]
 			}
 		}  
-		`)
-		return items
-	} catch (error) {
-		throw error
-	}
+		`
+		)
+		.catch((error) => {
+			console.log(error)
+			return null
+		})
+	return items
 }
+
+export const presentationItems = async () => {
+	const data = await client
+		.fetch(
+			groq`{
+				"banner": *[_type == 'banner'] {
+						"data": *[_id == ^.product._ref] {
+							_id,
+							name,
+							"colorRef": *[_type == 'color' && _id == ^.colors[0]._ref][0].urlList[0]
+						}[0]
+					}[0]
+				,
+				"topPicks":
+				*[_type == 'top'] {
+						"data": *[_id == ^.product._ref] {
+						_id,
+						price,
+							name,
+							"colorRef": *[_type == 'color' && _id == ^.colors[0]._ref][0].urlList[0]
+								}
+							},
+				"news"
+				:
+			 *[_type == 'product' ]{
+						_id,
+						name,
+						"colors": 
+							*[
+								_type == 'color' 
+								&& 
+								_id in ^.colors[]._ref]{
+									urlList[0]
+								}[0]
+					
+				}  | order(_createdAt desc)[0],
+				 "picks": *[_type == 'pick'] {
+						"data": *[_id == ^.product._ref] {
+						_id,
+							name,
+							"colorRef": *[_type == 'color' && _id == ^.colors[0]._ref][0].urlList[0]
+								}
+							}
+			}
+			`
+		)
+		.catch((error) => {
+			console.log(error)
+			return null
+		})
+	return data
+}
+
+export const sponsorItems = async () => {
+	const sponsor = await client
+		.fetch(groq`*[_type == "sponsor"][0]`)
+		.catch((error) => {
+			console.log(error)
+			return null
+		})
+	return sponsor
+}
+
+export default ShopService

@@ -1,12 +1,8 @@
-
-import { PicksType } from '@/lib/types/ShopTypes'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-type Props = {
-	products: PicksType[]
-}
-export default function TopPicks({ products }: Props) {
+
+export default function TopPicks({ products }: any) {
 	return (
 		<div
 			title="TopPicksForYou"
@@ -21,14 +17,17 @@ export default function TopPicks({ products }: Props) {
 			</div>
 			<div className="w-full flex justify-center">
 				<div className="flex gap-6 pb-4  overflow-hidden overflow-x-scroll w-fit 2xl:md:overflow-x-hidden">
-					{products.map((product) => (
-						<Link href={`/shop/${product.data[0]._id}`} key={product.data[0]._id}>
-							<div className="min-w-[300px] h-full" >
+					{products.map((product: any) => (
+						<Link
+							href={`/shop/${product.data[0]._id}`}
+							key={product.data[0]._id}
+						>
+							<div className="min-w-[300px] h-full">
 								<div className="relative w-full h-[300px]">
-									<Image
+									<img
 										src={product.data[0].colorRef}
 										alt={product.data[0].name}
-										fill
+										className="w-full h-full"
 									/>
 								</div>
 								<h5>{product.data[0].name}</h5>
@@ -40,10 +39,10 @@ export default function TopPicks({ products }: Props) {
 			</div>
 			<div className="w-full flex justify-center">
 				<Link href="/shop">
-				<button className="group w-fit">
-					View More
-					<div className="invisible group-hover:visible line-black" />
-				</button>
+					<button className="group w-fit">
+						View More
+						<div className="invisible group-hover:visible line-black" />
+					</button>
 				</Link>
 			</div>
 		</div>

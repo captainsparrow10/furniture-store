@@ -1,25 +1,7 @@
+import { authOptions } from '@/lib/server/Auth'
 import { db } from '@db/db'
-import { NextRequest, NextResponse } from 'next/server'
-
-export async function GET(request: NextRequest) {
-	try {
-		const email = request.nextUrl.searchParams.get('email')
-		if (email) {
-			const data = await db.user.findUnique({
-				where: {
-					email: email,
-				},
-				select: {
-					id: true,
-				},
-			})
-			return NextResponse.json(data)
-		}
-		return NextResponse.json({ message: 'Email not found' }, { status: 404 })
-	} catch (error) {
-		console.log(error)
-	}
-}
+import { getServerSession } from 'next-auth'
+import {  NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
 	const data: {
@@ -52,6 +34,24 @@ export async function POST(request: Request) {
 			return NextResponse.json({ message: 'success' }, { status: 200 })
 		}
 		return NextResponse.json({ message: 'Data not found' }, { status: 400 })
+	} catch (error) {
+		return NextResponse.json({ error }, { status: 400 })
+	}
+}
+
+export async function DELETE(request: Request, context: any) {
+	try {
+		const session = await getServerSession(authOptions)
+		const userId = session?.user.id
+		if (userId) {
+			await db.cart.deleteMany({
+				where: {
+					userId,
+				},
+			})
+			return NextResponse.json('succed')
+		}
+		return NextResponse.json({ error: 'Any to delete' }, { status: 400 })
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 400 })
 	}

@@ -1,18 +1,20 @@
 import axios from 'axios'
 import { ProfileInterface } from '../Interfaces/ProfileInterface'
 
-// profile/get
-const getUser = async (email: string) => {
-	const params = {
-		email,
-	}
-	const response = await axios
-		.get('/api/profile/', { params })
-		.then((response) => response.data)
-		.catch((error) => {
-			return error.message
-		})
-	return response
+const UserService = {
+	Adress: {
+		get: async () => {
+			return await getAddressUser()
+		},
+	},
+	Profile: {
+		insert: async (userData: ProfileInterface) => {
+			return await insertUser(userData)
+		},
+		deleteCart: async () => {
+			return deleteUserCart()
+		},
+	},
 }
 
 // auth/register
@@ -35,21 +37,21 @@ const insertUser = async (userData: ProfileInterface) => {
 	}
 }
 
-// profile/userId/get -> adresss
-const getAddressUser = async (userId: string) => {
+// auth/adress
+const getAddressUser = async () => {
 	try {
-		const response = await axios.get('/api/profile/' + userId)
+		const response = await axios.get('/api/auth/adress')
 		return response.data
 	} catch (error) {
 		throw error
 	}
 }
 
-// profile/post ->  userAdress
+// auth/profile
 const insertUserAdress = async (userData: ProfileInterface) => {
 	try {
 		const response = await axios.post(
-			'/api/profile',
+			'/api/auth/',
 			{
 				...userData,
 			},
@@ -65,13 +67,13 @@ const insertUserAdress = async (userData: ProfileInterface) => {
 	}
 }
 
-// profile/userId/delete -> cartProducts
-const deleteUserCart = async (userId: string) => {
+// auth/profile
+const deleteUserCart = async () => {
 	try {
-		await axios.delete('/api/profile/' + userId)
+		await axios.delete('api/auth/profile')
 	} catch (error) {
 		throw error
 	}
 }
 
-export { getAddressUser, getUser, insertUserAdress, insertUser, deleteUserCart }
+export default UserService 
