@@ -1,23 +1,22 @@
 import axios from 'axios'
-import { BaseURL } from '../var'
 import { ProfileInterface } from '../Interfaces/ProfileInterface'
 
 // profile/get
-export const profileCardProductUser = async (email: string) => {
+const getUser = async (email: string) => {
 	const params = {
 		email,
 	}
-
-	try {
-		const response = await axios.get(BaseURL() + '/api/profile/', { params })
-		return response.data
-	} catch (error) {
-		throw error
-	}
+	const response = await axios
+		.get('/api/profile/', { params })
+		.then((response) => response.data)
+		.catch((error) => {
+			return error.message
+		})
+	return response
 }
 
 // auth/register
-export const insertUser = async (userData: ProfileInterface) => {
+const insertUser = async (userData: ProfileInterface) => {
 	try {
 		const response = await axios.post(
 			'/api/auth/register',
@@ -37,17 +36,17 @@ export const insertUser = async (userData: ProfileInterface) => {
 }
 
 // profile/userId/get -> adresss
-export const getAddressUser = async (userId: string) => {
+const getAddressUser = async (userId: string) => {
 	try {
-		const response = await axios.get(BaseURL() + '/api/profile/' + userId)
+		const response = await axios.get('/api/profile/' + userId)
 		return response.data
 	} catch (error) {
 		throw error
 	}
 }
 
-// profile/userId/post -> adress
-export const insertAdressUser = async (userData: ProfileInterface) => {
+// profile/post ->  userAdress
+const insertUserAdress = async (userData: ProfileInterface) => {
 	try {
 		const response = await axios.post(
 			'/api/profile',
@@ -67,10 +66,12 @@ export const insertAdressUser = async (userData: ProfileInterface) => {
 }
 
 // profile/userId/delete -> cartProducts
-export const deleteCartUser = async (userId: string) => {
+const deleteUserCart = async (userId: string) => {
 	try {
-		await axios.delete(BaseURL() + '/api/profile/' + userId)
+		await axios.delete('/api/profile/' + userId)
 	} catch (error) {
 		throw error
 	}
 }
+
+export { getAddressUser, getUser, insertUserAdress, insertUser, deleteUserCart }

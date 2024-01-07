@@ -1,9 +1,9 @@
 import { db } from '@db/db'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(context: any) {
+export async function GET(request: NextRequest) {
 	try {
-		const email = await context.params
+		const email = request.nextUrl.searchParams.get('email')
 		if (email) {
 			const data = await db.user.findUnique({
 				where: {
@@ -15,9 +15,9 @@ export async function GET(context: any) {
 			})
 			return NextResponse.json(data)
 		}
-		return NextResponse.json({ message: 'Email not found' }, { status: 400 })
+		return NextResponse.json({ message: 'Email not found' }, { status: 404 })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		console.log(error)
 	}
 }
 
