@@ -1,6 +1,6 @@
 'use client'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { deleteProfileUserProducts } from '@/lib/server/UserServer'
+import { deleteProfileUserProducts } from '@/lib/service/UserServer'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'

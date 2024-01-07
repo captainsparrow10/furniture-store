@@ -3,11 +3,11 @@ import Sponsor from '@/components/Sponsor'
 import Indications from '@/components/navegation/Indications'
 import CheckOutComponent from '@/components/pages/checkout/CheckOutComponent'
 import { sessionInterface } from '@/lib/Interfaces/ProfileInterface'
-import { authOptions } from '@/lib/server/Auth'
+import { authOptions } from '@/lib/Auth'
 import {
 	adressCardProductUser,
 	profileCardProductUser,
-} from '@/lib/server/UserServer'
+} from '@/lib/service/UserServer'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import React from 'react'

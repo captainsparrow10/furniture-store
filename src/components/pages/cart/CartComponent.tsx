@@ -1,7 +1,7 @@
 'use client'
 
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { deleteCartProducts, updateCartProducts } from '@/lib/server/CartServer'
+import { deleteCartProducts, updateCartProducts } from '@/lib/service/CartServer'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'

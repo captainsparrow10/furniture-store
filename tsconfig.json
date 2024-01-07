@@ -26,7 +26,7 @@
 			"@pages/*": ["./src/UI/Pages/*"],
 			"@lib/*": ["./src/lib/*"],
 			"@db/*": ["./prisma/lib/*"],
-			"@server/*": ["./src/lib/server/*"]
+			"@service/*": ["./lib/service/*"]
 		}
 	},
 	"include": [

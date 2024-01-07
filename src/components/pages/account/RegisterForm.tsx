@@ -1,5 +1,5 @@
 'use client'
-import { insertUser } from '@/lib/server/UserServer'
+import Service from '@/lib/service'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -23,7 +23,7 @@ export default function RegisterForm() {
 	} = useForm<Inputs>()
 	const onSubmit = handleSubmit(async (data: Inputs) => {
 		if (data.confirmPassword == data.password) {
-			const res = await insertUser(data)
+			const res = await Service.user.Profile.insert(data)
 			if (res) {
 				router.push('/login')
 			}

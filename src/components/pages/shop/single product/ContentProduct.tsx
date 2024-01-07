@@ -3,15 +3,15 @@ import React, { useState } from 'react'
 import ContentImage from './ContentImage'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { insertCartProduct } from '@/lib/server/CartServer'
+import { insertCartProduct } from '@/lib/service/CartServer'
 import Count from '@/components/button/Count'
 import { useRouter } from 'next/navigation'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
+import Service from '@/lib/service'
 type Props = {
 	shopItem: ShopSingleItemInterface
-	userId: string | undefined
 }
-export default function ContentProduct({ shopItem, userId }: Props) {
+export default function ContentProduct({ shopItem }: Props) {
 	const router = useRouter()
 	const [count, setCount] = useState(1)
 	const handlePlusNumber = () => {
@@ -27,22 +27,17 @@ export default function ContentProduct({ shopItem, userId }: Props) {
 		return
 	}
 	const handleCartItem = async () => {
-		if (userId) {
-			try {
-				const product: CartInterface = {
-					userId: userId,
-					productId: shopItem._id,
-					name: shopItem.name,
-					image: shopItem.colors[0].urlList[0],
-					amount: count,
-					price: shopItem.price.toString(),
-				}
-				await insertCartProduct(product)
-			} catch (error) {
-				throw error
+		try {
+			const product: CartInterface = {
+				productId: shopItem._id,
+				name: shopItem.name,
+				image: shopItem.colors[0].urlList[0],
+				amount: count,
+				price: shopItem.price.toString(),
 			}
-		} else {
-			router.push('/login')
+			await Service.cart.post(product)
+		} catch (error) {
+			console.log(error)
 		}
 	}
 	return (

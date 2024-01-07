@@ -1,14 +1,16 @@
-import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { authOptions } from '@/lib/server/Auth'
+import { authOptions } from '@/lib/Auth'
 import { db } from '@db/db'
 import { getServerSession } from 'next-auth'
+import { redirect } from 'next/navigation'
 import { NextResponse } from 'next/server'
-
-const session = await getServerSession(authOptions)
-const userId = session?.user.id
 
 export async function GET() {
 	try {
+		const session = await getServerSession(authOptions)
+		let userId
+		if (session) {
+			userId = session.user.id
+		}
 		if (userId) {
 			const data = await db.cart.findMany({
 				where: {
@@ -27,9 +29,18 @@ export async function GET() {
 }
 
 export async function POST(request: any) {
-	const data: CartInterface = await request.json()
 	try {
-		if (data) {
+		const session = await getServerSession(authOptions)
+		let userId
+		if (session) {
+			userId = session.user.id
+		}
+		const data = await request.json()
+
+		if (userId === undefined) {
+			return NextResponse.json({ error: 'user not found' }, { status: 404 })
+		}
+		if (data && userId) {
 			await db.cart.upsert({
 				where: {
 					productId: data.productId,
@@ -40,9 +51,11 @@ export async function POST(request: any) {
 					},
 				},
 				create: {
+					userId,
 					...data,
 				},
 			})
+
 			return NextResponse.json({ message: 'success' }, { status: 200 })
 		}
 		return NextResponse.json({ message: 'data not found' }, { status: 400 })
@@ -51,9 +64,14 @@ export async function POST(request: any) {
 	}
 }
 
-export async function DELETE(context: any) {
-	const { productId } = context.params
+export async function DELETE(request: Request, context: any) {
 	try {
+		const { productId } = context.params
+		const session = await getServerSession(authOptions)
+		let userId
+		if (session) {
+			userId = session.user.id
+		}
 		if (userId && productId) {
 			await db.cart.delete({
 				where: {
@@ -73,8 +91,13 @@ export async function DELETE(context: any) {
 }
 
 export async function PUT(request: Request, context: any) {
-	const { productId, amount } = await context.params
 	try {
+		const { productId, amount } = await context.params
+		const session = await getServerSession(authOptions)
+		let userId
+		if (session) {
+			userId = session.user.id
+		}
 		if (productId && amount && userId) {
 			await db.cart.update({
 				where: {

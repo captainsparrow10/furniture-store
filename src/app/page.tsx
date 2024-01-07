@@ -2,10 +2,14 @@ import Banner from '@/components/pages/home/Banner'
 import Picks from '@/components/pages/home/Picks'
 import TopPicks from '@/components/pages/home/TopPicks'
 import NewPick from '@/components/pages/home/NewPick'
-import ShopService from '@/lib/server/ShopServer'
+import Service from '@/lib/service'
+import { authOptions } from '@/lib/Auth'
+import { getServerSession } from 'next-auth'
 
 export default async function page() {
-	const home: any = await ShopService.getPresentation()
+	const home: any = await Service.shop.getPresentation()
+	const session = await getServerSession(authOptions)
+	console.log(session)
 	return (
 		<main className="relative">
 			<Banner product={home.banner.data} />

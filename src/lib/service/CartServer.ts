@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { CartInterface } from '../Interfaces/CartInterface'
-
-
+import { error } from 'console'
 
 const CartService = {
 	get: async () => {
@@ -20,8 +19,8 @@ const CartService = {
 
 // cart/post
 export const insertCartProduct = async (product: CartInterface) => {
-	try {
-		const response = await axios.post(
+	await axios
+		.post(
 			'/api/cart',
 			{
 				...product,
@@ -32,10 +31,9 @@ export const insertCartProduct = async (product: CartInterface) => {
 				},
 			}
 		)
-		return response.status
-	} catch (error) {
-		throw error
-	}
+		.catch((error) => {
+			console.log(error.response.status)
+		})
 }
 
 // cart/get

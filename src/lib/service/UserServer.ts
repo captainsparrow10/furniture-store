@@ -6,6 +6,9 @@ const UserService = {
 		get: async () => {
 			return await getAddressUser()
 		},
+		insert: async (userAdress: ProfileInterface) => {
+			return await insertUserAdress(userAdress)
+		},
 	},
 	Profile: {
 		insert: async (userData: ProfileInterface) => {
@@ -51,7 +54,7 @@ const getAddressUser = async () => {
 const insertUserAdress = async (userData: ProfileInterface) => {
 	try {
 		const response = await axios.post(
-			'/api/auth/',
+			'/api/profile',
 			{
 				...userData,
 			},
@@ -76,4 +79,4 @@ const deleteUserCart = async () => {
 	}
 }
 
-export default UserService 
+export default UserService

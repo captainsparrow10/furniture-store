@@ -24,6 +24,7 @@ export default function LoginForm() {
 			password: data.password,
 			redirect: false,
 		})
+		console.log(res)
 		res?.error ? alert(res.error) : router.push('/')
 	})
 	return (

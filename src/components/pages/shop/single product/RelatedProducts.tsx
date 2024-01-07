@@ -1,5 +1,5 @@
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
-import ShopService from '@/lib/server/ShopServer'
+import ShopService from '@/lib/service/ShopServer'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'

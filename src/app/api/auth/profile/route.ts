@@ -1,9 +1,14 @@
-import { authOptions } from '@/lib/server/Auth'
+import { authOptions } from '@/lib/Auth'
 import { db } from '@db/db'
 import { getServerSession } from 'next-auth'
 import {  NextResponse } from 'next/server'
 
 export async function POST(request: Request) {
+	const session = await getServerSession(authOptions)
+	let userId
+	if (session) {
+		userId = session.user.id
+	}
 	const data: {
 		userId: string
 		companyName?: string
