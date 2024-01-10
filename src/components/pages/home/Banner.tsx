@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -19,7 +20,7 @@ export default function product({ product }: any) {
 					</Link>
 				</div>
 				<div className="relative w-full h-full max-h-[500px] max-w-[600px] lg:max-h-none">
-					<img src={product.colorRef} alt={product.name} className='w-full h-full' />
+					<Image src={product.colorRef} alt={product.name} fill />
 				</div>
 			</div>
 		</div>

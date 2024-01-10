@@ -8,7 +8,7 @@ interface FilterBarProps {
 	sortby: (state: number) => void // Tipo de sortby como una función que toma un string y no retorna nada
 }
 export default function FilterBar({ results, sortby }: FilterBarProps) {
-	const [state, setState] = useState('default')
+	const [state, setState] = useState('Default')
 	const [view, setView] = useState(false)
 	const orderbys = [
 		{
@@ -55,18 +55,11 @@ export default function FilterBar({ results, sortby }: FilterBarProps) {
 				</div>
 				<p className="pl-2">showing {results} results</p>
 			</div>
-			<div
-				className={clsx('flex items-center', { 'space-x-4': view == false })}
-			>
-				<div
-					className={clsx('relative h-full', {
-						'w-[90px]': view == true,
-						'w-fit': view == false,
-					})}
-				>
+			<div className="flex items-center">
+				<div className="relative h-full w-fit">
 					<div
 						className={clsx(
-							'absolute  flex-col gap-2 z-50  overflow-hidden bg-pink',
+							'absolute  flex-col gap-y-6 z-50 pb-6 px-2  overflow-hidden bg-pink w-28',
 							{
 								flex: view == true,
 								hidden: view == false,
@@ -76,7 +69,10 @@ export default function FilterBar({ results, sortby }: FilterBarProps) {
 						{orderName.map((order) => (
 							<h5
 								key={order.id}
-								className="hover:font-bold cursor-pointer"
+								className={clsx(
+									'hover:font-bold cursor-pointer',
+									state == order.name && 'font-bold'
+								)}
 								onClick={() => {
 									setState(order.name)
 									setView(!view)
@@ -88,7 +84,7 @@ export default function FilterBar({ results, sortby }: FilterBarProps) {
 							</h5>
 						))}
 					</div>
-					<h5>{state}</h5>
+					<h5 className=" w-28 font-bold px-2">{state}</h5>
 				</div>
 				<ChevronDownIcon
 					className="icon flex-shrink-0"

@@ -4,7 +4,7 @@ import ContentImage from './ContentImage'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import Count from '@/components/button/Count'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 import Services from '@/lib/services'
 type Props = {
@@ -34,7 +34,10 @@ export default function ContentProduct({ shopItem }: Props) {
 				amount: count,
 				price: shopItem.price.toString(),
 			}
-			await Services.cart.post(product)
+			const res = await Services.cart.post(product)
+			if (res == 404) {
+				router.push('/login')
+			}
 		} catch (error) {
 			console.log(error)
 		}

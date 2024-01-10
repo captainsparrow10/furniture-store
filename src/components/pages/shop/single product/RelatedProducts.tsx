@@ -35,10 +35,10 @@ export default async function RelatedProducts({ id, tags }: Props) {
 							<Link href={`/shop/${item._id}`} key={item._id}>
 								<div className="min-w-[300px] h-full flex flex-col gap-3">
 									<div className="relative w-full h-[300px]">
-										<img
+										<Image
 											src={item.colors[0].urlList[0]}
 											alt={item.name}
-											className="w-full h-full"
+											fill
 										/>
 									</div>
 									<h5>{item.name}</h5>

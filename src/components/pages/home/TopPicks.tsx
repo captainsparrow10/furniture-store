@@ -24,10 +24,10 @@ export default function TopPicks({ products }: any) {
 						>
 							<div className="min-w-[300px] h-full">
 								<div className="relative w-full h-[300px]">
-									<img
+									<Image
 										src={product.data[0].colorRef}
 										alt={product.data[0].name}
-										className="w-full h-full"
+										fill
 									/>
 								</div>
 								<h5>{product.data[0].name}</h5>

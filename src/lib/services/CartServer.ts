@@ -8,8 +8,8 @@ const CartService = {
 	post: async (product: CartInterface) => {
 		return await insertCartProduct(product)
 	},
-	update: async (producId: string, amount: number) => {
-		return await updateCartProducts(producId, amount)
+	update: async (productId: string, amount: number) => {
+		return await updateCartProducts(productId, amount)
 	},
 	delete: async (producId: string) => {
 		return await deleteCartProducts(producId)
@@ -18,7 +18,7 @@ const CartService = {
 
 // cart/post
 export const insertCartProduct = async (product: CartInterface) => {
-	await axios
+	return await axios
 		.post(
 			'/api/cart',
 			{
@@ -32,6 +32,9 @@ export const insertCartProduct = async (product: CartInterface) => {
 		)
 		.then((response) => response.status)
 		.catch((error) => {
+			if (error.response.status == 404) {
+				return error.response.status
+			}
 			console.log(error.response.status)
 		})
 }
@@ -63,12 +66,11 @@ export const deleteCartProducts = async (productId: string) => {
 }
 
 // cart/update
-export const updateCartProducts = async (producId: string, amount: number) => {
+export const updateCartProducts = async (productId: string, amount: number) => {
 	const params = {
+		productId,
 		amount,
-		producId,
 	}
-
 	const response = await axios
 		.put('/api/cart', {
 			params,

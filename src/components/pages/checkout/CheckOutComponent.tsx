@@ -76,7 +76,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 				phone: data.phone,
 			}
 			const res = await Services.user.Adress.insert(req)
-			if (res) {
+			if (res == 200) {
 				await Services.user.Profile.deleteCart()
 				router.push('/cart/checkout/send')
 			}

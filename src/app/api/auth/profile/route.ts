@@ -1,9 +1,9 @@
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/services/Auth'
 import { db } from '@db/db'
 import { getServerSession } from 'next-auth'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest, response: NextResponse) {
 	try {
 		const session = await getServerSession(authOptions)
 		let userId
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
 	}
 }
 
-export async function DELETE(request: Request, context: any) {
+export async function DELETE(request: NextRequest, response: NextResponse) {
 	try {
 		const session = await getServerSession(authOptions)
 		const userId = session?.user.id

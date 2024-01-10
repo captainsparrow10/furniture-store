@@ -8,7 +8,7 @@ export default function NewPick({ product }: any) {
 	return (
 		<div className="flex px-6 py-6 bg-cream justify-center flex-wrap items-center h-[700px]">
 			<div className="relative w-full max-w-[500px] h-3/5 lg:h-4/5">
-				<img src={product.colors.urlList} alt={product.name} className='w-full h-full' />
+				<Image src={product.colors.urlList} alt={product.name} fill/>
 			</div>
 
 			<div className="w-fit h-2/5 lg:h-fit flex flex-col gap-3 justify-center  items-center text-center">

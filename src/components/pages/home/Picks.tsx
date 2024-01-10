@@ -15,10 +15,10 @@ export default async function Picks({ products }: any) {
 						key={product.data[0]._id}
 					>
 						<div className="relative w-full h-[450px]">
-							<img
+							<Image
 								src={product.data[0].colorRef}
 								alt={product.data[0].name}
-								className='w-full h-full'
+								fill
 							/>
 						</div>
 						<div>

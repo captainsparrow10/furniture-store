@@ -24,7 +24,7 @@ export default function RegisterForm() {
 	const onSubmit = handleSubmit(async (data: Inputs) => {
 		if (data.confirmPassword == data.password) {
 			const res = await Service.user.Profile.insert(data)
-			if (res) {
+			if (res == 200) {
 				router.push('/login')
 			}
 		}

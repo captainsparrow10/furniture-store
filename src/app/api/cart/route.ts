@@ -1,10 +1,9 @@
-import { authOptions } from '@/lib/auth'
+import { authOptions } from '@/lib/services/Auth'
 import { db } from '@db/db'
 import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET() {
+export async function GET(request: NextRequest, response: NextResponse) {
 	try {
 		const session = await getServerSession(authOptions)
 		let userId
@@ -28,7 +27,7 @@ export async function GET() {
 	}
 }
 
-export async function POST(request: any) {
+export async function POST(request: NextRequest, response: NextResponse) {
 	try {
 		const session = await getServerSession(authOptions)
 		let userId
@@ -64,9 +63,10 @@ export async function POST(request: any) {
 	}
 }
 
-export async function DELETE(request: Request, context: any) {
+export async function DELETE(request: NextRequest, response: NextResponse) {
 	try {
-		const { productId } = context.params
+		const productId = request.nextUrl.searchParams.get('productId')
+
 		const session = await getServerSession(authOptions)
 		let userId
 		if (session) {
@@ -90,9 +90,10 @@ export async function DELETE(request: Request, context: any) {
 	}
 }
 
-export async function PUT(request: Request, context: any) {
+export async function PUT(request: NextRequest, response: NextResponse) {
 	try {
-		const { productId, amount } = await context.params
+		const {productId, amount} = await request.json().then(data => data.params)
+
 		const session = await getServerSession(authOptions)
 		let userId
 		if (session) {
@@ -105,7 +106,7 @@ export async function PUT(request: Request, context: any) {
 					userId,
 				},
 				data: {
-					amount: amount,
+					amount,
 				},
 			})
 			return NextResponse.json({ message: 'success' }, { status: 200 })

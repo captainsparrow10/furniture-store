@@ -3,10 +3,6 @@
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import { totalPriceFunction } from '@/lib/functions'
 import Service from '@/lib/services'
-import {
-	deleteCartProducts,
-	updateCartProducts,
-} from '@/lib/services/CartServer'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -33,11 +29,11 @@ export default function CartComponent() {
 
 	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const handleDelete = async (productId: string) => {
-		await deleteCartProducts(productId)
+		await Service.cart.delete(productId)
 		return
 	}
 	const deleteItem = useMutation({
-		mutationFn: async (prductId: string) => handleDelete(prductId),
+		mutationFn: async (productId: string) => handleDelete(productId),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['cart'] })
 		},
@@ -51,12 +47,12 @@ export default function CartComponent() {
 		const { amount, type, productId } = params
 		if (type == 1) {
 			if (99 >= amount) {
-				await updateCartProducts(productId, amount + 1)
+				await Service.cart.update(productId, amount + 1)
 				return
 			}
 		} else if (type == 2) {
 			if (amount > 1) {
-				await updateCartProducts(productId, amount - 1)
+				await Service.cart.update(productId, amount - 1)
 				return
 			}
 		}
