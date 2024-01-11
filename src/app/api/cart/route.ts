@@ -5,7 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, response: NextResponse) {
 	try {
-		const userId = request.headers.get('authorization')?.replace('Bearer ', '')
+		const session = await getServerSession(authOptions)
+		const userId = session?.user.id
 		if (userId) {
 			const data = await db.cart.findMany({
 				where: {
@@ -26,12 +27,8 @@ export async function GET(request: NextRequest, response: NextResponse) {
 export async function POST(request: NextRequest, response: NextResponse) {
 	try {
 		const session = await getServerSession(authOptions)
-		let userId
-		if (session) {
-			userId = session.user.id
-		}
+		const userId = session?.user.id
 		const data = await request.json()
-
 		if (userId === undefined) {
 			return NextResponse.json({ error: 'user not found' }, { status: 404 })
 		}
@@ -62,12 +59,8 @@ export async function POST(request: NextRequest, response: NextResponse) {
 export async function DELETE(request: NextRequest, response: NextResponse) {
 	try {
 		const productId = request.nextUrl.searchParams.get('productId')
-
 		const session = await getServerSession(authOptions)
-		let userId
-		if (session) {
-			userId = session.user.id
-		}
+		const userId = session?.user.id
 		if (userId && productId) {
 			await db.cart.delete({
 				where: {
@@ -91,12 +84,8 @@ export async function PUT(request: NextRequest, response: NextResponse) {
 		const { productId, amount } = await request
 			.json()
 			.then((data) => data.params)
-
 		const session = await getServerSession(authOptions)
-		let userId
-		if (session) {
-			userId = session.user.id
-		}
+		const userId = session?.user.id
 		if (productId && amount && userId) {
 			await db.cart.update({
 				where: {

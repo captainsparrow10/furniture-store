@@ -2,17 +2,13 @@
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import { UserInterface } from '@/lib/Interfaces/ProfileInterface'
 import { totalPriceFunction } from '@/lib/functions'
-import Services from '@/lib/services'
-import { useQuery } from '@tanstack/react-query'
+import Services from '@/lib/services/Services'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-type Props = {
-	user: UserInterface
-	cart: CartInterface[]
-	totalPrice: number
-}
+
 type Inputs = {
 	firstName: string
 	lastName: string
@@ -23,8 +19,36 @@ type Inputs = {
 	zipCode: string
 	phone: string
 }
-export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
+export default function CheckOutComponent() {
 	const router = useRouter()
+	const [totalPrice, setTotalPrice] = useState(0)
+	const handlePrice = (cartItems: CartInterface[]) => {
+		const result = totalPriceFunction(cartItems)
+		setTotalPrice(result)
+	}
+
+	const queryClient = useQueryClient()
+	const cart = useQuery({
+		queryKey: ['cart'],
+		queryFn: async () => {
+			const data: CartInterface[] = await Services.cart.get()
+			handlePrice(data)
+			return data
+		},
+	})
+	const user = useQuery({
+		queryKey: ['user'],
+		queryFn: async () => {
+			const data: UserInterface = await Services.user.get()
+			return data
+		},
+	})
+
+	const updateUserData = useMutation({
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['cart'] })
+		},
+	})
 
 	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const {
@@ -52,6 +76,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 				phone: data.phone,
 			}
 			const res = await Services.user.insert(req)
+			updateUserData.mutate()
 			if (res == 200) {
 				await Services.user.deleteCart()
 				router.push('/cart/checkout/send')
@@ -74,7 +99,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 							className="input"
 							placeholder="John"
 							{...register('firstName', { required: true })}
-							defaultValue={user.firstName}
+							defaultValue={user.data && user.data.firstName}
 						/>
 						{errors.firstName && (
 							<span className="text-red-500 text-[14px]">
@@ -88,7 +113,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 							type="text"
 							className="input"
 							placeholder="Doe"
-							defaultValue={user.lastName}
+							defaultValue={user.data && user.data.lastName}
 							{...register('lastName', { required: true })}
 						/>
 						{errors.lastName && (
@@ -107,7 +132,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 						className="input"
 						placeholder="Example company"
 						{...register('companyName', { required: false })}
-						defaultValue={user.adress[0].companyName}
+						defaultValue={user.data && user.data.adress[0].companyName}
 					/>
 				</div>
 				<div className="input-space">
@@ -117,7 +142,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 						className="input"
 						placeholder="Mexico"
 						{...register('country', { required: true })}
-						defaultValue={user.adress[0].country}
+						defaultValue={user.data && user.data.adress[0].country}
 					/>
 					{errors.country && (
 						<span className="text-red-500 text-[14px]">
@@ -132,7 +157,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 						className="input"
 						placeholder="Mexico city"
 						{...register('street', { required: true })}
-						defaultValue={user.adress[0].street}
+						defaultValue={user.data && user.data.adress[0].street}
 					/>
 					{errors.street && (
 						<span className="text-red-500 text-[14px]">
@@ -147,7 +172,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 						className="input"
 						placeholder="Mexico"
 						{...register('province', { required: true })}
-						defaultValue={user.adress[0].province}
+						defaultValue={user.data && user.data.adress[0].province}
 					/>
 					{errors.province && (
 						<span className="text-red-500 text-[14px]">
@@ -162,7 +187,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 						className="input"
 						placeholder="1234"
 						{...register('zipCode', { required: true })}
-						defaultValue={user.adress[0].zipCode}
+						defaultValue={user.data && user.data.adress[0].zipCode}
 					/>
 					{errors.zipCode && (
 						<span className="text-red-500 text-[14px]">
@@ -177,7 +202,7 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 						className="input"
 						placeholder="+507 12345678"
 						{...register('phone', { required: true })}
-						defaultValue={user.adress[0].phone}
+						defaultValue={user.data && user.data.adress[0].phone}
 					/>
 					{errors.phone && (
 						<span className="text-red-500 text-[14px]">
@@ -192,8 +217,8 @@ export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 					<h4>Price</h4>
 				</div>
 				<div className="flex flex-col gap-y-2">
-					{cart &&
-						cart.map((item) => (
+					{cart.data &&
+						cart.data.map((item) => (
 							<div className="flex justify-between" key={item.productId}>
 								<h5 className="text-gray">
 									{item.name}

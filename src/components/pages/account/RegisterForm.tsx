@@ -1,5 +1,5 @@
 'use client'
-import Service from '@/lib/services'
+import Service from '@/lib/services/Services'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'

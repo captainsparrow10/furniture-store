@@ -2,8 +2,8 @@
 
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import { totalPriceFunction } from '@/lib/functions'
-import Services from '@/lib/services'
-import Service from '@/lib/services'
+import Services from '@/lib/services/Services'
+import Service from '@/lib/services/Services'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'

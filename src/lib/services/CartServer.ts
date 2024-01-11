@@ -1,7 +1,5 @@
 import axios from 'axios'
 import { CartInterface } from '../Interfaces/CartInterface'
-import { getServerSession } from 'next-auth'
-import { authOptions } from './Auth'
 
 const CartService = {
 	get: async () => {
@@ -17,19 +15,14 @@ const CartService = {
 		return await deleteCartProducts(producId)
 	},
 }
-const url = process.env.NEXT_URL + '/api/cart'
+
+
+const url = process.env.NEXT_PUBLIC_URL + '/api/cart'
 
 // cart/get
 const cartProductsUserId = async () => {
-	const session = await getServerSession(authOptions)
-	const token = session?.user.id
 	return await axios
-		.get(url, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				Accept: 'application/json',
-			},
-		})
+		.get(url)
 		.then((response) => {
 			return response.data
 		})
@@ -39,10 +32,10 @@ const cartProductsUserId = async () => {
 }
 
 // cart/post
- const insertCartProduct = async (product: CartInterface) => {
+const insertCartProduct = async (product: CartInterface) => {
 	return await axios
 		.post(
-			'/api/cart',
+			url,
 			{
 				...product,
 			},
@@ -52,7 +45,9 @@ const cartProductsUserId = async () => {
 				},
 			}
 		)
-		.then((response) => response.status)
+		.then((response) => {
+			return response.status
+		})
 		.catch((error) => {
 			if (error.response.status == 404) {
 				return error.response.status
@@ -61,25 +56,25 @@ const cartProductsUserId = async () => {
 		})
 }
 
-
 // cart/delete
- const deleteCartProducts = async (productId: string) => {
+const deleteCartProducts = async (productId: string) => {
 	const params = {
 		productId,
 	}
-	const response = await axios
+	return await axios
 		.delete('/api/cart', {
 			params,
 		})
-		.then((response) => response.status)
+		.then((response) => {
+			return response.status
+		})
 		.catch((error) => {
 			console.log(error.response.status)
 		})
-	return response
 }
 
 // cart/update
- const updateCartProducts = async (productId: string, amount: number) => {
+const updateCartProducts = async (productId: string, amount: number) => {
 	const params = {
 		productId,
 		amount,
@@ -88,7 +83,9 @@ const cartProductsUserId = async () => {
 		.put('/api/cart', {
 			params,
 		})
-		.then((response) => response.status)
+		.then((response) => {
+			return response.status
+		})
 		.catch((error) => {
 			console.log(error.response.status)
 		})

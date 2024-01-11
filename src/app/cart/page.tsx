@@ -4,7 +4,6 @@ import Sponsor from '@/components/Sponsor'
 
 
 export default async function Cartpage() {
-
 	return (
 		<main>
 			<Indications />

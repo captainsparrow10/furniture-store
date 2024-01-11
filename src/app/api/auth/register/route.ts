@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import bcrypt from 'bcrypt'
 import { db } from '@db/db'
 
 export async function POST(request: NextRequest, response: NextResponse) {
@@ -13,13 +12,12 @@ export async function POST(request: NextRequest, response: NextResponse) {
 		if (emailFound) {
 			return NextResponse.json({ error: 'Email exists' }, { status: 400 })
 		} else {
-			const hashedpassword = await bcrypt.hash(data.password, 10)
 			await db.user.create({
 				data: {
 					firstName: data.firstName,
 					lastName: data.lastName,
 					email: data.email,
-					password: hashedpassword,
+					password: data.password,
 				},
 			})
 		}

@@ -1,7 +1,7 @@
 import { db } from '@db/db'
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import bcrypt from 'bcrypt'
+// import bcrypt from 'bcrypt'
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -28,10 +28,8 @@ export const authOptions: NextAuthOptions = {
 					})
 					if (!userFound) throw new Error('User not found')
 
-					const mathPassword = await bcrypt.compare(
-						credentials?.password,
-						userFound.password
-					)
+					const mathPassword = credentials?.password && userFound.password
+
 					if (!mathPassword) throw new Error('Wrong password')
 
 					return {

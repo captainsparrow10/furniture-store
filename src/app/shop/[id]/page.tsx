@@ -4,7 +4,7 @@ import ContentProduct from '@/components/pages/shop/single product/ContentProduc
 import ProductDescription from '@/components/pages/shop/single product/ProductDescription'
 import RelatedProducts from '@/components/pages/shop/single product/RelatedProducts'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
-import Services from '@/lib/services'
+import Services from '@/lib/services/Services'
 
 export default async function SingleProduct({
 	params,

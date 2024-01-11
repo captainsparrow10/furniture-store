@@ -6,7 +6,7 @@ import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import Count from '@/components/button/Count'
 import { useRouter } from 'next/navigation'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
-import Services from '@/lib/services'
+import Services from '@/lib/services/Services'
 type Props = {
 	shopItem: ShopSingleItemInterface
 }
