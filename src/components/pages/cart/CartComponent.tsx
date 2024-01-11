@@ -2,6 +2,7 @@
 
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import { totalPriceFunction } from '@/lib/functions'
+import Services from '@/lib/services'
 import Service from '@/lib/services'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
@@ -18,14 +19,15 @@ export default function CartComponent() {
 	}
 
 	const queryClient = useQueryClient()
-	const cartProductsPrueba = useQuery({
+	const cartProducts = useQuery({
 		queryKey: ['cart'],
 		queryFn: async () => {
-			const data: CartInterface[] = await Service.cart.get()
+			const data: CartInterface[] = await Services.cart.get()
 			handlePrice(data)
 			return data
 		},
 	})
+
 
 	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const handleDelete = async (productId: string) => {
@@ -80,10 +82,10 @@ export default function CartComponent() {
 					</h5>
 					<h5 className=" font-bold col-span-2 flex justify-center">Total</h5>
 				</div>
-				{cartProductsPrueba.isLoading && <span>Loading...</span>}
-				{cartProductsPrueba.isError && <span>Data not found</span>}
-				{cartProductsPrueba.data &&
-					cartProductsPrueba.data.map((item: CartInterface) => (
+				{cartProducts.isLoading && <span>Loading...</span>}
+				{cartProducts.isError && <span>Data not found</span>}
+				{cartProducts.data &&
+					cartProducts.data.map((item: CartInterface) => (
 						<div
 							className="grid grid-cols-12 gap-5 h-[106px] w-[817px]"
 							key={item.productId}

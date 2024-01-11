@@ -1,22 +1,21 @@
 import axios from 'axios'
-import { AdressInterface, ProfileInterface } from '../Interfaces/ProfileInterface'
+import {
+	AdressInterface,
+	ProfileInterface,
+} from '../Interfaces/ProfileInterface'
 
 const UserService = {
-	Adress: {
-		get: async () => {
-			return await getAddressUser()
-		},
-		insert: async (userAdress: AdressInterface) => {
-			return await insertUserAdress(userAdress)
-		},
+	get: async () => {
+		return await getUser()
 	},
-	Profile: {
-		insert: async (userData: ProfileInterface) => {
-			return await insertUser(userData)
-		},
-		deleteCart: async () => {
-			return deleteUserCart()
-		},
+	register: async (userData: ProfileInterface) => {
+		return await insertUser(userData)
+	},
+	deleteCart: async () => {
+		return deleteUserCart()
+	},
+	insert: async (userData: AdressInterface) => {
+		return await insertAdress(userData)
 	},
 }
 
@@ -39,22 +38,22 @@ const insertUser = async (userData: ProfileInterface) => {
 	return response
 }
 
-// auth/adress
-const getAddressUser = async () => {
-	const response = await axios
-		.get('/api/auth/adress')
-		.then((response) => response.data)
-		.catch((error) => console.log(error.response.status))
-	return response
+// auth/profile
+const getUser = async() => {
+	await axios.get('/api/auth/profile')
+	.then((response) => {
+		return response.data
+	})
+	.catch((error) => console.log(error.response.status))
 }
 
 // auth/profile
-const insertUserAdress = async (userAdress: AdressInterface) => {
+const insertAdress = async (userData: AdressInterface) => {
 	const response = await axios
 		.post(
-			'/api/auth/adress',
+			'/api/auth/register',
 			{
-				...userAdress,
+				...userData,
 			},
 			{
 				headers: {
@@ -70,12 +69,12 @@ const insertUserAdress = async (userAdress: AdressInterface) => {
 // auth/profile
 const deleteUserCart = async () => {
 	const response = await axios
-		.delete('api/auth/profile')
+		.delete('/api/auth/profile')
 		.then((response) => response.status)
 		.catch((error) => {
 			console.log(error.response.status)
 		})
-		return response
+	return response
 }
 
 export default UserService

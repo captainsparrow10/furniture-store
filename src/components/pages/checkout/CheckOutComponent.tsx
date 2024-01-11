@@ -1,27 +1,17 @@
 'use client'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
+import { UserInterface } from '@/lib/Interfaces/ProfileInterface'
 import { totalPriceFunction } from '@/lib/functions'
 import Services from '@/lib/services'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+
 type Props = {
-	user: {
-		id: number
-		email: string
-		firstName: string
-		lastName: string
-	}
-	userAdress?: {
-		id: number
-		companyName?: string
-		country: string
-		street: string
-		province: string
-		zipCode: string
-		phone: string
-	}
+	user: UserInterface
+	cart: CartInterface[]
+	totalPrice: number
 }
 type Inputs = {
 	firstName: string
@@ -32,23 +22,10 @@ type Inputs = {
 	province: string
 	zipCode: string
 	phone: string
-	email: string
 }
-export default function CheckOutComponent({ user, userAdress }: Props) {
-	const [totalPrice, setTotalPrice] = useState(0)
+export default function CheckOutComponent({ user, cart, totalPrice }: Props) {
 	const router = useRouter()
-	const handlePrice = (cartItems: CartInterface[]) => {
-		const result = totalPriceFunction(cartItems)
-		setTotalPrice(result)
-	}
-	const cartProductsPrueba = useQuery({
-		queryKey: ['cart'],
-		queryFn: async () => {
-			const data: CartInterface[] = await Services.cart.get()
-			handlePrice(data)
-			return data
-		},
-	})
+
 	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const {
 		register,
@@ -64,8 +41,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 			data.street &&
 			data.province &&
 			data.zipCode &&
-			data.phone &&
-			data.email
+			data.phone
 		) {
 			const req = {
 				companyName: data.companyName,
@@ -75,13 +51,14 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 				zipCode: data.zipCode,
 				phone: data.phone,
 			}
-			const res = await Services.user.Adress.insert(req)
+			const res = await Services.user.insert(req)
 			if (res == 200) {
-				await Services.user.Profile.deleteCart()
+				await Services.user.deleteCart()
 				router.push('/cart/checkout/send')
 			}
 		}
 	})
+
 	return (
 		<form
 			className="flex flex-wrap justify-center gap-24 px-6 lg:px-12 py-16 3xl:px-24"
@@ -130,7 +107,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="Example company"
 						{...register('companyName', { required: false })}
-						defaultValue={userAdress?.companyName}
+						defaultValue={user.adress[0].companyName}
 					/>
 				</div>
 				<div className="input-space">
@@ -140,7 +117,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="Mexico"
 						{...register('country', { required: true })}
-						defaultValue={userAdress?.country}
+						defaultValue={user.adress[0].country}
 					/>
 					{errors.country && (
 						<span className="text-red-500 text-[14px]">
@@ -155,7 +132,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="Mexico city"
 						{...register('street', { required: true })}
-						defaultValue={userAdress?.street}
+						defaultValue={user.adress[0].street}
 					/>
 					{errors.street && (
 						<span className="text-red-500 text-[14px]">
@@ -170,7 +147,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="Mexico"
 						{...register('province', { required: true })}
-						defaultValue={userAdress?.province}
+						defaultValue={user.adress[0].province}
 					/>
 					{errors.province && (
 						<span className="text-red-500 text-[14px]">
@@ -185,7 +162,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="1234"
 						{...register('zipCode', { required: true })}
-						defaultValue={userAdress?.zipCode}
+						defaultValue={user.adress[0].zipCode}
 					/>
 					{errors.zipCode && (
 						<span className="text-red-500 text-[14px]">
@@ -200,24 +177,9 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="+507 12345678"
 						{...register('phone', { required: true })}
-						defaultValue={userAdress?.phone}
+						defaultValue={user.adress[0].phone}
 					/>
 					{errors.phone && (
-						<span className="text-red-500 text-[14px]">
-							This field is required
-						</span>
-					)}
-				</div>
-				<div className="input-space">
-					<h5>email address</h5>
-					<input
-						type="email"
-						className="input"
-						placeholder="example@gmail.com"
-						defaultValue={user.email}
-						{...register('email', { required: true })}
-					/>
-					{errors.email && (
 						<span className="text-red-500 text-[14px]">
 							This field is required
 						</span>
@@ -230,8 +192,8 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 					<h4>Price</h4>
 				</div>
 				<div className="flex flex-col gap-y-2">
-					{cartProductsPrueba.data &&
-						cartProductsPrueba.data.map((item) => (
+					{cart &&
+						cart.map((item) => (
 							<div className="flex justify-between" key={item.productId}>
 								<h5 className="text-gray">
 									{item.name}

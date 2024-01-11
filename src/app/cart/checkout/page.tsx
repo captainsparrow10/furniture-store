@@ -1,30 +1,24 @@
-
 import Sponsor from '@/components/Sponsor'
 import Indications from '@/components/navegation/Indications'
 import CheckOutComponent from '@/components/pages/checkout/CheckOutComponent'
-import { sessionInterface } from '@/lib/Interfaces/ProfileInterface'
-import { authOptions } from '@/lib/services/Auth'
-import {
-	adressCardProductUser,
-	profileCardProductUser,
-} from '@/lib/services/UserServer'
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
+import { CartInterface } from '@/lib/Interfaces/CartInterface'
+import { UserInterface } from '@/lib/Interfaces/ProfileInterface'
+import { totalPriceFunction } from '@/lib/functions'
+import Services from '@/lib/services'
 import React from 'react'
 
 export default async function CheckOutpage() {
-	const session: sessionInterface | null = await getServerSession(authOptions)
-	if (session) {
-		const user = await profileCardProductUser(session.user.email)
-		const userAdress = await adressCardProductUser(user.id)
-		return (
-			<main>
-				<Indications />
-				 <CheckOutComponent user={user} userAdress={userAdress} />
-				<Sponsor />
-			</main>
-		)
-	} else {
-		redirect('/login')
+	const cart: CartInterface[] = await Services.cart.get()
+	const user: UserInterface = await Services.user.get()
+	let totalPrice = 0
+	if (cart) {
+	totalPrice = totalPriceFunction(cart)
 	}
+	return (
+		<main>
+			<Indications />
+			<CheckOutComponent user={user} cart={cart} totalPrice={totalPrice} />
+			<Sponsor />
+		</main>
+	)
 }

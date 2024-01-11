@@ -13,3 +13,8 @@ export interface AdressInterface {
 	phone: string
 	country: string
 }
+export interface UserInterface {
+	firstName: string
+	lastName: string
+	adress: AdressInterface[]
+}
