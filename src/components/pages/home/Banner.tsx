@@ -1,13 +1,9 @@
 'use client'
-import { BannerType } from '@/lib/types/ShopTypes'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
-type Props = {
-	product: BannerType
-}
 
-export default function product({ product }: Props) {
+export default function product({ product }: any) {
 	return (
 		<div className="h-[1000px] px-6 lg:px-12 2xl:px-24 bg-yellow">
 			<div

@@ -1,5 +1,5 @@
-import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
-import { singleProductTags } from '@/lib/server/ShopServer'
+import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
+import Services from '@/lib/services/Services'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -18,12 +18,8 @@ export default async function RelatedProducts({ id, tags }: Props) {
 		const { name: tag1 } = tags[0] || ''
 		const { name: tag2 } = tags[1] || ''
 		const { name: tag3 } = tags[2] || ''
-		const shopItems: shopSingleItemInterface[] = await singleProductTags(
-			id,
-			tag1,
-			tag2,
-			tag3
-		)
+		const shopItems: ShopSingleItemInterface[] =
+			await Services.shop.getTagsSingleProducts(id, tag1, tag2, tag3)
 
 		return (
 			<div

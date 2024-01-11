@@ -1,11 +1,11 @@
 import Banner from '@/components/pages/home/Banner'
 import Picks from '@/components/pages/home/Picks'
-import { presentationItems } from '../lib/server'
 import TopPicks from '@/components/pages/home/TopPicks'
 import NewPick from '@/components/pages/home/NewPick'
+import Services from '@/lib/services/Services'
 
 export default async function page() {
-	const home: any = await presentationItems()
+	const home: any = await Services.shop.getPresentation()
 
 	return (
 		<main className="relative">

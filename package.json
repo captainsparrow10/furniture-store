@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "@mapbox/node-pre-gyp": "^1.0.11",
     "@prisma/client": "^5.7.1",
     "@sanity/image-url": "^1.0.2",
     "@sanity/vision": "^3.21.1",
@@ -19,6 +20,7 @@
     "axios": "^1.6.3",
     "bcrypt": "^5.1.1",
     "clsx": "^2.0.0",
+    "cuid": "^3.0.0",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "next-sanity": "^5.5.11",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.14.6",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -1,27 +1,14 @@
 'use client'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { deleteProfileUserProducts } from '@/lib/server/UserServer'
-import { useQuery } from '@tanstack/react-query'
+import { UserInterface } from '@/lib/Interfaces/ProfileInterface'
+import { totalPriceFunction } from '@/lib/functions'
+import Services from '@/lib/services/Services'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-type Props = {
-	user: {
-		id: number
-		email: string
-		firstName: string
-		lastName: string
-	}
-	userAdress?: {
-		id: number
-		companyName?: string
-		country: string
-		street: string
-		province: string
-		zipCode: string
-		phone: string
-	}
-}
+
+
 type Inputs = {
 	firstName: string
 	lastName: string
@@ -31,37 +18,39 @@ type Inputs = {
 	province: string
 	zipCode: string
 	phone: string
-	email: string
 }
-export default function CheckOutComponent({ user, userAdress }: Props) {
-	const [totalPrice, setTotalPrice] = useState(0)
+export default function CheckOutComponent() {
 	const router = useRouter()
+	const [totalPrice, setTotalPrice] = useState(0)
 	const handlePrice = (cartItems: CartInterface[]) => {
-		let subPrice, totalPrice: number
-		if (Array.isArray(cartItems) && cartItems.length > 0) {
-			subPrice = cartItems.map((item) => item.amount * parseFloat(item.price))
-			totalPrice = subPrice.reduce((total, value) => total + value, 0)
-			setTotalPrice(totalPrice)
-		} else if (cartItems && cartItems.length === 1) {
-			totalPrice = parseFloat(cartItems[0].price)
-			setTotalPrice(totalPrice)
-		} else {
-			setTotalPrice(0)
-		}
+		const result = totalPriceFunction(cartItems)
+		setTotalPrice(result)
 	}
 
-	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
-	const cartProductsPrueba = useQuery({
+	const queryClient = useQueryClient()
+	const cart = useQuery({
 		queryKey: ['cart'],
 		queryFn: async () => {
-			const response = await fetch(
-				'/api/cart?id=' + user.id
-			)
-			const data: CartInterface[] = await response.json()
+			const data: CartInterface[] = await Services.cart.get()
 			handlePrice(data)
 			return data
 		},
 	})
+	const user = useQuery({
+		queryKey: ['user'],
+		queryFn: async () => {
+			const data: UserInterface = await Services.user.get()
+			return data
+		},
+	})
+
+	const updateUserData = useMutation({
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ['cart'] })
+		},
+	})
+
+	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const {
 		register,
 		handleSubmit,
@@ -76,30 +65,25 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 			data.street &&
 			data.province &&
 			data.zipCode &&
-			data.phone &&
-			data.email
+			data.phone
 		) {
-			const res = await fetch('/api/profile', {
-				method: 'POST',
-				body: JSON.stringify({
-					id_user: user.id,
-					companyName: data.companyName,
-					country: data.country,
-					province: data.province,
-					street: data.street,
-					zipCode: data.zipCode,
-					phone: data.phone,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			})
-			if (res.ok) {
-				await deleteProfileUserProducts(user.id)
+			const req = {
+				companyName: data.companyName,
+				country: data.country,
+				province: data.province,
+				street: data.street,
+				zipCode: data.zipCode,
+				phone: data.phone,
+			}
+			const res = await Services.user.insert(req)
+			updateUserData.mutate()
+			if (res == 200) {
+				await Services.user.deleteCart()
 				router.push('/cart/checkout/send')
 			}
 		}
 	})
+
 	return (
 		<form
 			className="flex flex-wrap justify-center gap-24 px-6 lg:px-12 py-16 3xl:px-24"
@@ -115,7 +99,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 							className="input"
 							placeholder="John"
 							{...register('firstName', { required: true })}
-							defaultValue={user.firstName}
+							defaultValue={user.data && user.data.firstName}
 						/>
 						{errors.firstName && (
 							<span className="text-red-500 text-[14px]">
@@ -129,7 +113,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 							type="text"
 							className="input"
 							placeholder="Doe"
-							defaultValue={user.lastName}
+							defaultValue={user.data && user.data.lastName}
 							{...register('lastName', { required: true })}
 						/>
 						{errors.lastName && (
@@ -148,7 +132,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="Example company"
 						{...register('companyName', { required: false })}
-						defaultValue={userAdress?.companyName}
+						defaultValue={user.data && user.data.adress[0].companyName}
 					/>
 				</div>
 				<div className="input-space">
@@ -158,7 +142,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="Mexico"
 						{...register('country', { required: true })}
-						defaultValue={userAdress?.country}
+						defaultValue={user.data && user.data.adress[0].country}
 					/>
 					{errors.country && (
 						<span className="text-red-500 text-[14px]">
@@ -173,7 +157,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="Mexico city"
 						{...register('street', { required: true })}
-						defaultValue={userAdress?.street}
+						defaultValue={user.data && user.data.adress[0].street}
 					/>
 					{errors.street && (
 						<span className="text-red-500 text-[14px]">
@@ -188,7 +172,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="Mexico"
 						{...register('province', { required: true })}
-						defaultValue={userAdress?.province}
+						defaultValue={user.data && user.data.adress[0].province}
 					/>
 					{errors.province && (
 						<span className="text-red-500 text-[14px]">
@@ -203,7 +187,7 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="1234"
 						{...register('zipCode', { required: true })}
-						defaultValue={userAdress?.zipCode}
+						defaultValue={user.data && user.data.adress[0].zipCode}
 					/>
 					{errors.zipCode && (
 						<span className="text-red-500 text-[14px]">
@@ -218,24 +202,9 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 						className="input"
 						placeholder="+507 12345678"
 						{...register('phone', { required: true })}
-						defaultValue={userAdress?.phone}
+						defaultValue={user.data && user.data.adress[0].phone}
 					/>
 					{errors.phone && (
-						<span className="text-red-500 text-[14px]">
-							This field is required
-						</span>
-					)}
-				</div>
-				<div className="input-space">
-					<h5>email address</h5>
-					<input
-						type="email"
-						className="input"
-						placeholder="example@gmail.com"
-						defaultValue={user.email}
-						{...register('email', { required: true })}
-					/>
-					{errors.email && (
 						<span className="text-red-500 text-[14px]">
 							This field is required
 						</span>
@@ -248,9 +217,9 @@ export default function CheckOutComponent({ user, userAdress }: Props) {
 					<h4>Price</h4>
 				</div>
 				<div className="flex flex-col gap-y-2">
-					{cartProductsPrueba.data &&
-						cartProductsPrueba.data.map((item) => (
-							<div className="flex justify-between" key={item.id_product}>
+					{cart.data &&
+						cart.data.map((item) => (
+							<div className="flex justify-between" key={item.productId}>
 								<h5 className="text-gray">
 									{item.name}
 									<span className="font-bold"> x {item.amount}</span>

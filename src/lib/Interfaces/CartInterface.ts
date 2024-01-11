@@ -1,6 +1,5 @@
 export interface CartInterface {
-	id_user: number
-	id_product: string
+	productId: string
 	name: string
 	image: string
 	amount: number

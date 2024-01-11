@@ -1,9 +1,9 @@
 'use client'
 import React, { useState } from 'react'
 import clsx from 'clsx'
-import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
+import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 type Props = {
-	shopItem: shopSingleItemInterface
+	shopItem: ShopSingleItemInterface
 }
 export default function ProductDescription({ shopItem }: Props) {
 	const [state, setState] = useState('description')

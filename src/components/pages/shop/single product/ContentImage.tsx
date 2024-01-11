@@ -1,10 +1,11 @@
 'use client'
-import { shopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
+
+import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
 type Props = {
-	shopItem: shopSingleItemInterface
+	shopItem: ShopSingleItemInterface
 }
 
 export default function ContentImage({ shopItem }: Props) {
