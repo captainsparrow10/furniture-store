@@ -14,7 +14,7 @@ const ShopService = {
 	) => await singleProductTags(productId, tag1, tag2, tag3),
 }
 
-export const products = async () => {
+const products = async () => {
 	const items = await client
 		.fetch(
 			groq`{

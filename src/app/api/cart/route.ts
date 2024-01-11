@@ -4,29 +4,26 @@ import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, response: NextResponse) {
-	try {
-		const session = await getServerSession(authOptions)
-		let userId
-		console.log(session)
-		console.log("servidor")
-		if (session) {
-			userId = session.user.id
-		}
-		if (userId) {
-			const data = await db.cart.findMany({
-				where: {
-					userId,
-				},
-				orderBy: {
-					name: 'asc',
-				},
-			})
-			return NextResponse.json(data)
-		}
-		return NextResponse.json({ message: 'data not found' }, { status: 404 })
-	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
-	}
+	const session = request.headers.get('authorization')?.replace('Bearer ', '')
+	console.log(session)
+	return NextResponse.json('sirvo')
+	// try {
+	// 	const userId = undefined
+	// 	if (userId) {
+	// 		const data = await db.cart.findMany({
+	// 			where: {
+	// 				userId,
+	// 			},
+	// 			orderBy: {
+	// 				name: 'asc',
+	// 			},
+	// 		})
+	// 		return NextResponse.json(data)
+	// 	}
+	// 	return NextResponse.json({ message: 'data not found' }, { status: 404 })
+	// } catch (error) {
+	// 	return NextResponse.json({ error }, { status: 400 })
+	// }
 }
 
 export async function POST(request: NextRequest, response: NextResponse) {
@@ -94,7 +91,9 @@ export async function DELETE(request: NextRequest, response: NextResponse) {
 
 export async function PUT(request: NextRequest, response: NextResponse) {
 	try {
-		const {productId, amount} = await request.json().then(data => data.params)
+		const { productId, amount } = await request
+			.json()
+			.then((data) => data.params)
 
 		const session = await getServerSession(authOptions)
 		let userId

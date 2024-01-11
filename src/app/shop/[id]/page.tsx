@@ -4,14 +4,14 @@ import ContentProduct from '@/components/pages/shop/single product/ContentProduc
 import ProductDescription from '@/components/pages/shop/single product/ProductDescription'
 import RelatedProducts from '@/components/pages/shop/single product/RelatedProducts'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
-import Service from '@/lib/services'
+import Services from '@/lib/services'
 
 export default async function SingleProduct({
 	params,
 }: {
 	params: { id: string }
 }) {
-	const shopItem: ShopSingleItemInterface = await Service.shop.getSingleProducts(params.id)
+	const shopItem: ShopSingleItemInterface = await Services.shop.getSingleProducts(params.id)
 	return (
 		<main>
 			<UrlIndications name={shopItem.name} />

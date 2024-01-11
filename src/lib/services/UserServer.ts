@@ -3,6 +3,8 @@ import {
 	AdressInterface,
 	ProfileInterface,
 } from '../Interfaces/ProfileInterface'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './Auth'
 
 const UserService = {
 	get: async () => {
@@ -39,12 +41,19 @@ const insertUser = async (userData: ProfileInterface) => {
 }
 
 // auth/profile
-const getUser = async() => {
-	await axios.get('/api/auth/profile')
-	.then((response) => {
-		return response.data
-	})
-	.catch((error) => console.log(error.response.status))
+const getUser = async () => {
+	const session = await getServerSession(authOptions)
+	console.log('session', session)
+	await axios
+		.get('/api/auth/profile', {
+			headers: {
+				Authorization: session?.user.id,
+			},
+		})
+		.then((response) => {
+			console.log(response)
+		})
+		.catch((error) => console.log('error'))
 }
 
 // auth/profile

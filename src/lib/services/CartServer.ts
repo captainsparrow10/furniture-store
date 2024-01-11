@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { CartInterface } from '../Interfaces/CartInterface'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './Auth'
 
 const CartService = {
 	get: async () => {
@@ -15,9 +17,29 @@ const CartService = {
 		return await deleteCartProducts(producId)
 	},
 }
+const url = process.env.NEXT_URL + '/api/cart'
+
+// cart/get
+const cartProductsUserId = async () => {
+	const session = await getServerSession(authOptions)
+	console.log("sesion",session)
+	const token = session?.user.id
+	console.log("token",token)
+	return await axios
+		.get(url, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				Accept: 'application/json',
+			},
+		})
+		.then((response) => response.data)
+		.catch((error) => {
+			console.log(error.response.status)
+		})
+}
 
 // cart/post
-export const insertCartProduct = async (product: CartInterface) => {
+ const insertCartProduct = async (product: CartInterface) => {
 	return await axios
 		.post(
 			'/api/cart',
@@ -39,18 +61,9 @@ export const insertCartProduct = async (product: CartInterface) => {
 		})
 }
 
-// cart/get
-export const cartProductsUserId = async () => {
-	return await axios
-		.get('/api/cart')
-		.then((response) => response.data)
-		.catch((error) => {
-			console.log(error.response.status)
-		})
-}
 
 // cart/delete
-export const deleteCartProducts = async (productId: string) => {
+ const deleteCartProducts = async (productId: string) => {
 	const params = {
 		productId,
 	}
@@ -66,7 +79,7 @@ export const deleteCartProducts = async (productId: string) => {
 }
 
 // cart/update
-export const updateCartProducts = async (productId: string, amount: number) => {
+ const updateCartProducts = async (productId: string, amount: number) => {
 	const params = {
 		productId,
 		amount,
