@@ -22,9 +22,7 @@ const url = process.env.NEXT_URL + '/api/cart'
 // cart/get
 const cartProductsUserId = async () => {
 	const session = await getServerSession(authOptions)
-	console.log("sesion",session)
 	const token = session?.user.id
-	console.log("token",token)
 	return await axios
 		.get(url, {
 			headers: {
@@ -32,7 +30,9 @@ const cartProductsUserId = async () => {
 				Accept: 'application/json',
 			},
 		})
-		.then((response) => response.data)
+		.then((response) => {
+			return response.data
+		})
 		.catch((error) => {
 			console.log(error.response.status)
 		})

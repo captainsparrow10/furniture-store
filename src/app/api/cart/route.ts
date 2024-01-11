@@ -4,26 +4,23 @@ import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, response: NextResponse) {
-	const session = request.headers.get('authorization')?.replace('Bearer ', '')
-	console.log(session)
-	return NextResponse.json('sirvo')
-	// try {
-	// 	const userId = undefined
-	// 	if (userId) {
-	// 		const data = await db.cart.findMany({
-	// 			where: {
-	// 				userId,
-	// 			},
-	// 			orderBy: {
-	// 				name: 'asc',
-	// 			},
-	// 		})
-	// 		return NextResponse.json(data)
-	// 	}
-	// 	return NextResponse.json({ message: 'data not found' }, { status: 404 })
-	// } catch (error) {
-	// 	return NextResponse.json({ error }, { status: 400 })
-	// }
+	try {
+		const userId = request.headers.get('authorization')?.replace('Bearer ', '')
+		if (userId) {
+			const data = await db.cart.findMany({
+				where: {
+					userId,
+				},
+				orderBy: {
+					name: 'asc',
+				},
+			})
+			return NextResponse.json(data)
+		}
+		return NextResponse.json({ message: 'data not found' }, { status: 404 })
+	} catch (error) {
+		return NextResponse.json({ error }, { status: 400 })
+	}
 }
 
 export async function POST(request: NextRequest, response: NextResponse) {

@@ -4,7 +4,7 @@ import ContentImage from './ContentImage'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
 import Count from '@/components/button/Count'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 import Services from '@/lib/services'
 type Props = {
