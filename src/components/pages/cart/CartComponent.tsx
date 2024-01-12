@@ -1,10 +1,7 @@
 'use client'
 
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import {
-	AdressInterface,
-	UserInterface,
-} from '@/lib/Interfaces/ProfileInterface'
+import { UserInterface } from '@/lib/Interfaces/ProfileInterface'
 import { totalPriceFunction } from '@/lib/functions'
 import Services from '@/lib/services/Services'
 import Service from '@/lib/services/Services'
@@ -21,7 +18,6 @@ export default function CartComponent() {
 		const result = totalPriceFunction(cartItems)
 		setTotalPrice(result)
 	}
-
 
 	const queryClient = useQueryClient()
 	const cartProducts = useQuery({
@@ -82,9 +78,6 @@ export default function CartComponent() {
 			queryClient.invalidateQueries({ queryKey: ['cart'] })
 		},
 	})
-if (user.isSuccess) {
-	console.log(user.data)
-}
 
 	return (
 		<div className="px-6 lg:px-12 py-16 3xl:px-24  flex justify-center flex-wrap gap-9">

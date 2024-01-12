@@ -7,8 +7,6 @@ import Count from '@/components/button/Count'
 import { useRouter } from 'next/navigation'
 import { ShopSingleItemInterface } from '@/lib/Interfaces/ShopInterface'
 import Services from '@/lib/services/Services'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/services/Auth'
 type Props = {
 	shopItem: ShopSingleItemInterface
 }
@@ -37,9 +35,6 @@ export default function ContentProduct({ shopItem }: Props) {
 				price: shopItem.price.toString(),
 			}
 			const res = await Services.cart.post(product)
-			console.log(res)
-			const session = await getServerSession(authOptions)
-			console.log(session)
 			if (res == 404) {
 				router.push('/login')
 			}
