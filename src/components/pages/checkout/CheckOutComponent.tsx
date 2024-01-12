@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-
 type Inputs = {
 	firstName: string
 	lastName: string
@@ -113,7 +112,7 @@ export default function CheckOutComponent() {
 							type="text"
 							className="input"
 							placeholder="Doe"
-							defaultValue={user.data && user.data.lastName}
+							defaultValue={user.data ? user.data.lastName : ''}
 							{...register('lastName', { required: true })}
 						/>
 						{errors.lastName && (
@@ -132,7 +131,9 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="Example company"
 						{...register('companyName', { required: false })}
-						defaultValue={user.data && user.data.adress[0].companyName}
+						defaultValue={
+							user.data?.adress[0] ? user.data.adress[0].companyName : ''
+						}
 					/>
 				</div>
 				<div className="input-space">
@@ -142,7 +143,9 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="Mexico"
 						{...register('country', { required: true })}
-						defaultValue={user.data && user.data.adress[0].country}
+						defaultValue={
+							user.data?.adress[0] ? user.data.adress[0].country : ''
+						}
 					/>
 					{errors.country && (
 						<span className="text-red-500 text-[14px]">
@@ -157,7 +160,9 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="Mexico city"
 						{...register('street', { required: true })}
-						defaultValue={user.data && user.data.adress[0].street}
+						defaultValue={
+							user.data?.adress[0] ? user.data.adress[0].street : ''
+						}
 					/>
 					{errors.street && (
 						<span className="text-red-500 text-[14px]">
@@ -172,7 +177,9 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="Mexico"
 						{...register('province', { required: true })}
-						defaultValue={user.data && user.data.adress[0].province}
+						defaultValue={
+							user.data?.adress[0] ? user.data.adress[0].province : ''
+						}
 					/>
 					{errors.province && (
 						<span className="text-red-500 text-[14px]">
@@ -187,7 +194,9 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="1234"
 						{...register('zipCode', { required: true })}
-						defaultValue={user.data && user.data.adress[0].zipCode}
+						defaultValue={
+							user.data?.adress[0] ? user.data.adress[0].zipCode : ''
+						}
 					/>
 					{errors.zipCode && (
 						<span className="text-red-500 text-[14px]">
@@ -202,7 +211,7 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="+507 12345678"
 						{...register('phone', { required: true })}
-						defaultValue={user.data && user.data.adress[0].phone}
+						defaultValue={user.data?.adress[0] ? user.data.adress[0].phone : ''}
 					/>
 					{errors.phone && (
 						<span className="text-red-500 text-[14px]">
