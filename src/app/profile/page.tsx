@@ -3,7 +3,7 @@ import Indications from "@/components/navegation/Indications";
 import ProfileForm from "@/components/pages/account/ProfileForm";
 
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
 	return (
 		<main>
 			<Indications />

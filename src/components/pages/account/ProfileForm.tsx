@@ -1,10 +1,7 @@
 'use client'
 import SuccessAlert from '@/components/Alert/SuccessAlert'
-import WarningAlert from '@/components/Alert/WarningAlert'
-import { useUpdateUserprofile } from '@/lib/hook/useMutation'
 import { useUserCart } from '@/lib/hook/useQuery'
 import Services from '@/lib/services/Services'
-import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -27,7 +24,6 @@ export default function ProfileForm() {
 	}
 
 	const user = useUserCart()
-	const updateUserProfile = useUpdateUserprofile()
 
 	const {
 		register,
