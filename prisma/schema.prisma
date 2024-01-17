@@ -30,17 +30,10 @@ model User {
   password  String
   adress    Adress[]
   cart      Cart[]
-  session   Session[]
   role      UserRole  @default(USER)
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  user         User     @relation(fields: [userId], references: [id])
-  expires      DateTime
-  userId       String   @unique
-}
+
 
 enum UserRole {
   ADMIN
