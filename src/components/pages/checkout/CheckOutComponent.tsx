@@ -1,11 +1,7 @@
 'use client'
 import { CartInterface } from '@/lib/Interfaces/CartInterface'
-import { UserInterface } from '@/lib/Interfaces/ProfileInterface'
-import { totalPriceFunction } from '@/lib/functions'
-import Services from '@/lib/services/Services'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { useUpdateUserAdress } from '@/lib/hook/useMutation'
+import { useCart, usePriceCart, useUserCart } from '@/lib/hook/useQuery'
 import { useForm } from 'react-hook-form'
 
 type Inputs = {
@@ -19,37 +15,12 @@ type Inputs = {
 	phone: string
 }
 export default function CheckOutComponent() {
-	const router = useRouter()
-	const [totalPrice, setTotalPrice] = useState(0)
-	const handlePrice = (cartItems: CartInterface[]) => {
-		const result = totalPriceFunction(cartItems)
-		setTotalPrice(result)
-	}
+	const cart = useCart()
+	const price = usePriceCart()
+	const user = useUserCart()
 
-	const queryClient = useQueryClient()
-	const cart = useQuery({
-		queryKey: ['cart'],
-		queryFn: async () => {
-			const data: CartInterface[] = await Services.cart.get()
-			handlePrice(data)
-			return data
-		},
-	})
-	const user = useQuery({
-		queryKey: ['user'],
-		queryFn: async () => {
-			const data: UserInterface = await Services.user.get()
-			return data
-		},
-	})
+	const updateUserAdress = useUpdateUserAdress()
 
-	const updateUserData = useMutation({
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['cart'] })
-		},
-	})
-
-	const total = (totalPrice + totalPrice * 0.07).toFixed(2)
 	const {
 		register,
 		handleSubmit,
@@ -74,14 +45,12 @@ export default function CheckOutComponent() {
 				zipCode: data.zipCode,
 				phone: data.phone,
 			}
-			const res = await Services.user.insert(req)
-			updateUserData.mutate()
-			if (res == 200) {
-				await Services.user.deleteCart()
-				router.push('/cart/checkout/send')
-			}
+			updateUserAdress.mutate(req)
 		}
 	})
+
+
+
 
 	return (
 		<form
@@ -112,7 +81,7 @@ export default function CheckOutComponent() {
 							type="text"
 							className="input"
 							placeholder="Doe"
-							defaultValue={user.data ? user.data.lastName : ''}
+							defaultValue={user.data && user.data.lastName}
 							{...register('lastName', { required: true })}
 						/>
 						{errors.lastName && (
@@ -131,9 +100,7 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="Example company"
 						{...register('companyName', { required: false })}
-						defaultValue={
-							user.data?.adress[0] ? user.data.adress[0].companyName : ''
-						}
+						defaultValue={user.data && user.data.adress[0].companyName}
 					/>
 				</div>
 				<div className="input-space">
@@ -143,9 +110,7 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="Mexico"
 						{...register('country', { required: true })}
-						defaultValue={
-							user.data?.adress[0] ? user.data.adress[0].country : ''
-						}
+						defaultValue={user.data && user.data.adress[0].country}
 					/>
 					{errors.country && (
 						<span className="text-red-500 text-[14px]">
@@ -160,9 +125,7 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="Mexico city"
 						{...register('street', { required: true })}
-						defaultValue={
-							user.data?.adress[0] ? user.data.adress[0].street : ''
-						}
+						defaultValue={user.data && user.data.adress[0].street}
 					/>
 					{errors.street && (
 						<span className="text-red-500 text-[14px]">
@@ -177,9 +140,7 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="Mexico"
 						{...register('province', { required: true })}
-						defaultValue={
-							user.data?.adress[0] ? user.data.adress[0].province : ''
-						}
+						defaultValue={user.data && user.data.adress[0].province}
 					/>
 					{errors.province && (
 						<span className="text-red-500 text-[14px]">
@@ -194,9 +155,7 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="1234"
 						{...register('zipCode', { required: true })}
-						defaultValue={
-							user.data?.adress[0] ? user.data.adress[0].zipCode : ''
-						}
+						defaultValue={user.data && user.data.adress[0].zipCode}
 					/>
 					{errors.zipCode && (
 						<span className="text-red-500 text-[14px]">
@@ -211,7 +170,7 @@ export default function CheckOutComponent() {
 						className="input"
 						placeholder="+507 12345678"
 						{...register('phone', { required: true })}
-						defaultValue={user.data?.adress[0] ? user.data.adress[0].phone : ''}
+						defaultValue={user.data && user.data.adress[0].phone}
 					/>
 					{errors.phone && (
 						<span className="text-red-500 text-[14px]">
@@ -227,7 +186,7 @@ export default function CheckOutComponent() {
 				</div>
 				<div className="flex flex-col gap-y-2">
 					{cart.data &&
-						cart.data.map((item) => (
+						cart.data.map((item: CartInterface) => (
 							<div className="flex justify-between" key={item.productId}>
 								<h5 className="text-gray">
 									{item.name}
@@ -238,12 +197,14 @@ export default function CheckOutComponent() {
 						))}
 					<div className="flex justify-between">
 						<h5 className=" text-gray">ITBMS</h5>
-						<h5>{(totalPrice * 0.07).toFixed(2)}</h5>
+						<h5>{price.data && (price.data * 0.07).toFixed(2)}</h5>
 					</div>
 				</div>
 				<div className="flex justify-between">
 					<h5>total</h5>
-					<h5 className="font-bold">$ {total}</h5>
+					<h5 className="font-bold">
+						$ {price.data && (price.data + price.data * 0.07).toFixed(2)}
+					</h5>
 				</div>
 				<div className="flex flex-col items-center gap-y-6">
 					<div className="line" />

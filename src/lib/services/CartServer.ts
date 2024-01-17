@@ -79,7 +79,7 @@ const updateCartProducts = async (productId: string, amount: number) => {
 		productId,
 		amount,
 	}
-	const response = await axios
+	return  await axios
 		.put('/api/cart', {
 			params,
 		})
@@ -89,7 +89,7 @@ const updateCartProducts = async (productId: string, amount: number) => {
 		.catch((error) => {
 			console.log(error.response.status)
 		})
-	return response
+
 }
 
 export default CartService

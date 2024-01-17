@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {
+	AccountInterface,
 	AdressInterface,
 	ProfileInterface,
 } from '../Interfaces/ProfileInterface'
@@ -16,6 +17,12 @@ const UserService = {
 	},
 	insert: async (userData: AdressInterface) => {
 		return await insertAdress(userData)
+	},
+	lostPassword: async (email: string, password: string) => {
+		return await updatePassword(email, password)
+	},
+	updateProfile: async (userData: AccountInterface) => {
+		return await putProfile(userData)
 	},
 }
 
@@ -38,7 +45,27 @@ const insertUser = async (userData: ProfileInterface) => {
 		.then((response) => {
 			return response.status
 		})
-		.catch((error) => console.log(error.response.status))
+		.catch((error) => {
+			return error.response.status
+		})
+}
+
+// auth/register
+const updatePassword = async (email: string, password: string) => {
+	const params = {
+		email,
+		password,
+	}
+	return await axios
+		.put('/api/auth/register', {
+			params,
+		})
+		.then((response) => {
+			return response.status
+		})
+		.catch((error) => {
+			console.log(error.response.status)
+		})
 }
 
 // auth/profile
@@ -69,6 +96,23 @@ const insertAdress = async (userData: AdressInterface) => {
 			return response.status
 		})
 		.catch((error) => console.log(error.response.status))
+}
+
+// auth/profile
+const putProfile = async (userData: AccountInterface) => {
+	const params = {
+		userData,
+	}
+	return await axios
+		.put('/api/auth/profile', {
+			params,
+		})
+		.then((response) => {
+			return response.status
+		})
+		.catch((error) => {
+			return error.response.status
+		})
 }
 
 // auth/profile

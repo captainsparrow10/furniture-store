@@ -6,6 +6,7 @@ import Services from '@/lib/services/Services'
 
 export default async function page() {
 	const home: any = await Services.shop.getPresentation()
+
 	return (
 		<main className="relative">
 			<Banner product={home.banner.data} />

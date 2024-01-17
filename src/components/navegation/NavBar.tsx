@@ -1,19 +1,20 @@
 'use client'
+
+import { useCart } from '@/lib/hook/useQuery'
 import { Bars3BottomLeftIcon, Bars3Icon } from '@heroicons/react/20/solid'
-import {
-	UserIcon,
-	HeartIcon,
-	MagnifyingGlassIcon,
-	ShoppingCartIcon,
-} from '@heroicons/react/24/outline'
+import { UserIcon, ShoppingCartIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function NavBar() {
 	const [open, setOpen] = useState(false)
+	const [userPanel, setUserPanel] = useState(false)
+	const session = useSession()
 	const pathname = usePathname()
+	const cartProducts = useCart()
 	const navegations = [
 		{
 			href: '/',
@@ -28,11 +29,30 @@ export default function NavBar() {
 			name: 'contact',
 		},
 	]
+	const [scrollBg, setScrollBg] = useState('')
+
+	useEffect(() => {
+		const handleScroll = () => {
+			if (window.scrollY > 100) {
+				setScrollBg('bg-white')
+			} else {
+				setScrollBg('bg-transparent')
+			}
+		}
+
+		// Agrega el listener al montar el componente
+		window.addEventListener('scroll', handleScroll)
+
+		// Limpia el listener al desmontar el componente
+		return () => {
+			window.removeEventListener('scroll', handleScroll)
+		}
+	}, [])
 	return (
 		<>
 			<div
 				className={clsx(
-					'w-2/5 h-full bg-white z-50 overflow-hidden',
+					'w-2/5 h-full bg-white z-50 overflow-hidden border  border-gray-line',
 					open && 'fixed',
 					!open && 'hidden'
 				)}
@@ -62,7 +82,10 @@ export default function NavBar() {
 				</div>
 			</div>
 
-			<nav className="flex justify-between py-6 bg-transparent px-6 lg:px-12 2xl:px-24 overflow-hidden top-0 w-full fixed  gap-16 lg:justify-end lg:gap-36 z-40">
+			<nav
+				id="navBar"
+				className={`flex justify-between py-6 bg-transparent px-6 lg:px-12 2xl:px-24 overflow-hidden top-0 w-full fixed  gap-16 lg:justify-end lg:gap-36 z-40 ${scrollBg}`}
+			>
 				<Bars3Icon
 					className="icon cursor-pointer text-black lg:hidden"
 					onClick={() => setOpen(!open)}
@@ -86,11 +109,50 @@ export default function NavBar() {
 					))}
 				</div>
 				<div className="gap-4 flex sm:gap-12">
-					<Link href="/login" prefetch={pathname == '/login'}>
-						<UserIcon className="icon cursor-pointer" />
-					</Link>
-					<Link href="/cart" prefetch={pathname == '/cart'}>
+					{session.data?.user ? (
+						<div className="relative w-fit">
+							<h5
+								className="cursor-pointer uppercase"
+								onClick={() => setUserPanel(!userPanel)}
+							>
+								{session.data?.user.name}
+							</h5>
+							<div
+								className={clsx(
+									`w-fit h-fit z-50 overflow-hidden ${scrollBg}`,
+									userPanel && 'fixed',
+									!userPanel && 'hidden'
+								)}
+							>
+								<div className="flex flex-col gap-4 px-2 py-4 w-fit">
+									<Link href="/profile">
+										<h5 className="cursor-pointer hover:font-bold">Profile</h5>
+									</Link>
+									<h5
+										className="cursor-pointer hover:font-bold"
+										onClick={() => signOut()}
+									>
+										Log out
+									</h5>
+								</div>
+							</div>
+						</div>
+					) : (
+						<Link href="/login" prefetch={pathname == '/login'}>
+							<UserIcon className="icon cursor-pointer" />
+						</Link>
+					)}
+					<Link
+						href="/cart"
+						prefetch={pathname == '/cart'}
+						className="relative w-fit"
+					>
 						<ShoppingCartIcon className="icon cursor-pointer" />
+						{session.data?.user && (
+							<div className="absolute bottom-4 left-2 bg-pink rounded-full flex items-center justify-center icon">
+								<h5 className="font-bold">{cartProducts.data?.length || 0}</h5>
+							</div>
+						)}
 					</Link>
 				</div>
 			</nav>

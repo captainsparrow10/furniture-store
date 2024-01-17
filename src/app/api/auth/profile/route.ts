@@ -29,7 +29,7 @@ export async function GET(request: NextRequest, response: NextResponse) {
 					},
 				})
 				return NextResponse.json(data)
-		}
+			}
 		}
 		return NextResponse.json({ message: 'data not found' }, { status: 404 })
 	} catch (error) {
@@ -87,9 +87,57 @@ export async function DELETE(request: NextRequest, response: NextResponse) {
 					userId,
 				},
 			})
-			return NextResponse.json('success')
+			return NextResponse.json({ message: 'success' }, { status: 200 })
 		}
 		return NextResponse.json({ error: 'Any to delete' }, { status: 404 })
+	} catch (error) {
+		return NextResponse.json({ error }, { status: 400 })
+	}
+}
+
+export async function PUT(request: NextRequest, response: NextResponse) {
+	try {
+		const session = await getServerSession(authOptions)
+		
+		const data: {
+			firstName: string
+			lastName: string
+			companyName?: string
+			country: string
+			street: string
+			province: string
+			zipCode: string
+			phone: string
+		} = await request.json()
+		if (session) {
+			const userId = session.user.id
+			if (userId) {
+				await db.user.update({
+					where: {
+						id: userId,
+					},
+					data: {
+						firstName: data.firstName,
+						lastName: data.lastName,
+					},
+				})
+				await db.adress.update({
+					where: {
+						userId,
+					},
+					data: {
+						companyName: data.companyName,
+						country: data.country,
+						street: data.street,
+						province: data.province,
+						zipCode: data.zipCode,
+						phone: data.phone,
+					},
+				})
+				return NextResponse.json({ message: 'success' }, { status: 200 })
+			}
+		}
+		return NextResponse.json({ message: 'data not found' }, { status: 404 })
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 400 })
 	}

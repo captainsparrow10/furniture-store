@@ -1,4 +1,5 @@
 'use client'
+import WarningAlert from '@/components/Alert/WarningAlert'
 import Service from '@/lib/services/Services'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
@@ -15,6 +16,11 @@ type Inputs = {
 export default function RegisterForm() {
 	const [see1, setSee1] = useState(false)
 	const [see2, setSee2] = useState(false)
+	const [view, setView] = useState(false)
+
+	const handleChangeView = (value: boolean) => {
+		setView(value)
+	}
 	const router = useRouter()
 	const {
 		register,
@@ -27,117 +33,125 @@ export default function RegisterForm() {
 			if (res == 200) {
 				router.push('/login')
 			}
+			if (res == 404) {
+				setView(true)
+			}
 		}
 	})
 	return (
-		<div className="py-16 px-6 flex gap-12 justify-center items-center">
-			<form
-				className="flex flex-col justify-between w-full max-w-[350px] gap-4"
-				onSubmit={onSubmit}
-			>
-				<h3>Register</h3>
-				<div>
-					<label htmlFor="firstName">First Name</label>
-					<input
-						type="text"
-						placeholder="John"
-						className="input"
-						{...register('firstName', { required: true })}
-					/>
-					{errors.firstName && (
-						<span className="text-red-500 text-[14px]">
-							This field is required
-						</span>
-					)}
-				</div>
-				<div>
-					<label htmlFor="lastName">Last Name</label>
-					<input
-						type="text"
-						placeholder="Doe"
-						className="input"
-						{...register('lastName', { required: true })}
-					/>
-					{errors.lastName && (
-						<span className="text-red-500 text-[14px]">
-							This field is required
-						</span>
-					)}
-				</div>
-				<div>
-					<label htmlFor="email">E-Mail</label>
-					<input
-						type="email"
-						placeholder="example@gmail.com"
-						className="input"
-						{...register('email', { required: true })}
-					/>
-					{errors.email && (
-						<span className="text-red-500 text-[14px]">
-							This field is required
-						</span>
-					)}
-				</div>
-				<div>
-					<label htmlFor="password">Password</label>
-					<div className="flex  items-center input gap-3">
+		<>
+		{
+			view && <WarningAlert handleChangeView={handleChangeView} error={"Email Found, use another"}/>
+		}
+			<div className="py-16 px-6 flex gap-12 justify-center items-center">
+				<form
+					className="flex flex-col justify-between w-full max-w-[350px] gap-4"
+					onSubmit={onSubmit}
+				>
+					<h3>Register</h3>
+					<div>
+						<label htmlFor="firstName">First Name</label>
 						<input
-							type={see1 ? 'text' : 'password'}
-							placeholder="*******"
-							className="flex w-full text-[16px] font-normal placeholder:text-gray border outline-none border-none"
-							{...register('password', { required: true })}
+							type="text"
+							placeholder="John"
+							className="input"
+							{...register('firstName', { required: true })}
 						/>
-						{see1 ? (
-							<EyeSlashIcon
-								className="icon shrink-0"
-								onClick={() => setSee1(!see1)}
-							/>
-						) : (
-							<EyeIcon
-								className="icon shrink-0"
-								onClick={() => setSee1(!see1)}
-							/>
+						{errors.firstName && (
+							<span className="text-red-500 text-[14px]">
+								This field is required
+							</span>
 						)}
 					</div>
-					{errors.password && (
-						<span className="text-red-500 text-[14px]">
-							This field is required
-						</span>
-					)}
-				</div>
-				<div>
-					<label htmlFor="confirmPassword">Confirm Password</label>
-					<div className="flex  items-center input gap-3">
+					<div>
+						<label htmlFor="lastName">Last Name</label>
 						<input
-							type={see2 ? 'text' : 'password'}
-							placeholder="********"
-							className="flex w-full text-[16px] font-normal placeholder:text-gray border outline-none border-none"
-							{...register('confirmPassword', { required: true })}
+							type="text"
+							placeholder="Doe"
+							className="input"
+							{...register('lastName', { required: true })}
 						/>
-						{see2 ? (
-							<EyeSlashIcon
-								className="icon shrink-0"
-								onClick={() => setSee2(!see2)}
-							/>
-						) : (
-							<EyeIcon
-								className="icon shrink-0"
-								onClick={() => setSee2(!see2)}
-							/>
+						{errors.lastName && (
+							<span className="text-red-500 text-[14px]">
+								This field is required
+							</span>
 						)}
 					</div>
-					{errors.confirmPassword && (
-						<span className="text-red-500 text-[14px]">
-							This field is required
-						</span>
-					)}
-				</div>
-				<div className="flex justify-center">
-					<button className="btn-lg" type="submit">
-						Register
-					</button>
-				</div>
-			</form>
-		</div>
+					<div>
+						<label htmlFor="email">E-Mail</label>
+						<input
+							type="email"
+							placeholder="example@gmail.com"
+							className="input"
+							{...register('email', { required: true })}
+						/>
+						{errors.email && (
+							<span className="text-red-500 text-[14px]">
+								This field is required
+							</span>
+						)}
+					</div>
+					<div>
+						<label htmlFor="password">Password</label>
+						<div className="flex  items-center input gap-3">
+							<input
+								type={see1 ? 'text' : 'password'}
+								placeholder="*******"
+								className="flex w-full text-[16px] font-normal placeholder:text-gray border outline-none border-none"
+								{...register('password', { required: true })}
+							/>
+							{see1 ? (
+								<EyeSlashIcon
+									className="icon shrink-0"
+									onClick={() => setSee1(!see1)}
+								/>
+							) : (
+								<EyeIcon
+									className="icon shrink-0"
+									onClick={() => setSee1(!see1)}
+								/>
+							)}
+						</div>
+						{errors.password && (
+							<span className="text-red-500 text-[14px]">
+								This field is required
+							</span>
+						)}
+					</div>
+					<div>
+						<label htmlFor="confirmPassword">Confirm Password</label>
+						<div className="flex  items-center input gap-3">
+							<input
+								type={see2 ? 'text' : 'password'}
+								placeholder="********"
+								className="flex w-full text-[16px] font-normal placeholder:text-gray border outline-none border-none"
+								{...register('confirmPassword', { required: true })}
+							/>
+							{see2 ? (
+								<EyeSlashIcon
+									className="icon shrink-0"
+									onClick={() => setSee2(!see2)}
+								/>
+							) : (
+								<EyeIcon
+									className="icon shrink-0"
+									onClick={() => setSee2(!see2)}
+								/>
+							)}
+						</div>
+						{errors.confirmPassword && (
+							<span className="text-red-500 text-[14px]">
+								This field is required
+							</span>
+						)}
+					</div>
+					<div className="flex justify-center">
+						<button className="btn-lg" type="submit">
+							Register
+						</button>
+					</div>
+				</form>
+			</div>
+		</>
 	)
 }

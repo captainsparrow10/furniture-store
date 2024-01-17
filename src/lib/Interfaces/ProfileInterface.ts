@@ -5,6 +5,17 @@ export interface ProfileInterface {
 	password: string
 }
 
+export interface AccountInterface {
+	firstName: string
+	lastName: string
+	companyName?: string
+	country: string
+	street: string
+	province: string
+	zipCode: string
+	phone: string
+}
+
 export interface AdressInterface {
 	companyName?: string
 	street: string

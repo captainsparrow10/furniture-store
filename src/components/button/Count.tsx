@@ -13,13 +13,13 @@ export default function Count({
 	handleLessNumber,
 }: Props) {
 	return (
-		<div className="flex justify-center px-4 py-5 gap-6 items-center border border-black w-fit rounded-xl">
-			<button onClick={handlePlusNumber}>
-				<PlusIcon className="h-4 w-4 text-black" />
+		<div className="flex justify-center px-4 py-5 gap-6 items-center border hover:border-black  border-gray w-fit rounded-xl">
+			<button onClick={handleLessNumber}>
+				<MinusIcon className="h-4 w-4 hover:text-black text-gray" />
 			</button>
 			<h4>{number}</h4>
-			<button onClick={handleLessNumber}>
-				<MinusIcon className="h-4 w-4 text-black" />
+			<button onClick={handlePlusNumber}>
+				<PlusIcon className="h-4 w-4 hover:text-black text-gray" />
 			</button>
 		</div>
 	)

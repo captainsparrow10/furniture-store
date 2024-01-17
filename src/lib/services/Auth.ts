@@ -24,9 +24,12 @@ export const authOptions: NextAuthOptions = {
 					const userFound = await db.user.findUnique({
 						where: {
 							email: credentials?.email,
+							password: credentials?.password,
 						},
 					})
-					if (!userFound) throw new Error('User not found')
+					if (!userFound) {
+						throw new Error('User not found')
+					}
 
 					const mathPassword = credentials?.password && userFound.password
 
