@@ -13,9 +13,9 @@ datasource db {
 
 model Cart {
   id        String @id @default(cuid())
-  user      User   @relation(fields: [userId], references: [id])
-  userId    String @unique
-  productId String @unique
+  user      User   @relation(fields: [userid], references: [id])
+  userid    String 
+  productid String @unique
   name      String
   image     String
   amount    Int
@@ -23,31 +23,30 @@ model Cart {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  firstName String
-  lastName  String
-  email     String    @unique
+  id        String   @id @default(cuid())
+  firstname String
+  lastname  String
+  email     String   @unique
   password  String
-  adress    Adress[]
+  address   Address?
   cart      Cart[]
-  role      UserRole  @default(USER)
+  role      UserRole @default(USER)
 }
-
-
 
 enum UserRole {
   ADMIN
   USER
 }
 
-model Adress {
-  id          String  @id @default(cuid())
-  user        User    @relation(fields: [userId], references: [id])
-  userId      String  @unique
-  companyName String?
-  country     String
-  province    String
-  street      String
-  zipCode     String
-  phone       String
+
+model Address {
+  id       String  @id @default(cuid())
+  user     User    @relation(fields: [userid], references: [id])
+  userid   String  @unique
+  company  String?
+  country  String
+  province String 
+  street   String
+  zipcode  String
+  phone    String
 }

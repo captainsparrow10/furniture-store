@@ -1,108 +1,113 @@
-import { authOptions } from '@/lib/services/Auth'
+import { getSession } from '@/lib/util/api'
+import { CartType } from '@/types/cart'
 import { db } from '@db/db'
-import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, response: NextResponse) {
 	try {
-		const session = await getServerSession(authOptions)
-		const userId = session?.user.id
-		if (userId) {
-			const data = await db.cart.findMany({
-				where: {
-					userId,
-				},
-				orderBy: {
-					name: 'asc',
-				},
-			})
-			return NextResponse.json(data)
+		const userid = await getSession()
+		if (!userid) {
+			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
-		return NextResponse.json({ message: 'data not found' }, { status: 404 })
+
+		const userCart = await db.cart.findMany({
+			where: {
+				userid: userid,
+			},
+			orderBy: {
+				name: 'asc',
+			},
+		})
+		return NextResponse.json(userCart, { status: 200, statusText: 'Sent Data' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }
 
 export async function POST(request: NextRequest, response: NextResponse) {
 	try {
-		const session = await getServerSession(authOptions)
-		const userId = session?.user.id
-		const data = await request.json()
-		if (userId === undefined) {
-			return NextResponse.json({ error: 'user not found' }, { status: 404 })
-		}
-		if (data && userId) {
-			await db.cart.upsert({
-				where: {
-					productId: data.productId,
-				},
-				update: {
-					amount: {
-						increment: data.amount,
-					},
-				},
-				create: {
-					userId,
-					...data,
-				},
-			})
+		const userid = await getSession()
 
-			return NextResponse.json({ message: 'success' }, { status: 200 })
+		if (!userid) {
+			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
-		return NextResponse.json({ message: 'data not found' }, { status: 404 })
+		const data: CartType = await request.json()
+		if (!data) {
+			return NextResponse.json({ status: 404, statusText: 'Data not received' })
+		}
+
+		await db.cart.upsert({
+			where: {
+				productid: data.productid,
+			},
+			update: {
+				amount: {
+					increment: data.amount,
+				},
+			},
+			create: {
+				userid,
+				...data,
+			},
+		})
+
+		return NextResponse.json({ status: 200, statusText: 'Data Received' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }
 
 export async function DELETE(request: NextRequest, response: NextResponse) {
 	try {
-		const productId = request.nextUrl.searchParams.get('productId')
-		const session = await getServerSession(authOptions)
-		const userId = session?.user.id
-		if (userId && productId) {
-			await db.cart.delete({
-				where: {
-					productId,
-					userId,
-				},
-			})
-			return NextResponse.json({ message: 'success' }, { status: 200 })
+		const userid = await getSession()
+
+		if (!userid) {
+			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
-		return NextResponse.json(
-			{ message: 'data in params not found' },
-			{ status: 404 }
-		)
+		const productid = request.nextUrl.searchParams.get('productid')
+		if (!productid) {
+			return NextResponse.json({ status: 404, statusText: 'Data not received' })
+		}
+		await db.cart.delete({
+			where: {
+				productid,
+				userid,
+			},
+		})
+		return NextResponse.json({ status: 200, statusText: 'Data Delete' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }
 
 export async function PUT(request: NextRequest, response: NextResponse) {
 	try {
-		const { productId, amount } = await request
+		const userid = await getSession()
+
+		if (!userid) {
+			return NextResponse.json({
+				status: 404,
+				statusText: 'User not found',
+			})
+		}
+		const { productid, amount } = await request
 			.json()
 			.then((data) => data.params)
-		const session = await getServerSession(authOptions)
-		const userId = session?.user.id
-		if (productId && amount && userId) {
-			await db.cart.update({
-				where: {
-					productId,
-					userId,
-				},
-				data: {
-					amount,
-				},
-			})
-			return NextResponse.json({ message: 'success' }, { status: 200 })
+		if (!productid || !amount) {
+			return NextResponse.json({ status: 404, statusText: 'Data not received' })
 		}
-		return NextResponse.json(
-			{ message: 'data in params not found' },
-			{ status: 404 }
-		)
+
+		await db.cart.update({
+			where: {
+				productid,
+				userid,
+			},
+			data: {
+				amount,
+			},
+		})
+		return NextResponse.json({ status: 200, statusText: 'Updated Data' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }

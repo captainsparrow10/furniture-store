@@ -1,8 +1,8 @@
 import '@/app/globals.css'
-import Footer from '@/components/Footer'
+import Footer from '@/components/footer'
 import NavBar from '@/components/navegation/NavBar'
-import NextAuth from '@/lib/providers/NextAuth'
-import ReactQuery from '@/lib/providers/ReactQuery'
+import NextAuth from '@/providers/auth/NextAuth'
+import ReactQuery from '@/providers/react-query/ReactQuery'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 

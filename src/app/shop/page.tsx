@@ -1,11 +1,11 @@
-import Sponsor from '@/components/Sponsor'
+import Sponsor from '@/components/sponsor'
 import Indications from '@/components/navegation/Indications'
-import ContentShop from '@/components/pages/shop/ContentShop'
-import { ShopItemSelectedInterface } from '@/lib/Interfaces/ShopInterface'
-import Service from '@/lib/services/Services'
+import ShopService from '@/services/shop'
+import { ShopItemSelectedType } from '@/types/shop'
+import ContentShop from '@/containers/shop/ContentShop'
 
 export default async function ShopPage() {
-	const shopItems: ShopItemSelectedInterface = await Service.shop.getProducts()
+	const shopItems: ShopItemSelectedType = await ShopService.getProducts()
 	return (
 		<main className="relative">
 			<Indications />

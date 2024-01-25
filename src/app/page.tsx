@@ -1,12 +1,11 @@
-import Banner from '@/components/pages/home/Banner'
-import Picks from '@/components/pages/home/Picks'
-import TopPicks from '@/components/pages/home/TopPicks'
-import NewPick from '@/components/pages/home/NewPick'
-import Services from '@/lib/services/Services'
+import Banner from '@/containers/home/banner'
+import Picks from '@/containers/home/picks'
+import TopPicks from '@/containers/home/toppicks'
+import NewPick from '@/containers/home/newpick'
+import ShopService from '@/services/shop'
 
 export default async function page() {
-	const home: any = await Services.shop.getPresentation()
-
+	const home: any = await ShopService.getPresentation()
 	return (
 		<main className="relative">
 			<Banner product={home.banner.data} />

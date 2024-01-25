@@ -1,6 +1,6 @@
 'use client'
 
-import { useCart } from '@/lib/hook/useQuery'
+import { useCart } from '@hooks/useQuery'
 import { Bars3BottomLeftIcon, Bars3Icon } from '@heroicons/react/20/solid'
 import { UserIcon, ShoppingCartIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
@@ -40,10 +40,8 @@ export default function NavBar() {
 			}
 		}
 
-		// Agrega el listener al montar el componente
 		window.addEventListener('scroll', handleScroll)
 
-		// Limpia el listener al desmontar el componente
 		return () => {
 			window.removeEventListener('scroll', handleScroll)
 		}

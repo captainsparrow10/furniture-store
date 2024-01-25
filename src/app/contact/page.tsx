@@ -1,5 +1,5 @@
-import Sponsor from '@/components/Sponsor'
-import ContactComponent from '@/components/contact/ContactComponent'
+import Sponsor from '@/components/sponsor'
+import ContactComponent from '@/containers/contact/form'
 import Indications from '@/components/navegation/Indications'
 import React from 'react'
 

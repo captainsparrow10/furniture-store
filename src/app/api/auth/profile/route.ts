@@ -1,144 +1,137 @@
-import { authOptions } from '@/lib/services/Auth'
+
+import { getSession } from '@/lib/util/api'
+import { AddressType, ProfileType } from '@/types/user'
 import { db } from '@db/db'
-import { getServerSession } from 'next-auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, response: NextResponse) {
 	try {
-		const session = await getServerSession(authOptions)
-		if (session) {
-			const userId = session.user.id
-			if (userId) {
-				const data = await db.user.findFirst({
-					where: {
-						id: userId,
-					},
-					select: {
-						firstName: true,
-						lastName: true,
-						adress: {
-							select: {
-								companyName: true,
-								street: true,
-								province: true,
-								zipCode: true,
-								phone: true,
-								country: true,
-							},
-						},
-					},
-				})
-				return NextResponse.json(data)
-			}
+		const id = await getSession()
+		if (!id) {
+			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
-		return NextResponse.json({ message: 'data not found' }, { status: 404 })
+		const data = await db.user.findUnique({
+			where: {
+				id,
+			},
+			select: {
+				firstname: true,
+				lastname: true,
+				address: {
+					select: {
+						company: true,
+						street: true,
+						province: true,
+						zipcode: true,
+						phone: true,
+						country: true,
+					},
+				},
+			},
+		})
+		const user = {
+			firstname: data?.firstname,
+			lastname: data?.lastname,
+			...data?.address,
+		}
+		return NextResponse.json(user, { status: 200, statusText: 'Sent Data' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }
+
 export async function POST(request: NextRequest, response: NextResponse) {
 	try {
-		const session = await getServerSession(authOptions)
-		let userId
-		if (session) {
-			userId = session.user.id
+		const userid = await getSession()
+		if (!userid) {
+			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
-		const data: {
-			companyName?: string
-			country: string
-			street: string
-			province: string
-			zipCode: string
-			phone: string
-		} = await request.json()
-		if (data && userId) {
-			await db.adress.upsert({
-				where: {
-					userId,
-				},
-				update: {
-					companyName: data.companyName,
-					country: data.country,
-					street: data.street,
-					province: data.province,
-					zipCode: data.zipCode,
-					phone: data.phone,
-				},
-				create: {
-					userId,
-					...data,
-				},
-			})
-			return NextResponse.json({ message: 'success' }, { status: 200 })
+		const data: AddressType = await request.json()
+		if (!data) {
+			return NextResponse.json({ status: 404, statusText: 'Data not received' })
 		}
-		return NextResponse.json({ message: 'Data not found' }, { status: 404 })
+		await db.address.upsert({
+			where: {
+				userid,
+			},
+			update: {
+				company: data.company,
+				country: data.country,
+				street: data.street,
+				province: data.province,
+				zipcode: data.zipcode,
+				phone: data.phone,
+			},
+			create: {
+				userid,
+				...data,
+			},
+		})
+		return NextResponse.json({ status: 200, statusText: 'Data Received' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }
 
 export async function DELETE(request: NextRequest, response: NextResponse) {
 	try {
-		const session = await getServerSession(authOptions)
-		const userId = session?.user.id
-		if (userId) {
-			await db.cart.deleteMany({
-				where: {
-					userId,
-				},
+		const userid= await getSession()
+
+		if (!userid) {
+			return NextResponse.json({
+				status: 404,
+				statusText: 'User not found',
 			})
-			return NextResponse.json({ message: 'success' }, { status: 200 })
 		}
-		return NextResponse.json({ error: 'Any to delete' }, { status: 404 })
+
+		await db.cart.deleteMany({
+			where: {
+				userid,
+			},
+		})
+		return NextResponse.json({ status: 200, statusText: 'Data Delete' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }
 
 export async function PUT(request: NextRequest, response: NextResponse) {
 	try {
-		const session = await getServerSession(authOptions)
-		
-		const data: {
-			firstName: string
-			lastName: string
-			companyName?: string
-			country: string
-			street: string
-			province: string
-			zipCode: string
-			phone: string
-		} = await request.json()
-		if (session) {
-			const userId = session.user.id
-			if (userId) {
-				await db.user.update({
-					where: {
-						id: userId,
-					},
-					data: {
-						firstName: data.firstName,
-						lastName: data.lastName,
-					},
-				})
-				await db.adress.update({
-					where: {
-						userId,
-					},
-					data: {
-						companyName: data.companyName,
-						country: data.country,
-						street: data.street,
-						province: data.province,
-						zipCode: data.zipCode,
-						phone: data.phone,
-					},
-				})
-				return NextResponse.json({ message: 'success' }, { status: 200 })
-			}
+		const userid = await getSession()
+
+		if (!userid) {
+			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
-		return NextResponse.json({ message: 'data not found' }, { status: 404 })
+		const data: ProfileType = await request.json().then((response) => {
+			return response.params.userData
+		})
+		if (!data) {
+			return NextResponse.json({ status: 404, statusText: 'Data not received' })
+		}
+		await db.user.update({
+			where: {
+				id: userid,
+			},
+			data: {
+				firstname: data.firstname,
+				lastname: data.lastname,
+			},
+		})
+		await db.address.update({
+			where: {
+				userid,
+			},
+			data: {
+				company: data.company,
+				country: data.country,
+				street: data.street,
+				province: data.province,
+				zipcode: data.zipcode,
+				phone: data.phone,
+			},
+		})
+		return NextResponse.json({ status: 200, statusText: 'Updated Data' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }

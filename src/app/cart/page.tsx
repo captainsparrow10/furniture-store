@@ -1,6 +1,6 @@
 import Indications from '@/components/navegation/Indications'
-import CartComponent from '@/components/pages/cart/CartComponent'
-import Sponsor from '@/components/Sponsor'
+import Sponsor from '@/components/sponsor'
+import CartComponent from '@/containers/cart/cartcomponent'
 
 
 export default async function Cartpage() {

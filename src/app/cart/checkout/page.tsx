@@ -1,6 +1,6 @@
-import Sponsor from '@/components/Sponsor'
+import Sponsor from '@/components/sponsor'
 import Indications from '@/components/navegation/Indications'
-import CheckOutComponent from '@/components/pages/checkout/CheckOutComponent'
+import CheckOutComponent from '@/containers/cart/checkout'
 import React from 'react'
 
 export default async function CheckOutpage() {

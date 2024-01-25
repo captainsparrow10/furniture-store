@@ -25,7 +25,12 @@
 			"@components/*": ["./src/components/*"],
 			"@lib/*": ["./src/lib/*"],
 			"@db/*": ["./prisma/lib/*"],
-			"@services/*": ["./lib/services/*"]
+			"@services/*": ["./src/services/*"],
+			"@validations/*": ["./src/validations/*"],
+			"@types/*": ["./src/types/*"],
+			"@providers/*": ["./src/providers/*"],
+			"@middleware/*": ["./src/middleware/*"],
+			"@hooks/*": ["./src/hooks/*"]
 		}
 	},
 	"include": [

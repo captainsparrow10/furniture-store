@@ -1,56 +1,57 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@db/db'
+import { RegisterType } from '@/types/user'
 
 export async function POST(request: NextRequest, response: NextResponse) {
 	try {
-		const data = await request.json()
+		const data: RegisterType = await request.json()
+		if (!data) {
+			return NextResponse.json({ status: 404, statusText: 'Data not received' })
+		}
 		const emailFound = await db.user.findUnique({
 			where: {
 				email: data.email,
 			},
 		})
 		if (emailFound) {
-			return NextResponse.json({ error: 'Email exists' }, { status: 404 })
-		} else {
-			await db.user.create({
-				data: {
-					firstName: data.firstName,
-					lastName: data.lastName,
-					email: data.email,
-					password: data.password,
-				},
-			})
+			return NextResponse.json({ status: 404, statusText: 'Email exists' })
 		}
-
-		return NextResponse.json({ message: 'success' }, { status: 200 })
+		await db.user.create({
+			data: {
+				firstname: data.firstname,
+				lastname: data.lastname,
+				email: data.email,
+				password: data.password,
+			},
+		})
+		return NextResponse.json({ status: 200, statusText: 'Registered User' })
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }
 
 export async function PUT(request: NextRequest, response: NextResponse) {
 	try {
 		const { email, password } = await request.json().then((data) => data.params)
-		if (email && password) {
-			try {
-				await db.user.update({
-					where: {
-						email,
-					},
-					data: {
-						password,
-					},
-				})
-			} catch (error) {
-				console.log(error)
-			}
-			return NextResponse.json({ message: 'success' }, { status: 200 })
+		if (!(email && password)) {
+			return NextResponse.json({
+				status: 404,
+				statusText: 'data in params not found',
+			})
 		}
-		return NextResponse.json(
-			{ message: 'data in params not found' },
-			{ status: 404 }
-		)
+		await db.user.update({
+			where: {
+				email,
+			},
+			data: {
+				password,
+			},
+		})
+		return NextResponse.json({
+			status: 200,
+			statusText: 'Updated Email Password',
+		})
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 400 })
+		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}
 }
