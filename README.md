@@ -20,12 +20,10 @@ So, remember: "There's not greater satisfaction than you get something with your
 * [Technology](#technology)
 
 ## Description
----
 It's an e-commerce with the purpose to made my own full web app application using Next.js, Authentication token, management state and life cycle of how to do made a order. 
 
 
 ## Technology
----
 * React
 * Next.js
 * Sanity
