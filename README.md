@@ -1,5 +1,5 @@
 # Furniture Store
-![banner image]("./public/img.png")
+![banner image](/public/img.png)
 
 Version: 1.0
 
@@ -18,7 +18,6 @@ So, remember: "There's not greater satisfaction than you get something with your
 # Content Table
 * [Description](#description)
 * [Technology](#technology)
-* [Setup](#setup)
 
 ## Description
 ---
@@ -27,5 +26,15 @@ It's an e-commerce with the purpose to made my own full web app application usin
 
 ## Technology
 ---
-## Setup
-----
+* React
+* Next.js
+* Sanity
+* PostgreSQL
+* Tailwind
+* Prisma
+* React Query
+* React Hook Form
+* Next Auth
+* Zod
+* Typescript
+* Axios
