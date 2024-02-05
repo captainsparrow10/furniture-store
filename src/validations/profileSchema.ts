@@ -13,7 +13,7 @@ const profileSchema = z.object({
 			message: 'Name must be at least 3 characters long',
 		})
 		.max(200, { message: 'Name must be less than 200 characters long' }),
-    company: z
+	company: z
 		.string()
 		.min(3, {
 			message: 'Name must be at least 3 characters long',

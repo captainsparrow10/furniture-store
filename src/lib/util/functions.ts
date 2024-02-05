@@ -1,4 +1,4 @@
-import CartService from '@/services/cart'
+import CartService from '@services/cart'
 
 async function totalPriceFunction() {
 	const cartItems = await CartService.cartProductsUserId()

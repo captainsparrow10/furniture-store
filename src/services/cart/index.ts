@@ -11,8 +11,8 @@ const CartService = {
 	updateAmountCartProduct: async (productid: string, amount: number) => {
 		return await updateAmountCartProduct(productid, amount)
 	},
-	deleteCartProductId: async (producId: string) => {
-		return await deleteCartProductId(producId)
+	deleteCartProductId: async (productid: string) => {
+		return await deleteCartProductId(productid)
 	},
 }
 
