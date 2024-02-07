@@ -1,7 +1,6 @@
-
 import { AddressType, ProfileType } from '@/types/user'
 import { apiUrl, apiRoute } from '@/services/api'
-
+import { getSession } from '@/lib/util/api'
 
 const ProfileService = {
 	getProfile: async () => {
@@ -18,8 +17,13 @@ const ProfileService = {
 	},
 }
 const getProfile = async () => {
+	const token = await getSession()
 	return apiUrl
-		.get(apiRoute.profile)
+		.get(apiRoute.profile, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
 		.then((response) => {
 			return response.data
 		})

@@ -1,4 +1,3 @@
-
 import { getSession } from '@/lib/util/api'
 import { AddressType, ProfileType } from '@/types/user'
 import { db } from '@db/db'
@@ -6,7 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, response: NextResponse) {
 	try {
-		const id = await getSession()
+		const header = request.headers.get('authorization')?.split(' ')[1]
+		const id = header
 		if (!id) {
 			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
 export async function DELETE(request: NextRequest, response: NextResponse) {
 	try {
-		const userid= await getSession()
+		const userid = await getSession()
 
 		if (!userid) {
 			return NextResponse.json({

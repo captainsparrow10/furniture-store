@@ -9,14 +9,26 @@ import { MessageAlertType } from '@/types/alert'
 import { useUserCart } from '@/hooks/useQuery'
 import { useUpdateProfileData } from '@/hooks/useMutation'
 import ProfileService from '@/services/user/profile'
+import { ProfileType } from '@/types/user'
+import { useQuery } from '@tanstack/react-query'
+type Props = {
+	profileData: ProfileType
+}
 
-export default function ProfileForm() {
+export default function ProfileForm({ profileData }: Props) {
 	const [viewAlert, setViewAlert] = useState(false)
 	const [message, setMessage] = useState<MessageAlertType | undefined>()
 	const handleViewAlert = () => {
 		setViewAlert(false)
 	}
-	const user = useUserCart()
+	const user = useQuery({
+		queryKey: ['user'],
+		queryFn:  async() => {
+		 const data: ProfileType = await ProfileService.getProfile()
+		 return data
+		},
+		initialData: profileData
+	})
 	const updateUser = useUpdateProfileData()
 
 	const {
