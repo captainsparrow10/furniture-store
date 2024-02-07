@@ -23,11 +23,11 @@ export default function ProfileForm({ profileData }: Props) {
 	}
 	const user = useQuery({
 		queryKey: ['user'],
-		queryFn:  async() => {
-		 const data: ProfileType = await ProfileService.getProfile()
-		 return data
+		queryFn: async () => {
+			const data: ProfileType = await ProfileService.getProfile()
+			return data
 		},
-		initialData: profileData
+		initialData: profileData,
 	})
 	const updateUser = useUpdateProfileData()
 
@@ -37,25 +37,20 @@ export default function ProfileForm({ profileData }: Props) {
 		formState: { errors },
 	} = useForm<ProfileInputs>({
 		resolver: zodResolver(profileSchema),
+		defaultValues: {
+			...user.data,
+		},
 	})
 	const onSubmit = handleSubmit(async (data: ProfileInputs) => {
-		if (
-			data.firstname &&
-			data.lastname &&
-			data.country &&
-			data.street &&
-			data.province &&
-			data.zipcode &&
-			data.phone
-		) {
-			const res: MessageAlertType = await ProfileService.putProfile({ ...data })
+		const res: MessageAlertType = await ProfileService.putProfile({ ...data })
+		if (res.status) {
+			setMessage({
+				statusText: res.statusText,
+				status: res.status,
+			})
+			setViewAlert(true)
 			if (res.status === 200) {
 				updateUser.mutate()
-				setMessage({
-					statusText: res.statusText,
-					status: res.status,
-				})
-				setViewAlert(true)
 			}
 		}
 	})
@@ -83,7 +78,7 @@ export default function ProfileForm({ profileData }: Props) {
 								className="input"
 								placeholder="John"
 								{...register('firstname', { required: true })}
-								defaultValue={user.data?.firstname && user.data.firstname}
+								defaultValue={user.data?.firstname}
 							/>
 							{errors.firstname?.message && (
 								<span className="text-red-500 text-[14px]">
@@ -97,7 +92,7 @@ export default function ProfileForm({ profileData }: Props) {
 								type="text"
 								className="input"
 								placeholder="Doe"
-								defaultValue={user.data?.lastname && user.data.lastname}
+								defaultValue={user.data?.lastname}
 								{...register('lastname', { required: true })}
 							/>
 							{errors.lastname?.message && (
@@ -116,7 +111,7 @@ export default function ProfileForm({ profileData }: Props) {
 							className="input"
 							placeholder="Example company"
 							{...register('company', { required: false })}
-							defaultValue={user.data?.company && user.data.company}
+							defaultValue={user.data?.company}
 						/>
 						{errors.company?.message && (
 							<span className="text-red-500 text-[14px]">
@@ -131,7 +126,7 @@ export default function ProfileForm({ profileData }: Props) {
 							className="input"
 							placeholder="Mexico"
 							{...register('country', { required: true })}
-							defaultValue={user.data?.country && user.data.country}
+							defaultValue={user.data?.country}
 						/>
 						{errors.country?.message && (
 							<span className="text-red-500 text-[14px]">
@@ -146,7 +141,7 @@ export default function ProfileForm({ profileData }: Props) {
 							className="input"
 							placeholder="Mexico city"
 							{...register('street', { required: true })}
-							defaultValue={user.data?.street && user.data.street}
+							defaultValue={user.data?.street}
 						/>
 						{errors.street?.message && (
 							<span className="text-red-500 text-[14px]">
@@ -161,7 +156,7 @@ export default function ProfileForm({ profileData }: Props) {
 							className="input"
 							placeholder="Mexico"
 							{...register('province', { required: true })}
-							defaultValue={user.data?.province && user.data.province}
+							defaultValue={user.data?.province}
 						/>
 						{errors.province?.message && (
 							<span className="text-red-500 text-[14px]">
@@ -176,7 +171,7 @@ export default function ProfileForm({ profileData }: Props) {
 							className="input"
 							placeholder="1234"
 							{...register('zipcode', { required: true })}
-							defaultValue={user.data?.zipcode && user.data.zipcode}
+							defaultValue={user.data?.zipcode}
 						/>
 						{errors.zipcode?.message && (
 							<span className="text-red-500 text-[14px]">
@@ -191,7 +186,7 @@ export default function ProfileForm({ profileData }: Props) {
 							className="input"
 							placeholder="+507 12345678"
 							{...register('phone', { required: true })}
-							defaultValue={user.data?.phone && user.data.phone}
+							defaultValue={user.data?.phone}
 						/>
 						{errors.phone?.message && (
 							<span className="text-red-500 text-[14px]">

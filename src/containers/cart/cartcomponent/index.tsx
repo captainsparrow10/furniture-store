@@ -2,22 +2,35 @@
 import AlertStatus from '@/components/alert'
 import { useDeleteItemCart, useUpdateAmountItemCart } from '@/hooks/useMutation'
 import { useCart, usePriceCart } from '@/hooks/useQuery'
+import CartService from '@/services/cart'
 import { MessageAlertType } from '@/types/alert'
 import { CartType } from '@/types/cart'
 import { MinusIcon, PlusIcon } from '@heroicons/react/20/solid'
 import { TrashIcon } from '@heroicons/react/24/outline'
+import { useQuery } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-export default function CartComponent() {
+type Props = {
+	userCart: CartType[]
+}
+
+export default function CartComponent({ userCart }: Props) {
 	const [viewAlert, setViewAlert] = useState(false)
 	const [message, setMessage] = useState<MessageAlertType | undefined>()
 	const handleViewAlert = () => {
 		setViewAlert(false)
 	}
 
-	const cartProducts = useCart()
+	const cartProducts = useQuery({
+		queryKey: ['cart'],
+		queryFn: async () => {
+			const data: CartType[] = await CartService.cartProductsUserId()
+			return data
+		},
+		initialData: userCart
+	})
 	const price = usePriceCart()
 	const deleteItem = useDeleteItemCart()
 	const updateItem = useUpdateAmountItemCart()

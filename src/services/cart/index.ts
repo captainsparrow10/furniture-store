@@ -1,3 +1,4 @@
+import { getSession } from '@/lib/util/api'
 import { CartType } from '@/types/cart'
 import { apiRoute, apiUrl } from '@services/api'
 
@@ -18,8 +19,13 @@ const CartService = {
 
 // cart/get
 const cartProductsUserId = async () => {
-	return await apiUrl
-		.get(apiRoute.cart)
+	const token = await getSession()
+	return apiUrl
+		.get(apiRoute.cart, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
 		.then((response) => {
 			return response.data
 		})
@@ -33,7 +39,8 @@ const cartProductsUserId = async () => {
 
 // cart/post
 const insertCartProduct = async (product: CartType) => {
-	return await apiUrl
+	const token = await getSession()
+	return apiUrl
 		.post(
 			apiRoute.cart,
 			{
@@ -42,6 +49,7 @@ const insertCartProduct = async (product: CartType) => {
 			{
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
 				},
 			}
 		)
@@ -58,12 +66,16 @@ const insertCartProduct = async (product: CartType) => {
 
 // cart/delete
 const deleteCartProductId = async (productid: string) => {
+	const token = await getSession()
 	const params = {
 		productid,
 	}
-	return await apiUrl
+	return apiUrl
 		.delete(apiRoute.cart, {
 			params,
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
 		})
 		.then((response) => {
 			return response.data
@@ -78,14 +90,23 @@ const deleteCartProductId = async (productid: string) => {
 
 // cart/update
 const updateAmountCartProduct = async (productid: string, amount: number) => {
+	const token = await getSession()
 	const params = {
 		productid,
 		amount,
 	}
-	return await apiUrl
-		.put(apiRoute.cart, {
-			params,
-		})
+	return apiUrl
+		.put(
+			apiRoute.cart,
+			{
+				params,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		)
 		.then((response) => {
 			return response.data
 		})

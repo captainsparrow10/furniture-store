@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, response: NextResponse) {
 	try {
-		const header = request.headers.get('authorization')?.split(' ')[1]
-		const id = header
+		const id = request.headers.get('authorization')?.split(' ')[1]
 		if (!id) {
 			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
@@ -42,7 +41,7 @@ export async function GET(request: NextRequest, response: NextResponse) {
 
 export async function POST(request: NextRequest, response: NextResponse) {
 	try {
-		const userid = await getSession()
+		const userid = request.headers.get('authorization')?.split(' ')[1]
 		if (!userid) {
 			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
@@ -75,7 +74,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
 export async function DELETE(request: NextRequest, response: NextResponse) {
 	try {
-		const userid = await getSession()
+		const userid = request.headers.get('authorization')?.split(' ')[1]
 
 		if (!userid) {
 			return NextResponse.json({
@@ -97,8 +96,7 @@ export async function DELETE(request: NextRequest, response: NextResponse) {
 
 export async function PUT(request: NextRequest, response: NextResponse) {
 	try {
-		const userid = await getSession()
-
+		const userid = request.headers.get('authorization')?.split(' ')[1]
 		if (!userid) {
 			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
@@ -117,11 +115,21 @@ export async function PUT(request: NextRequest, response: NextResponse) {
 				lastname: data.lastname,
 			},
 		})
-		await db.address.update({
+
+		await db.address.upsert({
 			where: {
 				userid,
 			},
-			data: {
+			update: {
+				company: data.company,
+				country: data.country,
+				street: data.street,
+				province: data.province,
+				zipcode: data.zipcode,
+				phone: data.phone,
+			},
+			create: {
+				userid,
 				company: data.company,
 				country: data.country,
 				street: data.street,

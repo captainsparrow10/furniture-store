@@ -5,14 +5,14 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, response: NextResponse) {
 	try {
-		const userid = await getSession()
+		const userid = request.headers.get('authorization')?.split(' ')[1]
 		if (!userid) {
 			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
 
 		const userCart = await db.cart.findMany({
 			where: {
-				userid: userid,
+				userid
 			},
 			orderBy: {
 				name: 'asc',
@@ -26,12 +26,12 @@ export async function GET(request: NextRequest, response: NextResponse) {
 
 export async function POST(request: NextRequest, response: NextResponse) {
 	try {
-		const userid = await getSession()
-
+		const userid = request.headers.get('authorization')?.split(' ')[1]
 		if (!userid) {
 			return NextResponse.json({ status: 404, statusText: 'User not Found' })
 		}
 		const data: CartType = await request.json()
+		console.log(data)
 		if (!data) {
 			return NextResponse.json({ status: 404, statusText: 'Data not received' })
 		}
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest, response: NextResponse) {
 
 export async function DELETE(request: NextRequest, response: NextResponse) {
 	try {
-		const userid = await getSession()
+		const userid = request.headers.get('authorization')?.split(' ')[1]
 
 		if (!userid) {
 			return NextResponse.json({ status: 404, statusText: 'User not Found' })
@@ -82,8 +82,7 @@ export async function DELETE(request: NextRequest, response: NextResponse) {
 
 export async function PUT(request: NextRequest, response: NextResponse) {
 	try {
-		const userid = await getSession()
-
+		const userid = request.headers.get('authorization')?.split(' ')[1]
 		if (!userid) {
 			return NextResponse.json({
 				status: 404,

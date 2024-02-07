@@ -19,7 +19,8 @@ const profileSchema = z.object({
 			message: 'Name must be at least 3 characters long',
 		})
 		.max(50, { message: 'Name must be less than 200 characters long' })
-		.optional(),
+		.optional()
+		.or(z.literal('')),
 	country: z
 		.string()
 		.min(3, {
