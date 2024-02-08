@@ -6,20 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("DATABASE_URL") 
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-}
-
-model Cart {
-  id        String @id @default(cuid())
-  user      User   @relation(fields: [userid], references: [id])
-  userid    String 
-  productid String @unique
-  name      String
-  image     String
-  amount    Int
-  price     String
 }
 
 model User {
@@ -31,17 +20,7 @@ model User {
   address   Address?
   cart      Cart[]
   role      UserRole @default(USER)
-  session Session?
-}
-
-model Session {
-  id        String   @id @default(cuid())
-  user     User    @relation(fields: [userid], references: [id])
-  userid   String  @unique
-  token String? @db.Text
-  refresh_token String? @db.Text
-  expires_at Int?
-
+  session   Session?
 }
 
 enum UserRole {
@@ -49,15 +28,34 @@ enum UserRole {
   USER
 }
 
-
 model Address {
   id       String  @id @default(cuid())
   user     User    @relation(fields: [userid], references: [id])
   userid   String  @unique
   company  String?
   country  String
-  province String 
+  province String
   street   String
   zipcode  String
   phone    String
+}
+
+model Session {
+  id            String @id @default(cuid())
+  user          User   @relation(fields: [userid], references: [id])
+  userid        String @unique
+  token         String @unique 
+  refresh_token String @unique 
+  expires_at    String
+}
+
+model Cart {
+  id        String @id @default(cuid())
+  user      User   @relation(fields: [userid], references: [id])
+  userid    String
+  productid String @unique
+  name      String
+  image     String
+  amount    Int
+  price     String
 }

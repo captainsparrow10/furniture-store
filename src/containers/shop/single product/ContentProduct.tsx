@@ -47,7 +47,7 @@ export default function ContentProduct({ shopItem }: Props) {
 				amount: count,
 				price: shopItem.price.toString(),
 			}
-			const res : MessageAlertType = await CartService.insertCartProduct(product)
+			const res: MessageAlertType = await CartService.insertCartProduct(product)
 			if (res.status == 404) {
 				router.push('/login')
 			}
@@ -67,7 +67,7 @@ export default function ContentProduct({ shopItem }: Props) {
 	})
 	return (
 		<>
-						{viewAlert && message && (
+			{viewAlert && message && (
 				<AlertStatus
 					title={message.statusText}
 					status={message.status}

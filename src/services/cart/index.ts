@@ -1,4 +1,4 @@
-import { getSession } from '@/lib/util/api'
+import { getSession } from '@/lib/api'
 import { CartType } from '@/types/cart'
 import { apiRoute, apiUrl } from '@services/api'
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { handleAmount } from '@/lib/util/functions'
+import { handleAmount } from '@/lib/functions'
 import CartService from '@/services/cart'
 import ProfileService from '@/services/user/profile'
 

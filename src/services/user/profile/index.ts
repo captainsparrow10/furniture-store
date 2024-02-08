@@ -1,6 +1,6 @@
 import { AddressType, ProfileType } from '@/types/user'
 import { apiUrl, apiRoute } from '@/services/api'
-import { getSession } from '@/lib/util/api'
+import { getSession } from '@/lib/api'
 
 const ProfileService = {
 	getProfile: async () => {

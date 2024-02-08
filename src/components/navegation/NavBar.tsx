@@ -8,6 +8,7 @@ import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { db } from '@db/db'
 
 export default function NavBar() {
 	const [open, setOpen] = useState(false)
@@ -128,7 +129,14 @@ export default function NavBar() {
 									</Link>
 									<h5
 										className="cursor-pointer hover:font-bold"
-										onClick={() => signOut()}
+										onClick={async () => {
+											await db.session.delete({
+												where: {
+													userid: session.data.user.id,
+												},
+											})
+											signOut()
+										}}
 									>
 										Log out
 									</h5>

@@ -3,6 +3,7 @@ import Picks from '@/containers/home/picks'
 import TopPicks from '@/containers/home/toppicks'
 import NewPick from '@/containers/home/newpick'
 import ShopService from '@/services/shop'
+import { generateExpireToken } from '@/lib/expire_token'
 
 export default async function page() {
 	const home: any = await ShopService.getPresentation()
