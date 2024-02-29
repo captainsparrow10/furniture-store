@@ -1,8 +1,8 @@
 'use client'
 import { FieldErrors, UseFormRegister } from 'react-hook-form'
-import { ChangeEvent, useState } from 'react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
+import { useState } from 'react'
 type Props = {
 	register: UseFormRegister<any>
 	label: string
@@ -20,13 +20,15 @@ type Props = {
 		| 'zipcode'
 		| 'phone'
 		| 'country'
+		| 'message'
+		| 'name'
+		| 'subject'
 	placeholder: string
-	defaultValue?: string
 	required?: boolean
 	forgot?: boolean
-	value?: string | undefined
 	errors: FieldErrors<any>
 	optional?: boolean
+	disable?: boolean
 }
 
 const Input = ({
@@ -36,22 +38,12 @@ const Input = ({
 	errors,
 	type,
 	valueInput,
-	defaultValue,
 	forgot,
 	optional = false,
 	required = true,
+	disable = false,
 }: Props) => {
 	const [open, setOpen] = useState(false)
-	const [data, setData] = useState(defaultValue || '')
-	const [userData, setUserData] = useState(defaultValue)
-	const onHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setData(e.target.value)
-		setUserData(e.target.value)
-		if (data.length < 1) {
-			setOpen(false)
-		}
-	}
-	console.log({ data })
 	return (
 		<div className="flex flex-col w-full space-y-1 relative">
 			<label htmlFor={label}>
@@ -59,17 +51,20 @@ const Input = ({
 					{label} {optional && <span className="text-gray">(Optional)</span>}
 				</h5>
 			</label>
-			<div className="w-full h-fit flex justify-between items-center rounded-xl bg-button px-4 py-3 space-x-6 border border-gray">
+			<div
+				className={clsx(
+					'w-full h-fit flex justify-between items-center rounded-xl bg-button px-4 py-3 space-x-6 border border-gray',
+					disable && 'bg-gray/20'
+				)}
+			>
 				<input
 					type={type === 'password' ? (open ? 'text' : 'password') : type}
 					id={label}
 					{...register(valueInput, {
 						required,
 					})}
-					value={data}
-					defaultValue={userData}
 					placeholder={placeholder}
-					onChange={onHandleChange}
+					disabled={disable}
 					className="text-body body2 focus:text-header w-full bg-transparent outline-none"
 				/>
 				{type === 'password' && (
@@ -77,7 +72,7 @@ const Input = ({
 						className="h-fit w-fit flx shrink-0"
 						onClick={() => setOpen(!open)}
 					>
-						{open && data?.length > 0 ? (
+						{open ? (
 							<EyeIcon className="icon shrink-0" />
 						) : (
 							<EyeSlashIcon className="icon shrink-0" />
@@ -85,31 +80,33 @@ const Input = ({
 					</div>
 				)}
 			</div>
-			<div
-				className={clsx(
-					'flex justify-end mt-2',
-					errors[valueInput] && 'flex-col justify-between items-end'
-				)}
-			>
-				{forgot ? (
-					<>
-						{errors[valueInput] && (
-							<span className="text-red-500 text-[12px] font-normal w-full flex items-start">
+			{
+				<div
+					className={clsx(
+						'flex justify-end mt-2',
+						errors[valueInput] && 'flex-col justify-between items-end'
+					)}
+				>
+					{forgot ? (
+						<>
+							{errors[valueInput] && (
+								<span className="text-red-500 text-[12px] font-normal w-full flex items-start">
+									{errors[valueInput]?.message?.toString()}
+								</span>
+							)}
+							<p className="text-gray cursor-pointer hover:text-black">
+								forgot the password?
+							</p>
+						</>
+					) : (
+						errors[valueInput] && (
+							<span className="text-red-400 text-[12px] w-full flex items-start">
 								{errors[valueInput]?.message?.toString()}
 							</span>
-						)}
-						<p className="text-gray cursor-pointer hover:text-black">
-							forgot the password?
-						</p>
-					</>
-				) : (
-					errors[valueInput] && (
-						<span className="text-red-400 text-[12px] w-full flex items-start">
-							{errors[valueInput]?.message?.toString()}
-						</span>
-					)
-				)}
-			</div>
+						)
+					)}
+				</div>
+			}
 		</div>
 	)
 }

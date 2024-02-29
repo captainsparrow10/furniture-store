@@ -50,7 +50,7 @@ export default function NavBar() {
 		<>
 			<div
 				className={clsx(
-					'fixed w-full h-full bg-white z-50 overflow-hidden border  border-gray-line transition-all duration-300',
+					'fixed h-full bg-white z-50 overflow-hidden border  border-gray-line transition-all duration-300',
 					open ? 'w-4/5' : 'w-0'
 				)}
 			>
@@ -115,9 +115,8 @@ export default function NavBar() {
 							</h5>
 							<div
 								className={clsx(
-									`w-fit h-fit z-50 overflow-hidden ${scrollBg}`,
-									userPanel && 'fixed',
-									!userPanel && 'hidden'
+									`w-fit z-50 overflow-hidden ${scrollBg} transition-all duration-300 fixed`,
+									userPanel ? 'shadow-md h-24' : 'h-0'
 								)}
 							>
 								<div className="flex flex-col gap-4 px-2 py-4 w-fit">

@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function Banner({ product }: any) {
 	return (
-		<div className="h-screen px-6 lg:px-12 2xl:px-24 bg-yellow">
+		<div className="h-screen px-6 lg:px-12 2xl:px-24 bg-yellow  pt-24">
 			<div className="flex w-full h-full lg:flex-row flex-col items-center justify-center">
 				<div className="flex flex-col w-full max-w-[430px] h-fit">
 					<h1>{product.name}</h1>

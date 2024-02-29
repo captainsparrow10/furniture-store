@@ -1,13 +1,26 @@
 import { z } from 'zod'
 
 const addressSchema = z.object({
+	firstname: z
+		.string()
+		.min(3, {
+			message: 'Name must be at least 3 characters long',
+		})
+		.max(200, { message: 'Name must be less than 200 characters long' }),
+	lastname: z
+		.string()
+		.min(3, {
+			message: 'Name must be at least 3 characters long',
+		})
+		.max(200, { message: 'Name must be less than 200 characters long' }),
 	company: z
 		.string()
 		.min(3, {
 			message: 'Name must be at least 3 characters long',
 		})
 		.max(50, { message: 'Name must be less than 200 characters long' })
-		.optional(),
+		.optional()
+		.or(z.literal('')),
 	country: z
 		.string()
 		.min(3, {

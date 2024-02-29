@@ -1,8 +1,12 @@
 {
   "cSpell.words": [
+    "clsx",
     "firstname",
+    "heroicons",
     "lastname",
     "NEXTAUTH",
-    "userid"
+    "productid",
+    "userid",
+    "zipcode"
   ]
 }

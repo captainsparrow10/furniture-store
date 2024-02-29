@@ -145,10 +145,12 @@ export const authOptions: NextAuthOptions = {
 					expires: userSession.expires_at,
 				}
 			}
-			if (parseInt(token.expires) < Date.now()) {
-				return await refreshToken(token)
-			}
-			return token
+			// if (parseInt(token.expires) < Date.now()) {
+			// 	token = await refreshToken(token)
+			// 	return token
+			// } 
+				return token
+			
 		},
 	},
 	secret: process.env.NEXTAUTH_SECRET,

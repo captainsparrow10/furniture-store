@@ -17,7 +17,7 @@ export default function RegisterForm() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors }, getValues,
 	} = useForm<RegisterInputs>({
 		resolver: zodResolver(registerSchema),
 	})
@@ -86,19 +86,19 @@ export default function RegisterForm() {
 					placeholder="********"
 					type="password"
 				/>
-					<div className="flex flex-col items-center gap-2">
-						<button className="btn-lg" type="submit">
-							Login In
-						</button>
-						<p className="text-gray">
-							Do you have account?
-							<Link href="/login">
-								<span className="pl-1 hover:font-bold hover:text-black">
-									login here
-								</span>
-							</Link>
-						</p>
-					</div>
+				<div className="flex flex-col items-center gap-2">
+					<button className="btn-lg" type="submit">
+						Login In
+					</button>
+					<p className="text-gray">
+						Do you have account?
+						<Link href="/login">
+							<span className="pl-1 hover:font-bold hover:text-black">
+								login here
+							</span>
+						</Link>
+					</p>
+				</div>
 			</form>
 		</div>
 	)
