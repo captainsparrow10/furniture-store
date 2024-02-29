@@ -5,6 +5,7 @@ import {
 	ExclamationTriangleIcon,
 	LockClosedIcon,
 } from '@heroicons/react/24/outline'
+import clsx from 'clsx'
 import React, { useEffect, useState } from 'react'
 
 type Props = {
@@ -44,9 +45,10 @@ export default function AlertStatus({ status, title, changeView }: Props) {
 
 	return (
 		<div
-			className={`pointer-events-none fixed  top-16 right-0 items-end px-4 py-6 sm:items-start sm:p-6 flex z-50 w-full max-w-fit ${
-				view ? 'opacity-0 transition-opacity' : 'opacity-100 transition-opacity'
-			} `}
+			className={clsx(
+				'pointer-events-none fixed  top-16 right-0 items-end px-4 py-6 sm:items-start sm:p-6 flex z-50 w-full max-w-fit',
+				view ? 'opacity-0' : 'opacity-100'
+			)}
 		>
 			<div className="flex w-full flex-col items-center space-y-4 sm:items-end">
 				<div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">

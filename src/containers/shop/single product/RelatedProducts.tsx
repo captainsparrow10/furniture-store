@@ -30,7 +30,7 @@ export default async function RelatedProducts({ id, tags }: Props) {
 					<h3 className="w-fit">Related Products</h3>
 				</div>
 				<div className="w-full flex justify-center">
-					<div className="flex gap-6 pb-4  overflow-hidden overflow-x-scroll w-fit 2xl:overflow-x-hidden">
+					<div className="flex gap-6 pb-4  overflow-hidden  overflow-x-auto w-fit 2xl:overflow-x-hidden">
 						{shopItems.map((item) => (
 							<Link href={`/shop/${item._id}`} key={item._id}>
 								<div className="min-w-[300px] h-full flex flex-col gap-3">

@@ -16,7 +16,7 @@ export default function TopPicks({ products }: any) {
 				</h5>
 			</div>
 			<div className="w-full flex justify-center">
-				<div className="flex gap-6 pb-4  overflow-hidden overflow-x-scroll w-fit 2xl:md:overflow-x-hidden">
+				<div className="flex gap-6 pb-4  overflow-hidden overflow-x-scroll w-fit xl:md:overflow-x-hidden">
 					{products.map((product: any) => (
 						<Link
 							href={`/shop/${product.data[0]._id}`}
