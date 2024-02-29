@@ -8,7 +8,6 @@ import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { db } from '@db/db'
 
 export default function NavBar() {
 	const [open, setOpen] = useState(false)
@@ -16,7 +15,7 @@ export default function NavBar() {
 	const session = useSession()
 	const pathname = usePathname()
 	const cartProducts = useCart()
-	const navegations = [
+	const navigation = [
 		{
 			href: '/',
 			name: 'home',
@@ -51,9 +50,8 @@ export default function NavBar() {
 		<>
 			<div
 				className={clsx(
-					'w-2/5 h-full bg-white z-50 overflow-hidden border  border-gray-line',
-					open && 'fixed',
-					!open && 'hidden'
+					'fixed w-full h-full bg-white z-50 overflow-hidden border  border-gray-line transition-all duration-300',
+					open ? 'w-4/5' : 'w-0'
 				)}
 			>
 				<div className="gap-12 flex flex-col lg:hidden py-6 px-6">
@@ -61,7 +59,7 @@ export default function NavBar() {
 						className="icon cursor-pointer text-black lg:hidden"
 						onClick={() => setOpen(!open)}
 					/>
-					{navegations.map((nav) => (
+					{navigation.map((nav) => (
 						<Link
 							href={nav.href}
 							key={nav.name}
@@ -80,17 +78,16 @@ export default function NavBar() {
 					))}
 				</div>
 			</div>
-
 			<nav
 				id="navBar"
-				className={`flex justify-between py-6 bg-transparent px-6 lg:px-12 2xl:px-24 overflow-hidden top-0 w-full fixed  gap-16 lg:justify-end lg:gap-36 z-40 ${scrollBg}`}
+				className={`flex justify-between py-6 bg-transparent px-6 lg:px-12 2xl:px-24 overflow-hidden top-0 w-full fixed  gap-16 md:justify-end lg:gap-36 z-40 ${scrollBg}`}
 			>
 				<Bars3Icon
-					className="icon cursor-pointer text-black lg:hidden"
+					className="icon cursor-pointer text-black md:hidden"
 					onClick={() => setOpen(!open)}
 				/>
-				<div className="gap-12 hidden lg:flex">
-					{navegations.map((nav) => (
+				<div className="gap-12 hidden md:flex">
+					{navigation.map((nav) => (
 						<Link
 							href={nav.href}
 							key={nav.name}
@@ -129,14 +126,7 @@ export default function NavBar() {
 									</Link>
 									<h5
 										className="cursor-pointer hover:font-bold"
-										onClick={async () => {
-											await db.session.delete({
-												where: {
-													userid: session.data.user.id,
-												},
-											})
-											signOut()
-										}}
+										onClick={() => signOut()}
 									>
 										Log out
 									</h5>
