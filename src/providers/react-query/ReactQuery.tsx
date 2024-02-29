@@ -12,13 +12,13 @@ export default function ReactQuery({ children }: { children: ReactNode }) {
 	const changeView = useAlert((state) => state.changeView)
 	return (
 		<QueryClientProvider client={queryClient}>
-			{alertStatus.view && (
-				<AlertStatus
-					changeView={changeView}
-					title={alertStatus.title}
-					status={alertStatus.status}
-				/>
-			)}
+			<AlertStatus
+				changeView={changeView}
+				title={alertStatus.title}
+				status={alertStatus.status}
+				view={alertStatus.view}
+			/>
+
 			{children}
 			<ReactQueryDevtools initialIsOpen={false} />
 		</QueryClientProvider>

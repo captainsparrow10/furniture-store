@@ -59,10 +59,8 @@ export default function FilterBar({ results, sortby }: FilterBarProps) {
 				<div className="relative h-full w-fit space-x-2">
 					<div
 						className={clsx(
-							'absolute flex h-full flex-col gap-y-6 pb-3  px-2 bg-pink  w-28 transition-all  overflow-hidden z-50',
-							view
-								? ' flex h-[230px] duration-300 ease-in rounded-md shadow-md'
-								: 'h-0 duration-300 ease-out'
+							'absolute flex flex-col gap-y-6 pb-3  px-2 bg-pink  w-28 transition-all duration-500 overflow-hidden z-50',
+							view ? 'h-[230px] rounded-md shadow-md' : 'h-0'
 						)}
 					>
 						{orderName.map((order) => (

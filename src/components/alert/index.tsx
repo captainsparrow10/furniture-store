@@ -6,18 +6,21 @@ import {
 	LockClosedIcon,
 } from '@heroicons/react/24/outline'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
 
 type Props = {
 	status: number
 	title: string
+	view: boolean
 	changeView: () => void
 }
 
-export default function AlertStatus({ status, title, changeView }: Props) {
-	const [view, setView] = useState(false)
+export default function AlertStatus({
+	status,
+	title,
+	changeView,
+	view,
+}: Props) {
 	const handleSuccess = () => {
-		setView(false)
 		changeView()
 	}
 
@@ -36,18 +39,17 @@ export default function AlertStatus({ status, title, changeView }: Props) {
 		),
 	}
 
-	useEffect(() => {
+	if (view) {
 		setTimeout(() => {
-			setView(true)
 			changeView()
-		}, 3000)
-	}, [changeView])
+		}, 2000)
+	}
 
 	return (
 		<div
 			className={clsx(
-				'pointer-events-none fixed  top-16 right-0 items-end px-4 py-6 sm:items-start sm:p-6 flex z-50 w-full max-w-fit',
-				view ? 'opacity-0' : 'opacity-100'
+				'pointer-events-none fixed  top-16 right-0 items-end px-4 py-6 sm:items-start sm:p-6 flex z-50 w-full max-w-fit transition-all duration-500',
+				view ? 'opacity-100 ' : 'opacity-0'
 			)}
 		>
 			<div className="flex w-full flex-col items-center space-y-4 sm:items-end">
@@ -61,7 +63,7 @@ export default function AlertStatus({ status, title, changeView }: Props) {
 							<div className="ml-4 flex flex-shrink-0">
 								<button
 									type="button"
-									className="inline-flex rounded-md bg-white text-gray-line hover:text-black"
+									className="inline-flex rounded-md bg-white text-gray-line hover:text-red-500"
 									onClick={handleSuccess}
 								>
 									<XMarkIcon className="h-5 w-5 flex flex-shrink-0" />

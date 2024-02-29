@@ -41,7 +41,7 @@ export default function TopPicks({ products }: any) {
 				<Link href="/shop">
 					<button className="group w-fit">
 						View More
-						<div className="invisible group-hover:visible line-black" />
+						<div className="opacity-0 group-hover:opacity-100 line-black transition-all duration-300 ease-in-out" />
 					</button>
 				</Link>
 			</div>
