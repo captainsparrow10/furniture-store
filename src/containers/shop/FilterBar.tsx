@@ -56,14 +56,11 @@ export default function FilterBar({ results, sortby }: FilterBarProps) {
 				<p className="pl-2">showing {results} results</p>
 			</div>
 			<div className="flex items-center">
-				<div className="relative h-full w-fit">
+				<div className="relative h-full w-fit space-x-2">
 					<div
 						className={clsx(
-							'absolute  flex-col gap-y-6 z-50 pb-6 px-2  overflow-hidden bg-pink w-28',
-							{
-								flex: view == true,
-								hidden: view == false,
-							}
+							'absolute flex flex-col gap-y-6 pb-3  px-2 bg-pink  w-28 transition-all duration-500 overflow-hidden z-50',
+							view ? 'h-[230px] rounded-md shadow-md' : 'h-0'
 						)}
 					>
 						{orderName.map((order) => (
@@ -84,7 +81,7 @@ export default function FilterBar({ results, sortby }: FilterBarProps) {
 							</h5>
 						))}
 					</div>
-					<h5 className=" w-28 font-bold px-2">{state}</h5>
+					<h5 className="w-28 font-bold">{state}</h5>
 				</div>
 				<ChevronDownIcon
 					className="icon flex-shrink-0"

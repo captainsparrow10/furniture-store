@@ -15,7 +15,7 @@ export default function NavBar() {
 	const session = useSession()
 	const pathname = usePathname()
 	const cartProducts = useCart()
-	const navegations = [
+	const navigation = [
 		{
 			href: '/',
 			name: 'home',
@@ -50,9 +50,8 @@ export default function NavBar() {
 		<>
 			<div
 				className={clsx(
-					'w-2/5 h-full bg-white z-50 overflow-hidden border  border-gray-line',
-					open && 'fixed',
-					!open && 'hidden'
+					'fixed h-full bg-white z-50 overflow-hidden border  border-gray-line transition-all duration-300',
+					open ? 'w-4/5' : 'w-0'
 				)}
 			>
 				<div className="gap-12 flex flex-col lg:hidden py-6 px-6">
@@ -60,7 +59,7 @@ export default function NavBar() {
 						className="icon cursor-pointer text-black lg:hidden"
 						onClick={() => setOpen(!open)}
 					/>
-					{navegations.map((nav) => (
+					{navigation.map((nav) => (
 						<Link
 							href={nav.href}
 							key={nav.name}
@@ -79,17 +78,15 @@ export default function NavBar() {
 					))}
 				</div>
 			</div>
-
 			<nav
-				id="navBar"
-				className={`flex justify-between py-6 bg-transparent px-6 lg:px-12 2xl:px-24 overflow-hidden top-0 w-full fixed  gap-16 lg:justify-end lg:gap-36 z-40 ${scrollBg}`}
+				className={`flex justify-between py-6 bg-transparent px-6 lg:px-12 2xl:px-24 overflow-hidden top-0 w-full fixed  gap-16 md:justify-end lg:gap-36 z-40 ${scrollBg}`}
 			>
 				<Bars3Icon
-					className="icon cursor-pointer text-black lg:hidden"
+					className="icon cursor-pointer text-black md:hidden"
 					onClick={() => setOpen(!open)}
 				/>
-				<div className="gap-12 hidden lg:flex">
-					{navegations.map((nav) => (
+				<div className="gap-12 hidden md:flex">
+					{navigation.map((nav) => (
 						<Link
 							href={nav.href}
 							key={nav.name}
@@ -117,9 +114,8 @@ export default function NavBar() {
 							</h5>
 							<div
 								className={clsx(
-									`w-fit h-fit z-50 overflow-hidden ${scrollBg}`,
-									userPanel && 'fixed',
-									!userPanel && 'hidden'
+									`w-fit z-50 overflow-hidden ${scrollBg} transition-all duration-300 fixed`,
+									userPanel ? 'shadow-md h-24' : 'h-0'
 								)}
 							>
 								<div className="flex flex-col gap-4 px-2 py-4 w-fit">

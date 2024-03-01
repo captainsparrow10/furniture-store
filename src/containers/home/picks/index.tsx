@@ -5,7 +5,6 @@ import React from 'react'
 export default async function Picks({ products }: any) {
 	return (
 		<div
-			title="Picks"
 			className="flex px-6 lg:px-12 2xl:px-24 sm:gap-12 py-12  bg-pink justify-center"
 		>
 			<div className="flex gap-8 sm:gap-12 pb-4 overflow-hidden overflow-x-scroll w-full max-w-[950px] md:overflow-x-hidden">
@@ -26,7 +25,7 @@ export default async function Picks({ products }: any) {
 							<Link href={`/shop/${product.data[0]._id}`}>
 								<button className="group w-fit">
 									Shop Now
-									<div className="invisible group-hover:visible line-black" />
+									<div className="opacity-0 group-hover:opacity-100 line-black transition-all duration-300 ease-in-out" />
 								</button>
 							</Link>
 						</div>

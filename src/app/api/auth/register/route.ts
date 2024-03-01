@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@db/db'
 import { RegisterType } from '@/types/user'
+import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest, response: NextResponse) {
 	try {
@@ -16,12 +17,13 @@ export async function POST(request: NextRequest, response: NextResponse) {
 		if (emailFound) {
 			return NextResponse.json({ status: 404, statusText: 'Email exists' })
 		}
+		const hashedPassword = await bcrypt.hash(data.password, 10)
 		await db.user.create({
 			data: {
 				firstname: data.firstname,
 				lastname: data.lastname,
 				email: data.email,
-				password: data.password,
+				password: hashedPassword,
 			},
 		})
 		return NextResponse.json({ status: 200, statusText: 'Registered User' })
