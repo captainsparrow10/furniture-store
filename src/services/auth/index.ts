@@ -3,8 +3,11 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import { loginSchema } from '@/validations/loginSchema'
-import { generateRandomToken, refreshToken } from '@/lib/token'
-import { generateExpireToken } from '@/lib/expire_token'
+import {
+	generateRandomToken,
+	refreshToken,
+	generateExpireToken,
+} from '@/lib/token'
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -96,6 +99,8 @@ export const authOptions: NextAuthOptions = {
 	},
 	callbacks: {
 		async session({ session, token }) {
+			console.log({ session })
+			console.log({ token })
 			if (token) {
 				session.user.id = token.id
 				session.user.name = token.name
@@ -104,6 +109,7 @@ export const authOptions: NextAuthOptions = {
 				session.user.refresh_token = token.refresh_token
 				session.user.expires = token.expires
 			}
+			console.log({ 'new session': session })
 			return session
 		},
 		async jwt({ token, user }) {
@@ -145,12 +151,12 @@ export const authOptions: NextAuthOptions = {
 					expires: userSession.expires_at,
 				}
 			}
-			// if (parseInt(token.expires) < Date.now()) {
-			// 	token = await refreshToken(token)
-			// 	return token
-			// } 
+			if (parseInt(token.expires) < Date.now()) {
+				token = await refreshToken(token)
+				console.log({ 'change token': token })
 				return token
-			
+			}
+			return token
 		},
 	},
 	secret: process.env.NEXTAUTH_SECRET,

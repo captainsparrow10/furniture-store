@@ -6,7 +6,6 @@ import React from 'react'
 export default function TopPicks({ products }: any) {
 	return (
 		<div
-			title="TopPicksForYou"
 			className="p-6 py-12 lg:px-12 3xl:px-24 flex flex-col gap-6 sm:gap-12"
 		>
 			<div className="flex flex-col gap-4 items-center">

@@ -79,7 +79,6 @@ export default function NavBar() {
 				</div>
 			</div>
 			<nav
-				id="navBar"
 				className={`flex justify-between py-6 bg-transparent px-6 lg:px-12 2xl:px-24 overflow-hidden top-0 w-full fixed  gap-16 md:justify-end lg:gap-36 z-40 ${scrollBg}`}
 			>
 				<Bars3Icon

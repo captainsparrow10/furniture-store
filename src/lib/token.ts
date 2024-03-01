@@ -2,7 +2,6 @@ import * as jwt from 'jsonwebtoken'
 import * as crypto from 'crypto'
 import { JWT } from 'next-auth/jwt'
 import { db } from '@db/db'
-import { generateExpireToken } from './expire_token'
 
 export function generateRandomToken(): string {
 	const userId = crypto.randomBytes(8).toString('hex')
@@ -23,6 +22,14 @@ export function generateRandomToken(): string {
 		.substring(0, 32)
 
 	return shortenedToken
+}
+
+export function generateExpireToken() {
+	const currentDate = new Date()
+	currentDate.setMinutes(currentDate.getMinutes() + 5)
+	const expiresAt = currentDate.getTime()
+
+	return expiresAt.toString()
 }
 
 export async function refreshToken(token: JWT) {
