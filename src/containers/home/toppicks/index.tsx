@@ -1,3 +1,4 @@
+import CardItem from '@/components/card/CardItem'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -5,7 +6,6 @@ import React from 'react'
 export default function TopPicks({ products }: any) {
 	return (
 		<div
-			title="TopPicksForYou"
 			className="p-6 py-12 lg:px-12 3xl:px-24 flex flex-col gap-6 sm:gap-12"
 		>
 			<div className="flex flex-col gap-4 items-center">
@@ -16,23 +16,17 @@ export default function TopPicks({ products }: any) {
 				</h5>
 			</div>
 			<div className="w-full flex justify-center">
-				<div className="flex gap-6 pb-4  overflow-hidden overflow-x-scroll w-fit xl:md:overflow-x-hidden">
+				<div className="flex gap-12 pb-4  overflow-hidden  overflow-x-auto w-fit ">
 					{products.map((product: any) => (
 						<Link
 							href={`/shop/${product.data[0]._id}`}
 							key={product.data[0]._id}
 						>
-							<div className="min-w-[300px] h-full">
-								<div className="relative w-full h-[300px]">
-									<Image
-										src={product.data[0].colorRef}
-										alt={product.data[0].name}
-										fill
-									/>
-								</div>
-								<h5>{product.data[0].name}</h5>
-								<h4>{product.data[0].price}</h4>
-							</div>
+							<CardItem
+								image={product.data[0].colorRef}
+								name={product.data[0].name}
+								price={product.data[0].price}
+							/>
 						</Link>
 					))}
 				</div>

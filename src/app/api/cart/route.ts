@@ -103,7 +103,7 @@ export async function DELETE(request: NextRequest, response: NextResponse) {
 				userid,
 			},
 		})
-		return NextResponse.json({ status: 200, statusText: 'Data Delete' })
+		return NextResponse.json({ status: 200, statusText: 'Item Delete' })
 	} catch (error) {
 		return NextResponse.json({ status: 400, statusText: 'Error Request' })
 	}

@@ -1,4 +1,3 @@
-import { getSession } from '@/lib/api'
 import { AddressType, ProfileType } from '@/types/user'
 import { db } from '@db/db'
 import { NextRequest, NextResponse } from 'next/server'
@@ -152,28 +151,33 @@ export async function PUT(request: NextRequest, response: NextResponse) {
 			},
 		})
 
-		await db.address.upsert({
-			where: {
-				userid,
-			},
-			update: {
-				company: data.company,
-				country: data.country,
-				street: data.street,
-				province: data.province,
-				zipcode: data.zipcode,
-				phone: data.phone,
-			},
-			create: {
-				userid,
-				company: data.company,
-				country: data.country,
-				street: data.street,
-				province: data.province,
-				zipcode: data.zipcode,
-				phone: data.phone,
-			},
-		})
+		 try {
+			
+			 await db.address.upsert({
+				 where: {
+					 userid,
+				 },
+				 update: {
+					 company: data.company,
+					 country: data.country,
+					 street: data.street,
+					 province: data.province,
+					 zipcode: data.zipcode,
+					 phone: data.phone,
+				 },
+				 create: {
+					 userid,
+					 company: data.company,
+					 country: data.country,
+					 street: data.street,
+					 province: data.province,
+					 zipcode: data.zipcode,
+					 phone: data.phone,
+				 },
+			 })
+		 } catch (error) {
+			console.log(error)
+		 }
 		return NextResponse.json({ status: 200, statusText: 'Updated Data' })
 	} catch (error) {
 		return NextResponse.json({ status: 400, statusText: 'Error Request' })
