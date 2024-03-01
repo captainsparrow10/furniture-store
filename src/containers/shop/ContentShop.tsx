@@ -22,7 +22,7 @@ export default function ContentShop({ shopItems }: Props) {
 		if (state == 4) {
 			return setOrderby(shopItems.price.descending)
 		}
-		return shopItems.default
+		return setOrderby(shopItems.default)
 	}
 
 	return (

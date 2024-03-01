@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { totalPriceFunction } from '@/lib/util/functions'
+import { totalPriceFunction } from '@/lib/functions'
 import { CartType } from '@/types/cart'
 import { ProfileType } from '@/types/user'
 import CartService from '@/services/cart'

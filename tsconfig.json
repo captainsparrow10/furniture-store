@@ -39,6 +39,6 @@
 		"**/*.tsx",
 		".next/types/**/*.ts",
 		"src/app/api/shop/[id]"
-	],
+, "src/lib/token/index.ts"	],
 	"exclude": ["node_modules"]
 }

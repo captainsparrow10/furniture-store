@@ -1,6 +1,8 @@
 'use client'
 
 import AlertStatus from '@/components/alert'
+import Input from '@/components/input'
+import { useAlert } from '@/lib/alerts'
 import { MessageAlertType } from '@/types/alert'
 import { LoginInputs } from '@/types/input'
 import { loginSchema } from '@/validations/loginSchema'
@@ -17,6 +19,7 @@ export default function LoginForm() {
 	const [see, setSee] = useState(false)
 	const [viewAlert, setViewAlert] = useState(false)
 	const [message, setMessage] = useState<MessageAlertType | undefined>()
+	const alertStatus = useAlert((state) => state.changeStatus)
 	const handleViewAlert = () => {
 		setViewAlert(false)
 	}
@@ -35,17 +38,15 @@ export default function LoginForm() {
 			password: data.password,
 			redirect: false,
 		})
+
 		if (res?.status == 200) {
+			alertStatus('Sign In...', res.status)
 			userCart.mutate()
 			router.push('/')
 		}
+
 		if (res?.error) {
-			console.log(res)
-			setViewAlert(true)
-			setMessage({
-				status: res.status,
-				statusText: res.error,
-			})
+			alertStatus(res.error, res.status)
 		}
 	})
 
@@ -55,81 +56,42 @@ export default function LoginForm() {
 		},
 	})
 	return (
-		<>
-			{viewAlert && message && (
-				<AlertStatus
-					title={message.statusText}
-					status={message.status}
-					changeView={handleViewAlert}
+		<div className="py-16 px-6 flex gap-12 justify-center items-center">
+			<form
+				className="flex flex-col gap-4 w-full max-w-[350px]  h-[380px]"
+				onSubmit={onSubmit}
+			>
+				<h3>Login</h3>
+				<Input
+					register={register}
+					label="email"
+					valueInput="email"
+					errors={errors}
+					placeholder="example@gmail.com"
+					type="email"
 				/>
-			)}
-			<div className="py-16 px-6 flex gap-12 justify-center items-center">
-				<form
-					className="flex flex-col gap-4 w-full max-w-[350px]  h-[380px]"
-					onSubmit={onSubmit}
-				>
-					<h3>Login</h3>
-					<div>
-						<label htmlFor="email">E-mail</label>
-						<input
-							type="email"
-							placeholder="example@gmail.com"
-							className="input"
-							{...register('email', {
-								required: true,
-							})}
-						/>
-						{errors.email?.message && (
-							<span className="text-red-500 text-[14px]">
-								{errors.email?.message}
+				<Input
+					register={register}
+					label="password"
+					valueInput="password"
+					errors={errors}
+					placeholder="********"
+					type="password"
+				/>
+				<div className="flex flex-col items-center gap-2">
+					<button className="btn-lg" type="submit">
+						Login In
+					</button>
+					<p className="text-gray">
+						Don&apos;t have account?
+						<Link href="/register">
+							<span className="pl-1 hover:font-bold hover:text-black">
+								Register here
 							</span>
-						)}
-					</div>
-					<div>
-						<label htmlFor="password">Password</label>
-						<div className="flex  items-center input gap-3">
-							<input
-								type={see ? 'text' : 'password'}
-								placeholder="*******"
-								className="flex w-full text-[16px] font-normal placeholder:text-gray border outline-none border-none"
-								{...register('password', { required: true })}
-							/>
-							{see ? (
-								<EyeSlashIcon
-									className="icon shrink-0"
-									onClick={() => setSee(!see)}
-								/>
-							) : (
-								<EyeIcon
-									className="icon shrink-0"
-									onClick={() => setSee(!see)}
-								/>
-							)}
-						</div>
-						{errors.password?.message && (
-							<span className="text-red-500 text-[14px]">
-								{errors.password?.message}
-							</span>
-						)}
-						<Link href="/lostpassword">
-							<p className="text-gray mt-2">Lost your password?</p>
 						</Link>
-					</div>
-					<div className="flex flex-col items-center gap-2">
-						<button className="btn-lg" type="submit">
-							Login In
-						</button>
-						<p className="text-gray">
-							Don&apos;t have account?
-							<Link href="/register">
-								<span className="pl-1 hover:font-bold hover:text-black">
-									Register here
-								</span>
-							</Link>
-						</p>
-					</div>
-				</form>
-			</div>
-		</>
+					</p>
+				</div>
+			</form>
+		</div>
 	)
 }

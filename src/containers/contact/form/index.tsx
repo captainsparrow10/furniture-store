@@ -2,6 +2,11 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import ContactSchedule from '../schedule'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { contactSchema } from '@/validations/contactSchema'
+import Input from '@/components/input'
+import TextArea from '@/components/input/area'
+import { useAlert } from '@/lib/alerts'
 
 type Inputs = {
 	name: string
@@ -13,12 +18,15 @@ export default function ContactForm() {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
-	} = useForm<Inputs>()
+	} = useForm<Inputs>({
+		resolver: zodResolver(contactSchema),
+	})
+	const alertStatus = useAlert((state) => state.changeStatus)
 	const onSubmit = handleSubmit(async (data: Inputs) => {
-		if (data && data.email && data.name && data.subject && data.message) {
-			console.log(data)
-		}
+		alertStatus('Data Send', 200)
+		reset()
 	})
 
 	return (
@@ -37,61 +45,39 @@ export default function ContactForm() {
 					className="flex flex-col gap-y-6 max-w-[423px] w-full"
 					onSubmit={onSubmit}
 				>
-					<div className="input-space">
-						<h5>Name</h5>
-						<input
-							type="text"
-							className="input"
-							placeholder="John Doe"
-							{...register('name', { required: true })}
-						/>
-						{errors.name && (
-							<span className="text-red-500 text-[14px]">
-								This field is required
-							</span>
-						)}
-					</div>
-					<div className="input-space">
-						<h5>Email</h5>
-						<input
-							type="email"
-							className="input"
-							placeholder="example@gmail.com"
-							{...register('email', { required: true })}
-						/>
-						{errors.email && (
-							<span className="text-red-500 text-[14px]">
-								This field is required
-							</span>
-						)}
-					</div>
-					<div className="input-space">
-						<h5>Subject</h5>
-						<input
-							type="text"
-							className="input"
-							placeholder="This is optional"
-							{...register('subject', { required: true })}
-						/>
-						{errors.subject && (
-							<span className="text-red-500 text-[14px]">
-								This field is required
-							</span>
-						)}
-					</div>
-					<div className="input-space">
-						<h5>Message</h5>
-						<textarea
-							className="input h-[200px]"
-							placeholder="Hi! I'd like to ask about"
-							{...register('message', { required: true })}
-						/>
-						{errors.message && (
-							<span className="text-red-500 text-[14px]">
-								This field is required
-							</span>
-						)}
-					</div>
+					<Input
+						register={register}
+						label="name"
+						valueInput="name"
+						errors={errors}
+						placeholder="John Doe"
+						type="text"
+					/>
+					<Input
+						register={register}
+						label="email"
+						valueInput="email"
+						errors={errors}
+						placeholder="example@gmail.com"
+						type="email"
+					/>
+					<Input
+						register={register}
+						label="subject"
+						valueInput="subject"
+						errors={errors}
+						placeholder="This is optional"
+						type="text"
+						optional={true}
+					/>
+					<TextArea
+						placeholder="Hi! I'd like to ask about"
+						register={register}
+						errors={errors}
+						valueInput="message"
+						label="message"
+					></TextArea>
+
 					<button className="btn-lg" type="submit">
 						submit
 					</button>

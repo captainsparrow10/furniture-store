@@ -1,7 +1,6 @@
-
 import { AddressType, ProfileType } from '@/types/user'
 import { apiUrl, apiRoute } from '@/services/api'
-
+import { getSession } from '@/lib/api'
 
 const ProfileService = {
 	getProfile: async () => {
@@ -18,8 +17,13 @@ const ProfileService = {
 	},
 }
 const getProfile = async () => {
+	const token = await getSession()
 	return apiUrl
-		.get(apiRoute.profile)
+		.get(apiRoute.profile, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
 		.then((response) => {
 			return response.data
 		})
@@ -32,6 +36,7 @@ const getProfile = async () => {
 }
 
 const createAddress = async (userData: AddressType) => {
+	const token = await getSession()
 	return await apiUrl
 		.post(
 			apiRoute.profile,
@@ -41,6 +46,7 @@ const createAddress = async (userData: AddressType) => {
 			{
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
 				},
 			}
 		)
@@ -56,13 +62,23 @@ const createAddress = async (userData: AddressType) => {
 }
 
 const putProfile = async (userData: ProfileType) => {
+	const token = await getSession()
 	const params = {
 		userData,
 	}
 	return await apiUrl
-		.put(apiRoute.profile, {
-			params,
-		})
+		.put(
+			apiRoute.profile,
+			{
+				params,
+			},
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		)
 		.then((response) => {
 			return response.data
 		})
@@ -75,8 +91,13 @@ const putProfile = async (userData: ProfileType) => {
 }
 
 const deleteCart = async () => {
+	const token = await getSession()
 	return await apiUrl
-		.delete(apiRoute.profile)
+		.delete(apiRoute.profile, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
 		.then((response) => {
 			return response.data
 		})

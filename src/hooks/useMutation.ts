@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
-import { handleAmount } from '@/lib/util/functions'
-import { AddressType, ProfileType } from '@/types/user'
+import { handleAmount } from '@/lib/functions'
 import CartService from '@/services/cart'
 import ProfileService from '@/services/user/profile'
 
@@ -32,32 +30,18 @@ const useUpdateAmountItemCart = () => {
 	})
 }
 
-const useUpdateUserAdress = () => {
-	const router = useRouter()
+const useCheckOut = () => {
 	const queryClient = useQueryClient()
 	return useMutation({
-		mutationFn: async (data: AddressType) =>
-			await ProfileService.createAdress(data),
+		mutationFn: async () => await ProfileService.deleteCart(),
 		onSuccess: async () => {
-			router.push('/cart/checkout/send')
-			await ProfileService.deleteCart()
 			queryClient.invalidateQueries({ queryKey: ['cart'] })
+			queryClient.invalidateQueries({ queryKey: ['user'] })
 		},
 	})
 }
 
-const useUpdateUserprofile = () => {
-	const queryClient = useQueryClient()
-	return useMutation({
-		mutationFn: async (data: ProfileType) =>
-			await ProfileService.putProfile(data),
-		onSuccess: async () => {
-			queryClient.invalidateQueries({ queryKey: ['cart'] })
-		},
-	})
-}
-
-const useUpdateProfileData = () =>{
+const useUpdateProfileData = () => {
 	const queryClient = useQueryClient()
 	return useMutation({
 		onSuccess: async () => {
@@ -68,8 +52,7 @@ const useUpdateProfileData = () =>{
 
 export {
 	useDeleteItemCart,
-	useUpdateAmountItemCart ,
-	useUpdateUserAdress,
-	useUpdateUserprofile,
-	useUpdateProfileData
+	useUpdateAmountItemCart,
+	useUpdateProfileData,
+	useCheckOut,
 }

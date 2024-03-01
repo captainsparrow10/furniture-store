@@ -13,43 +13,54 @@ const profileSchema = z.object({
 			message: 'Name must be at least 3 characters long',
 		})
 		.max(200, { message: 'Name must be less than 200 characters long' }),
-    company: z
+	company: z
 		.string()
 		.min(3, {
 			message: 'Name must be at least 3 characters long',
 		})
 		.max(50, { message: 'Name must be less than 200 characters long' })
-		.optional(),
+		.optional()
+		.or(z.literal('')),
 	country: z
 		.string()
 		.min(3, {
 			message: 'Name must be at least 3 characters long',
 		})
-		.max(50, { message: 'Name must be less than 50 characters long' }),
+		.max(50, { message: 'Name must be less than 50 characters long' })
+		.optional()
+		.or(z.literal('')),
 	street: z
 		.string()
 		.min(3, {
 			message: 'Name must be at least 3 characters long',
 		})
-		.max(200, { message: 'Name must be less than 200 characters long' }),
+		.max(200, { message: 'Name must be less than 200 characters long' })
+		.optional()
+		.or(z.literal('')),
 	province: z
 		.string()
 		.min(3, {
 			message: 'Name must be at least 3 characters long',
 		})
-		.max(50, { message: 'Name must be less than 50 characters long' }),
+		.max(50, { message: 'Name must be less than 50 characters long' })
+		.optional()
+		.or(z.literal('')),
 	zipcode: z
 		.string()
 		.min(4, {
 			message: 'Name must be at least 4 characters long',
 		})
-		.max(10, { message: 'Name must be less than 10 characters long' }),
+		.max(10, { message: 'Name must be less than 10 characters long' })
+		.optional()
+		.or(z.literal('')),
 	phone: z
 		.string()
 		.min(8, {
 			message: 'Name must be at least 8 characters long',
 		})
-		.max(20, { message: 'Name must be less than 20 characters long' }),
+		.max(20, { message: 'Name must be less than 20 characters long' })
+		.optional()
+		.or(z.literal('')),
 })
 
 export { profileSchema }

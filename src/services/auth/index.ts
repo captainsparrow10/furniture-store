@@ -1,7 +1,13 @@
 import { db } from '@db/db'
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { NextResponse } from 'next/server'
+import bcrypt from 'bcryptjs'
+import { loginSchema } from '@/validations/loginSchema'
+import {
+	generateRandomToken,
+	refreshToken,
+	generateExpireToken,
+} from '@/lib/token'
 
 export const authOptions: NextAuthOptions = {
 	providers: [
@@ -20,27 +26,70 @@ export const authOptions: NextAuthOptions = {
 				},
 			},
 			async authorize(credentials: any, req: any): Promise<any> {
-				if (credentials) {
+				const validatedFields = loginSchema.safeParse(credentials)
+				if (validatedFields.success) {
+					const { email, password } = validatedFields.data
 					const userFound = await db.user.findUnique({
 						where: {
-							email: credentials?.email,
-							password: credentials?.password,
+							email,
 						},
 					})
 					if (!userFound) return null
 
-					const mathPassword = credentials?.password == userFound.password
+					if (!userFound || !userFound.password) return null
 
-					if (!mathPassword) {
+					const passwordsMatch = await bcrypt.compare(
+						password,
+						userFound.password
+					)
+
+					if (!passwordsMatch) {
 						return null
 					}
+					const token = generateRandomToken()
+					const refresh_token = generateRandomToken()
+					const expires_at = generateExpireToken()
 
+					try {
+						await db.session.upsert({
+							where: {
+								userid: userFound.id,
+							},
+							update: {
+								token,
+								expires_at,
+							},
+							create: {
+								userid: userFound.id,
+								token,
+								refresh_token,
+								expires_at,
+							},
+						})
+					} catch (error) {
+						console.log(error)
+					}
+
+					const session = await db.session.findUnique({
+						where: {
+							userid: userFound.id,
+						},
+					})
+
+					if (!session) {
+						return null
+					}
 					return {
 						id: userFound.id,
 						name: userFound.firstname + ' ' + userFound.lastname,
 						email: userFound.email,
+						role: userFound.role,
+						accessToken: session.token,
+						refresh_token: session.refresh_token,
+						expires: session.expires_at,
 					}
 				}
+				return null
 			},
 		}),
 	],
@@ -50,11 +99,17 @@ export const authOptions: NextAuthOptions = {
 	},
 	callbacks: {
 		async session({ session, token }) {
+			console.log({ session })
+			console.log({ token })
 			if (token) {
 				session.user.id = token.id
 				session.user.name = token.name
 				session.user.role = token.role
+				session.user.accessToken = token.accessToken
+				session.user.refresh_token = token.refresh_token
+				session.user.expires = token.expires
 			}
+			console.log({ 'new session': session })
 			return session
 		},
 		async jwt({ token, user }) {
@@ -68,17 +123,38 @@ export const authOptions: NextAuthOptions = {
 						firstname: true,
 						lastname: true,
 						role: true,
+						session: {
+							select: {
+								token: true,
+								refresh_token: true,
+								expires_at: true,
+							},
+						},
 					},
 				})
-				if (!dbdUser) {
+				const userSession = await db.session.findUnique({
+					where: {
+						userid: user.id,
+					},
+				})
+				if (!dbdUser || !userSession) {
 					token.id = user!.id
 					return token
 				}
+
 				return {
 					id: dbdUser.id,
 					name: dbdUser.firstname + ' ' + dbdUser.lastname,
 					role: dbdUser.role,
+					accessToken: userSession.token,
+					refresh_token: userSession.refresh_token,
+					expires: userSession.expires_at,
 				}
+			}
+			if (parseInt(token.expires) < Date.now()) {
+				token = await refreshToken(token)
+				console.log({ 'change token': token })
+				return token
 			}
 			return token
 		},

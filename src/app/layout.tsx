@@ -1,4 +1,5 @@
 import '@/app/globals.css'
+import AlertStatus from '@/components/alert'
 import Footer from '@/components/footer'
 import NavBar from '@/components/navegation/NavBar'
 import NextAuth from '@/providers/auth/NextAuth'
